@@ -9,6 +9,66 @@ if (!"reshape" %in% rownames(installed.packages())) {
   install.packages("reshape")
 }
 
+#' Finds the country with the longest name.
+longestName <- function(dataFrame) {
+  maxCountry = ""
+  maxCount = 0
+  for (r in 1:nrow(dataFrame)) {
+    country = dataFrame[r,"Country.Name"]
+    # annoying way of getting string length
+    count = length(unlist(strsplit(as.character(country),split="")))
+    print(paste("Country:", country, "Count:", count))
+    if (count > maxCount) {
+      maxCountry = country;
+      maxCount = count;
+    }
+  }
+  print(paste("Longest country is", maxCountry, "with", maxCount, "letters..."))
+}
+
+cellLength <- function(cell) {
+  return(length(unlist(strsplit(as.character(cell),split=""))))
+}
+
+#' Returns a list of countries with the fewest NA values.
+#' Scans rows and returns the first cells of those rows 
+#' with the fewest NAs.
+#' @param dataFrame The data frame. Must be in LONG format.
+#' @param n Will return the top n cells.
+fewestNAs <- function(dataFrame, n) {
+  minNames = rep("", n)
+  minCounts = rep(ncol(dataFrame), n)
+  minRows = rep(0, n)
+  
+  for (country in 1:nrow(dataFrame)) {
+    name = dataFrame[country,"Country.Name"]
+    na.count = 0
+    for (i in 1:ncol(dataFrame)) {
+      if (is.na(dataFrame[country,i])) {
+        na.count = na.count + 1
+      }
+    }
+
+    #if (na.count < 300) {print(paste(country, na.count))}
+    
+    maxCount = max(minCounts)
+    # the index of the first max occurrence 
+    maxIndex = which.max(minCounts)
+    
+    # Found a new min! Add it to min list!
+    if (na.count < maxCount) {
+      minNames[maxIndex] = name
+      minCounts[maxIndex] = na.count
+      minRows[maxIndex] = country
+    }
+  }  
+  minRows = sort(minRows)
+  for (i in length(minRows)) {
+    print(dataFrame[i,"Country.Name"])
+  }
+  return(sort(minRows))
+}
+
 #' Returns a year-specific data frame.
 #' Filters out all but one year.
 #' @param dataFrame The wide-formatted data frame that contains data for more than one year.

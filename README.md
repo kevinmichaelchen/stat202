@@ -1,6 +1,13 @@
 STAT202
 =======
 
+## Downloading the data  
+1. Go to the following [link](http://databank.worldbank.org/data/views/variableselection/selectvariables.aspx?source=world-development-indicators).  
+2. Go to the *COUNTRY* tab and select all countries.  
+3. Go to the *SERIES* tab and select all indicators.  
+4. Go to the *TIME* tab and select the desired years.  
+
+## Overview  
 This repo contains the dataset, R script, and writeups for the 202 final project. We analyze data from **The World Bank** and explore relationships between economic growth and a myriad indicators (with an emphasis on urbanization indicators).  
 
 Running `build.R` will ask the user to choose a file of the original wide-format data (e.g., `originalData.csv`). The script will create a data frame for each year that was downloaded.  

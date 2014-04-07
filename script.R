@@ -1,98 +1,54 @@
-# Get Data from World Bank website http://databank.worldbank.org/data/views/variableselection/selectvariables.aspx?source=world-development-indicators
+ourFrame <- file.choose()
+variables.name <- names(ourFrame)
 
-##################
-
-# Dataframe setup will only work with the "reshape" package, for pivoting data
-#library("reshape") or install.packages("reshape")
-
-# Read in downloaded datset into dataframe 'data'
-data <- read.csv(file.choose(),header = TRUE)
-names(data)[1] <- "Country.Name"
-names(data)[5] <- "Y1980"
-names(data)[6] <- "Y2008"
-View(data)
-
-# Create 2008 dataframe
-data.test.2008 <- data[-(c(grep("Country.Code",names(data)),grep("Indicator.Code",names(data)),grep("Y1980",names(data))))] # remove Country.Code, Indicator.Code, Y1980 column
-#View(data.test.2008)
-
-# Create 1980 dataframe
-data.test.1980 <- data[-(c(grep("Country.Code",names(data)),grep("Indicator.Code",names(data)),grep("Y2008",names(data))))] # remove Country.Code, Indicator.Code, Y2008 column
-#View(data.test.1980)
-
-# Pivot/unmelt dataframe 'data.test.2008' to create new dataframe 'ourFrame.2008' with columns of predictors and response.
-ourFrame.2008 <- cast(data.test.2008,Country.Name ~ Indicator.Name, fun.aggregate = NULL, value = "Y2008")
-
-# To see what is.na does, try entering:
-# is.na(ourFrame.2008[,0:2])
-# colSums(is.na(ourFrame.2008[,0:2])) reports back the number of NAs in the first 2 columns
-
-# Discard columns that are wholly comprised of NAs
-ourFrame.2008 <- ourFrame.2008[,colSums(is.na(ourFrame.2008)) != nrow(ourFrame.2008)]
-
-View(ourFrame.2008)
-
-##############################
-
-# Create vectors of variable names: response.name, predictors.name
-# predictors.name <- names(ourFrame.2008)[-c(grep("Country.Name",names(ourFrame.2008)),grep("GDP.current.US.",names(ourFrame.2008)))]
-# response.name <- names(ourFrame.2008)[c(grep("GDP.current.US.",names(ourFrame.2008)))]
-variables.name <- names(ourFrame.2008)
-
-##############################  
-
-# Checks for Not A Number (NaN) values
+#' Checks for Not A Number (NaN) values.
 checkAllNumbers <- function(dataFrame) {
   #isNumber.allColumns <- rep(TRUE, ncol(dataFrame))
   for(z in 1:ncol(dataFrame)){
     for(l in 1:nrow(dataFrame)){
       if(is.nan(dataFrame[l,z])){
         #isNumber.allColumns[z] <- FALSE
-        print(paste("Column", z, "contains Not A Number (NaN) values..."))
+        print(paste("Column", z, "contains Not A Number (NaN) value(s)..."))
         break
       }
     }
   }
   #return(isNumber.allColumns)
 }
-checkAllNumbers(ourFrame.2008)
 
-##############################  
-
-# Setting up choices for log transformation:
-# For each column i in dataframe ourFrame.2008, set vector colsign[i] based on the presence/absence of 0 or negative numbers to FALSE/TRUE respectively.
-colsign <- NULL
-for(i in 2:ncol(ourFrame.2008)){
-  colsign[i] <- TRUE                  # setting default colsign = TRUE
-  for(j in 1:nrow(ourFrame.2008)){ # iterate through each row in column i
-    if((is.na(ourFrame.2008[j,i]) != TRUE) & (ourFrame.2008[j,i]) <= 0) {
-      colsign[i] <- FALSE
-      break
+#' Checks for log-ability.
+#' A number can be logged if it is a non-zero positive.
+checkAllLoggable <- function(dataFrame) {
+  #isLoggable.allColumns <- rep(TRUE, ncol(dataFrame))
+  for (z in 1:ncol(dataFrame)) {
+    for (l in 1:nrow(dataFrame)) {
+      if ( !is.na(dataFrame[l,z]) & dataFrame[l,z]) <= 0 ) {
+        print(paste("Column", z, "contains a negative and thus is not loggable..."))
+        #isLoggable.allColumns[z] <- FALSE
+        break
+      }
     }
   }
-}            
-head(colsign)
+#return(isLoggable.allColumns)
+}
 
-# if ourFrame[i] contains all positive numbers, set colsign[i] = TRUE
-# if ourFrame[i] contains a 0 or negative number, set colsign[i] = FALSE
-# all other cases, set colsign[i] = TRUE
-
-##############################
-
-# Run univariate linear regression of transformed predictors in ourFrame.2008:
-# Note: transform is only applicable for positive numbers based on colsign[i] above.
+#'  linear regression of transformed predictors in ourFrame:
+#' Note: transform is only applicable for positive numbers based on colsign[i] above.
 res.1 <- list()
 res.2 <- list()
-for(i in 2:ncol(ourFrame.2008)){
-  if(i == 391){next}                    # skip column 391 which is the response = "GDP.current.US."
+for(i in 2:ncol(ourFrame)){
+  # skip column 391 which is the response = "GDP.current.US."
+  if(i == 391){
+    next
+  }                    
   if(colsign[i] == TRUE){
     res.1[[i]] <- eval(parse(text = paste0(
-      "lm(log(`GDP (current US$)`) ~log(`", variables.name[i], "`), data = ourFrame.2008, na.action = na.exclude)"
+      "lm(log(`GDP (current US$)`) ~log(`", variables.name[i], "`), data = ourFrame, na.action = na.exclude)"
     )))
   }
   if(colsign[i] == FALSE) {
     res.2[[i]] <- eval(parse(text = paste0(
-      "lm(log(`GDP (current US$)`) ~ (`", variables.name[i], "`), data = ourFrame.2008, na.action = na.exclude)"
+      "lm(log(`GDP (current US$)`) ~ (`", variables.name[i], "`), data = ourFrame, na.action = na.exclude)"
     )))
   }
 }
@@ -130,20 +86,20 @@ covariates.no.log
 # Use best Univariate predictors in Multi-Variate Model
 # View plot with abline for example res.1.summary[25]. I need to figure out how to modularize plots to assess identified predictors for multivariate fit.
 #  res.1.summary[25]
-#  plot(log(ourFrame.2008$`GDP (current US$)`) ~ log(ourFrame.2008$`Adjusted savings: carbon dioxide damage (current US$)`))
-#  abline(lm(log(ourFrame.2008$`GDP (current US$)`) ~ log(ourFrame.2008$`Adjusted savings: carbon dioxide damage (current US$)`),na.action = na.exclude))
+#  plot(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`))
+#  abline(lm(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`),na.action = na.exclude))
 
 # Create multivariate models
 # names of the logged predictors
 covariates.log.name <- NULL
 for(i in 1: length(covariates)){
-  covariates.log.name[i] <- names(ourFrame.2008[covariates[i]])
+  covariates.log.name[i] <- names(ourFrame[covariates[i]])
 }
 
 # names of unlogged predictor
 covariates.no.log.name <- NULL
 for(i in 1: length(covariates.no.log)){
-  covariates.no.log.name[i] <- names(ourFrame.2008[covariates.no.log[[i]]])
+  covariates.no.log.name[i] <- names(ourFrame[covariates.no.log[[i]]])
 }
 
 # concatenate all logged predictors into string to be evaluated by lm function
@@ -152,19 +108,19 @@ test.1 <- paste(test,collapse = " + ")
 
 # multiple regression model of response vs. the unlogged and logged covariates.
 test.lm <- NULL
-test.lm <- eval(parse(text = paste0("lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1,", data = ourFrame.2008)")))
+test.lm <- eval(parse(text = paste0("lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1,", data = ourFrame)")))
 
 
 #  for(i in 1:length(covariates.log.name)){
 #    test.lm <- eval(parse(text = paste0(
-#      "lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14))` + ", test[1],"+",test[2],", data = ourFrame.2008, na.action = na.exclude)"
+#      "lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14))` + ", test[1],"+",test[2],", data = ourFrame, na.action = na.exclude)"
 #    )))
 #  }
 
 #  test.lm <- NULL
 #  for(i in 1:length(covariates.log.name)){
 #    test.lm <- eval(parse(text = paste0(
-#      "lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", paste("log(`",covariates.log.name[i],sep = "` + `"), "`), data = ourFrame.2008, na.action = na.exclude)"
+#      "lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", paste("log(`",covariates.log.name[i],sep = "` + `"), "`), data = ourFrame, na.action = na.exclude)"
 #    )))
 #  }
 

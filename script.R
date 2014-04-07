@@ -1,30 +1,38 @@
 # Get Data from World Bank website http://databank.worldbank.org/data/views/variableselection/selectvariables.aspx?source=world-development-indicators
-# Download by hand World Development indicators into working directory "API Source"  
-setwd(file.choose())
 
 ##################
 
 # Dataframe setup will only work with the "reshape" package, for pivoting data
-#library("reshape")
+#library("reshape") or install.packages("reshape")
 
 # Read in downloaded datset into dataframe 'data'
-data <- read.csv(list.files(path=getwd()),header = TRUE)
+data <- read.csv(file.choose(),header = TRUE)
 names(data)[1] <- "Country.Name"
 names(data)[5] <- "Y1980"
 names(data)[6] <- "Y2008"
 View(data)
 
-# Dataframe 'data' is split into dataframes: 'data.test.2008' and 'data.test.1980'
+# Create 2008 dataframe
 data.test.2008 <- data[-(c(grep("Country.Code",names(data)),grep("Indicator.Code",names(data)),grep("Y1980",names(data))))] # remove Country.Code, Indicator.Code, Y1980 column
+#View(data.test.2008)
+
+# Create 1980 dataframe
 data.test.1980 <- data[-(c(grep("Country.Code",names(data)),grep("Indicator.Code",names(data)),grep("Y2008",names(data))))] # remove Country.Code, Indicator.Code, Y2008 column
+#View(data.test.1980)
+
 # Pivot/unmelt dataframe 'data.test.2008' to create new dataframe 'ourFrame.2008' with columns of predictors and response.
 ourFrame.2008 <- cast(data.test.2008,Country.Name ~ Indicator.Name, fun.aggregate = NULL, value = "Y2008")
+
+# To see what is.na does, try entering:
+# is.na(ourFrame.2008[,0:2])
+# colSums(is.na(ourFrame.2008[,0:2])) reports back the number of NAs in the first 2 columns
+
+# Discard columns that are wholly comprised of NAs
 ourFrame.2008 <- ourFrame.2008[,colSums(is.na(ourFrame.2008)) != nrow(ourFrame.2008)]
+
 View(ourFrame.2008)
 
 ##############################
-
-View(ourFrame.2008)
 
 # Create vectors of variable names: response.name, predictors.name
 # predictors.name <- names(ourFrame.2008)[-c(grep("Country.Name",names(ourFrame.2008)),grep("GDP.current.US.",names(ourFrame.2008)))]
@@ -33,19 +41,21 @@ variables.name <- names(ourFrame.2008)
 
 ##############################  
 
-# in dataframe ourFrame.2008 check for presence of NaN values
-#check.nan <- NULL
-check.nan <- rep(FALSE, ncol(ourFrame.2008))
-for(z in 1:ncol(ourFrame.2008)){
-  for(l in 1:nrow(ourFrame.2008)){
-    if(is.nan(ourFrame.2008[l,z]) == TRUE){
-      check.nan[z] <- TRUE
-      break
+# Checks for Not A Number (NaN) values
+checkAllNumbers <- function(dataFrame) {
+  #isNumber.allColumns <- rep(TRUE, ncol(dataFrame))
+  for(z in 1:ncol(dataFrame)){
+    for(l in 1:nrow(dataFrame)){
+      if(is.nan(dataFrame[l,z])){
+        #isNumber.allColumns[z] <- FALSE
+        print(paste("Column", z, "contains Not A Number (NaN) values..."))
+        break
+      }
     }
   }
+  #return(isNumber.allColumns)
 }
-
-grep("TRUE",check.nan)    # searches for TRUE in check.nan. Should result in: "integer(0)". This indicates that there are no NaN in the dataframe.
+checkAllNumbers(ourFrame.2008)
 
 ##############################  
 

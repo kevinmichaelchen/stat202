@@ -6,6 +6,13 @@ STAT202
 2. Go to the *COUNTRY* tab and select all countries.  
 3. Go to the *SERIES* tab and select all indicators.  
 4. Go to the *TIME* tab and select the desired years.  
+5. Press *DOWNLOAD* and go to the *CSV* tab.
+7. Under *Modify Orientation*:  
+  * Export range: Entire dataset
+  * Data format: Table
+  * Variable format: Both codes & names
+  * NA preference: NA
+  * Text field delimiter: none
 
 ## Overview  
 This repo contains the dataset, R script, and writeups for the 202 final project. We analyze data from **The World Bank** and explore relationships between economic growth and a myriad indicators (with an emphasis on urbanization indicators).  

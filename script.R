@@ -1,13 +1,10 @@
-ourFrame <- file.choose()
-variables.name <- names(ourFrame)
-
 #' Checks for Not A Number (NaN) values.
 checkAllNumbers <- function(dataFrame) {
-  #isNumber.allColumns <- rep(TRUE, ncol(dataFrame))
+  #isNumber.allColumns = rep(TRUE, ncol(dataFrame))
   for(z in 1:ncol(dataFrame)){
     for(l in 1:nrow(dataFrame)){
       if(is.nan(dataFrame[l,z])){
-        #isNumber.allColumns[z] <- FALSE
+        #isNumber.allColumns[z] = FALSE
         print(paste("Column", z, "contains Not A Number (NaN) value(s)..."))
         break
       }
@@ -19,73 +16,78 @@ checkAllNumbers <- function(dataFrame) {
 #' Checks for log-ability.
 #' A number can be logged if it is a non-zero positive.
 checkAllLoggable <- function(dataFrame) {
-  #isLoggable.allColumns <- rep(TRUE, ncol(dataFrame))
+  isLoggable.allColumns = rep(TRUE, ncol(dataFrame))
   for (z in 1:ncol(dataFrame)) {
     for (l in 1:nrow(dataFrame)) {
       if ( !is.na(dataFrame[l,z]) & dataFrame[l,z]) <= 0 ) {
         print(paste("Column", z, "contains a negative and thus is not loggable..."))
-        #isLoggable.allColumns[z] <- FALSE
+        isLoggable.allColumns[z] = FALSE
         break
       }
     }
   }
-#return(isLoggable.allColumns)
+return(isLoggable.allColumns)
 }
 
-#'  linear regression of transformed predictors in ourFrame:
-#' Note: transform is only applicable for positive numbers based on colsign[i] above.
-res.1 <- list()
-res.2 <- list()
-for(i in 2:ncol(ourFrame)){
-  # skip column 391 which is the response = "GDP.current.US."
-  if(i == 391){
-    next
-  }                    
-  if(colsign[i] == TRUE){
-    res.1[[i]] <- eval(parse(text = paste0(
-      "lm(log(`GDP (current US$)`) ~log(`", variables.name[i], "`), data = ourFrame, na.action = na.exclude)"
-    )))
+#' Returns two lists of multiple regressions.
+#' @param dataFrame The data frame.
+#' @return The first list consists of log multiple regressions, the second of non-log regressions.
+getRegressionLists <- function(dataFrame) {
+  variables = names(dataFrame)
+  colsign = checkAllLoggable(dataFrame)
+  list.lm.log = list()
+  list.lm = list()
+  for (i in 2:ncol(dataFrame)) {
+    # skip column 391 which is the response = "GDP.current.US."
+    if (i == 391) {
+      next
+    }                    
+    if (colsign[i]) {
+      list.lm.log[[i]] = eval(parse(text = paste0(
+        "lm(log(`GDP (current US$)`) ~log(`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
+      )))
+    }
+    else {
+      list.lm[[i]] = eval(parse(text = paste0(
+        "lm(log(`GDP (current US$)`) ~ (`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
+      )))
+    }
   }
-  if(colsign[i] == FALSE) {
-    res.2[[i]] <- eval(parse(text = paste0(
-      "lm(log(`GDP (current US$)`) ~ (`", variables.name[i], "`), data = ourFrame, na.action = na.exclude)"
-    )))
-  }
+  length(list.lm.log)
+  length(list.lm)
+  return(list(list.lm.log, list.lm))
 }
-length(res.1)
-length(res.2)
 
-##############################  
+#' Returns a list of the best covariates.
+#' A covariate x is deemed good if cor(x,y) > cor.threshold.
+#' @param lm.list A list of multiple regression objects
+#' @param cor.threshold Defines which covariates are deemed "good"
+#' @param names The names of variables in lm.list
+listBestCovariates <- function(lm.list, cor.threshold, names) {
+  summaries <- lapply(lm.list, summary)
+  cors <- unlist(lapply(summaries,"[","r.squared"))
+  cors.adj <- unlist(lapply(summaries,"[","adj.r.squared"))
+  names(cors.adj) <- names
+  cors.adj.num <- as.numeric(cors.adj)
+  cors.adj.num.culled <- (cors.adj.num > cor.threshold)
+  covariates <- grep("TRUE", cors.adj.num.culled)
+  return(covariates)
+}
 
-# Select list() of best univariate predictors based on r^2 > 0.5
-res.1.summary <- lapply(res.1, summary)
-res.1.r2 <- unlist(lapply(res.1.summary,"[","r.squared"))
-head(res.1.r2)
-res.1.r2.2 <- unlist(lapply(res.1.summary,"[","adj.r.squared"))
-names(res.1.r2.2) <- variables.name
-head(res.1.r2.2)
-res.1.r2.num <- as.numeric(res.1.r2)
-res.1.r2.greater.than.0.5. <- (res.1.r2.num > 0.5)
-covariates <- grep("TRUE",res.1.r2.greater.than.0.5.)              # lists the best univariate predictors of GDP (r^2 > 0.5). reports n for res.1.summary[n]
-covariates
-
-# Select list() of best univariate predictors based on r^2 > 0.5 for nolog(predictors)
-res.2.summary <- lapply(res.2, summary)
-res.2.r2 <- unlist(lapply(res.2.summary,"[","r.squared"))
-head(res.2.r2)
-res.2.r2.2 <- unlist(lapply(res.1.summary,"[","adj.r.squared"))
-names(res.2.r2.2) <- variables.name
-head(res.2.r2.2)
-res.2.r2.num <- as.numeric(res.2.r2)  
-res.2.r2.greater.than.0.5. <- (res.2.r2.num > 0.5)
-covariates.no.log <- grep("TRUE",res.2.r2.greater.than.0.5.)              # lists the best univariate predictors of GDP (r^2 > 0.5). reports n for res.1.summary[n]
-covariates.no.log
+# LOAD THE DATA FRAME
+ourFrame <- file.choose()
+variables <- names(ourFrame)
+reg.lists <- getRegressionLists(ourFrame)
+list.lm.log <- reg.lists[0]
+list.lm <- reg.lists[1]
+listBestCovariates(list.lm.log, 0.5, variables)
+listBestCovariates(list.lm, 0.5, variables)
 
 ##############################
 
 # Use best Univariate predictors in Multi-Variate Model
-# View plot with abline for example res.1.summary[25]. I need to figure out how to modularize plots to assess identified predictors for multivariate fit.
-#  res.1.summary[25]
+# View plot with abline for example list.lm.log.summary[25]. I need to figure out how to modularize plots to assess identified predictors for multivariate fit.
+#  list.lm.log.summary[25]
 #  plot(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`))
 #  abline(lm(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`),na.action = na.exclude))
 

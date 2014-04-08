@@ -27,7 +27,7 @@ longestName <- function(dataFrame) {
 }
 
 #' Returns the length of a string.
-#' This is way too ugly.
+#' TODO This is way too ugly.
 cellLength <- function(cell) {
   return(length(unlist(strsplit(as.character(cell),split=""))))
 }

@@ -1,9 +1,9 @@
 #' Checks for Not A Number (NaN) values.
 checkAllNumbers <- function(dataFrame) {
   #isNumber.allColumns = rep(TRUE, ncol(dataFrame))
-  for(z in 1:ncol(dataFrame)){
-    for(l in 1:nrow(dataFrame)){
-      if(is.nan(dataFrame[l,z])){
+  for (z in 1:ncol(dataFrame)) {
+    for (l in 1:nrow(dataFrame)) {
+      if (is.nan(dataFrame[l,z])) {
         #isNumber.allColumns[z] = FALSE
         print(paste("Column", z, "contains Not A Number (NaN) value(s)..."))
         break
@@ -16,17 +16,19 @@ checkAllNumbers <- function(dataFrame) {
 #' Checks for log-ability.
 #' A number can be logged if it is a non-zero positive.
 checkAllLoggable <- function(dataFrame) {
-  isLoggable.allColumns = rep(TRUE, ncol(dataFrame))
+  logs <- rep(TRUE, ncol(dataFrame))
   for (z in 1:ncol(dataFrame)) {
     for (l in 1:nrow(dataFrame)) {
-      if ( !is.na(dataFrame[l,z]) & dataFrame[l,z]) <= 0 ) {
-        print(paste("Column", z, "contains a negative and thus is not loggable..."))
-        isLoggable.allColumns[z] = FALSE
+      cell = dataFrame[l,z]
+      if (is.na(cell) || class(cell) == 'logical') {next}
+      if (as.numeric(cell) <= 0) {        
+        print(paste("Column", z, "cannot be logged due to a", cell))
+        logs[z] = FALSE
         break
       }
     }
   }
-return(isLoggable.allColumns)
+  return(logs)
 }
 
 #' Returns two lists of multiple regressions.
@@ -75,7 +77,7 @@ listBestCovariates <- function(lm.list, cor.threshold, names) {
 }
 
 # LOAD THE DATA FRAME
-ourFrame <- file.choose()
+ourFrame <- read.csv(file.choose(), header = TRUE)
 variables <- names(ourFrame)
 reg.lists <- getRegressionLists(ourFrame)
 list.lm.log <- reg.lists[0]
@@ -109,11 +111,11 @@ for (i in 1:length(covariates)) {
 
 # concatenate all logged predictors into string to be evaluated by lm function
 #TODO we're missing commas here
-test <- paste0("log(`",covariates.log.name,"`)")
+test <- paste0("log(`",names.covariates.logged,"`)")
 test.1 <- paste(test,collapse = " + ")
 
 # multiple regression model of response vs. the unlogged and logged covariates.
-test.lm <- eval(parse(text = paste0("lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1,", data = ourFrame)")))
+test.lm <- eval(parse(text = paste0("lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1, ", data = ourFrame)")))
 
 
 #  for(i in 1:length(covariates.log.name)){

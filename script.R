@@ -33,25 +33,25 @@ checkAllLoggable <- function(dataFrame) {
 
 #' Returns two lists of multiple regressions.
 #' @param dataFrame The data frame.
+#' @param response The response will not appear in the result, since you can't regress an indicator on itself.
 #' @return The first list consists of log multiple regressions, the second of non-log regressions.
-getRegressionLists <- function(dataFrame) {
+getRegressionLists <- function(dataFrame, response) {
   variables = names(dataFrame)
   colsign = checkAllLoggable(dataFrame)
   list.lm.log = list()
   list.lm = list()
   for (i in 2:ncol(dataFrame)) {
-    # skip column 391 which is the response = "GDP.current.US."
-    if (i == 391) {
+    if (names(dataFrame)[i] == response) {
       next
     }                    
     if (colsign[i]) {
       list.lm.log[[i]] = eval(parse(text = paste0(
-        "lm(log(`GDP (current US$)`) ~log(`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
+        "lm(log(`", response, "`) ~log(`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
       )))
     }
     else {
-      list.lm[[i]] = eval(parse(text = paste0(
-        "lm(log(`GDP (current US$)`) ~ (`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
+      list.lm[[i]] = eval(parse(text = paste(
+        "lm(log(`", response, "`) ~ (`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
       )))
     }
   }
@@ -79,7 +79,8 @@ listBestCovariates <- function(lm.list, cor.threshold, names) {
 # LOAD THE DATA FRAME
 ourFrame <- read.csv(file.choose(), header = TRUE)
 variables <- names(ourFrame)
-reg.lists <- getRegressionLists(ourFrame)
+RESPONSE <- "GDP..current.US.."
+reg.lists <- getRegressionLists(ourFrame, RESPONSE)
 list.lm.log <- reg.lists[0]
 list.lm <- reg.lists[1]
 covariates.logged <- listBestCovariates(list.lm.log, 0.5, variables)
@@ -115,7 +116,7 @@ test <- paste0("log(`",names.covariates.logged,"`)")
 test.1 <- paste(test,collapse = " + ")
 
 # multiple regression model of response vs. the unlogged and logged covariates.
-test.lm <- eval(parse(text = paste0("lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1, ", data = ourFrame)")))
+test.lm <- eval(parse(text = paste0("lm(log(`", RESPONSE, "`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1, ", data = ourFrame)")))
 
 
 #  for(i in 1:length(covariates.log.name)){

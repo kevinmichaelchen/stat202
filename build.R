@@ -26,6 +26,8 @@ longestName <- function(dataFrame) {
   print(paste("Longest country is", maxCountry, "with", maxCount, "letters..."))
 }
 
+#' Returns the length of a string.
+#' This is way too ugly.
 cellLength <- function(cell) {
   return(length(unlist(strsplit(as.character(cell),split=""))))
 }
@@ -63,10 +65,12 @@ fewestNAs <- function(dataFrame, n) {
     }
   }  
   minRows = sort(minRows)
+  # TODO why is length(minRows) == 1?
+  print(paste("minRows length:", length(minRows)))
   for (i in length(minRows)) {
-    print(dataFrame[i,"Country.Name"])
+    print(dataFrame[minRows[i],"Country.Name"])
   }
-  return(sort(minRows))
+  #return(sort(minRows))
 }
 
 #' Returns a year-specific data frame.
@@ -74,6 +78,7 @@ fewestNAs <- function(dataFrame, n) {
 #' @param dataFrame The wide-formatted data frame that contains data for more than one year.
 #' @param year The only year that will not be discarded / filtered out.
 #' @param years The list of all years contained in the data frame.
+#' TODO this function is broken...
 filter <- function(dataFrame, year, years) {
   target = "Country.Code|Indicator.Code"  
   # Add every year but the current year to the target to be removed with grep
@@ -108,5 +113,9 @@ for (year in 1:length(YEARS)) {
   wideYearDF = filter(data, currentYear, YEARS)
   longYearDF = discardNullColumns(cast(wideYearDF, Country.Name ~ Indicator.Name, fun.aggregate=NULL, value=currentYear))
   # Write the data frame to file
-  write.csv(longYearDF, file=currentYear)
+  write.csv(longYearDF, file=paste(currentYear,".csv"))
 }
+
+# STEP 3: Find least spotty countries
+df = read.csv(file.choose(), header = TRUE)
+fewestNAs(df)

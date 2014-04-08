@@ -80,8 +80,8 @@ variables <- names(ourFrame)
 reg.lists <- getRegressionLists(ourFrame)
 list.lm.log <- reg.lists[0]
 list.lm <- reg.lists[1]
-listBestCovariates(list.lm.log, 0.5, variables)
-listBestCovariates(list.lm, 0.5, variables)
+covariates.logged <- listBestCovariates(list.lm.log, 0.5, variables)
+covariates <- listBestCovariates(list.lm, 0.5, variables)
 
 ##############################
 
@@ -91,25 +91,28 @@ listBestCovariates(list.lm, 0.5, variables)
 #  plot(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`))
 #  abline(lm(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`),na.action = na.exclude))
 
-# Create multivariate models
 # names of the logged predictors
-covariates.log.name <- NULL
-for(i in 1: length(covariates)){
-  covariates.log.name[i] <- names(ourFrame[covariates[i]])
+names.covariates.logged <- rep("", length(covariates.logged))
+for (i in 1:length(covariates.logged)) {
+  # TODO is it [i] or [[i]]?
+  covariate = covariates.logged[i]
+  names.covariates.logged[i] <- names(ourFrame[covariate])
 }
 
-# names of unlogged predictor
-covariates.no.log.name <- NULL
-for(i in 1: length(covariates.no.log)){
-  covariates.no.log.name[i] <- names(ourFrame[covariates.no.log[[i]]])
+# names of unlogged predictors
+names.covariates <- rep("", length(covariates))
+for (i in 1:length(covariates)) {
+  # TODO is it [i] or [[i]]?
+  covariate = covariates[i]
+  names.covariates[i] <- names(ourFrame[covariate])
 }
 
 # concatenate all logged predictors into string to be evaluated by lm function
+#TODO we're missing commas here
 test <- paste0("log(`",covariates.log.name,"`)")
 test.1 <- paste(test,collapse = " + ")
 
 # multiple regression model of response vs. the unlogged and logged covariates.
-test.lm <- NULL
 test.lm <- eval(parse(text = paste0("lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1,", data = ourFrame)")))
 
 

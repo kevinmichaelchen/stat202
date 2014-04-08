@@ -111,13 +111,9 @@ for (i in 1:length(covariates)) {
 }
 
 # concatenate all logged predictors into string to be evaluated by lm function
-#TODO we're missing commas here
-test <- paste0("log(`",names.covariates.logged,"`)")
-test.1 <- paste(test,collapse = " + ")
-
-# multiple regression model of response vs. the unlogged and logged covariates.
-test.lm <- eval(parse(text = paste0("lm(log(`", RESPONSE, "`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", test.1, ", data = ourFrame)")))
-
+test <- paste0("log(`", paste(names.covariates.logged, collapse="` + `"), "`)")
+test.lm <- eval(parse(text=test))
+summary(test.lm)
 
 #  for(i in 1:length(covariates.log.name)){
 #    test.lm <- eval(parse(text = paste0(

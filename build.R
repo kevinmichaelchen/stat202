@@ -97,7 +97,7 @@ filter <- function(dataFrame, year, years) {
 #' colSums(is.na(ourFrame.2008[,0:2])) 
 #' @param dataFrame The data frame.
 discardNullColumns <- function(dataFrame) {
-  return(dataFrame[,colSums(is.na(ourFrame.2008)) != nrow(ourFrame.2008)])
+  return(dataFrame[,colSums(is.na(dataFrame)) != nrow(dataFrame)])
 }
 
 # STEP 1: Add year columns to data frame
@@ -117,5 +117,5 @@ for (year in 1:length(YEARS)) {
 }
 
 # STEP 3: Find least spotty countries
-df = read.csv(file.choose(), header = TRUE)
-fewestNAs(df)
+#df = read.csv(file.choose(), header = TRUE)
+#fewestNAs(df)

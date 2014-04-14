@@ -2,6 +2,7 @@
 *.aux
 *.out
 *.gz
+.Rhistory
 *~
 *DS_Store*
 .Rproj.user

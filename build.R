@@ -1,6 +1,10 @@
 # Data from World Bank
 # http://databank.worldbank.org/data/views/variableselection/selectvariables.aspx?source=world-development-indicators
 
+print("Don't forget setwd()")
+file <- file.choose()
+setwd(substr(file,0,(nchar(file) - nchar("originalData.csv"))))
+
 # List of all the years downloaded
 YEARS <- c("Y1980", "Y2008")
 
@@ -8,7 +12,7 @@ YEARS <- c("Y1980", "Y2008")
 if (!"reshape" %in% rownames(installed.packages())) {
   install.packages("reshape")
 }
-
+library("reshape", lib.loc="/Library/Frameworks/R.framework/Versions/2.15/Resources/library")
 #' Finds the country with the longest name.
 longestName <- function(dataFrame) {
   maxCountry = ""
@@ -113,9 +117,9 @@ for (year in 1:length(YEARS)) {
   wideYearDF = filter(data, currentYear, YEARS)
   longYearDF = discardNullColumns(cast(wideYearDF, Country.Name ~ Indicator.Name, fun.aggregate=NULL, value=currentYear))
   # Write the data frame to file
-  write.csv(longYearDF, file=paste(currentYear,".csv"))
+  write.csv(longYearDF, file=paste0(currentYear,".csv"))
 }
-
+# TODO: fix write.csv in order to prevent extra column being written
 # STEP 3: Find least spotty countries
 #df = read.csv(file.choose(), header = TRUE)
 #fewestNAs(df)

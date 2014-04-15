@@ -1,16 +1,16 @@
 #' Checks for Not A Number (NaN) values.
-checkAllNumbers <- function(dataFrame) {
-  #isNumber.allColumns = rep(TRUE, ncol(dataFrame))
+isAllNumbers <- function(dataFrame) {
+  isNumber.allColumns = rep(TRUE, ncol(dataFrame))
   for (z in 1:ncol(dataFrame)) {
     for (l in 1:nrow(dataFrame)) {
-      if (is.nan(dataFrame[l,z])) {
-        #isNumber.allColumns[z] = FALSE
+      if (is.nan(dataFrame[l,z]) == TRUE) {
+        isNumber.allColumns[z] = FALSE
         print(paste("Column", z, "contains Not A Number (NaN) value(s)..."))
         break
       }
     }
   }
-  #return(isNumber.allColumns)
+  return(length(which(isNumber.allColumns == FALSE)) <= 0)
 }
 
 #' Checks for log-ability.
@@ -33,31 +33,36 @@ checkAllLoggable <- function(dataFrame) {
 
 #' Returns two lists of multiple regressions.
 #' @param dataFrame The data frame.
+#' @param dfName The name of the data frame.
 #' @param response The response will not appear in the result, since you can't regress an indicator on itself.
 #' @return The first list consists of log multiple regressions, the second of non-log regressions.
-getRegressionLists <- function(dataFrame, response) {
+getRegressionLists <- function(dataFrame, dfName, response) {
   variables = names(dataFrame)
   colsign = checkAllLoggable(dataFrame)
+  print("got out of check all logable")
   list.lm.log = list()
   list.lm = list()
+  names = names(dataFrame)
   for (i in 2:ncol(dataFrame)) {
-    if (names(dataFrame)[i] == response) {
+    indicator = names[i]
+    if (indicator == response) {
       next
-    }                    
+    }                   
+    print(paste("Checking indicator:", indicator))
     if (colsign[i]) {
       list.lm.log[[i]] = eval(parse(text = paste0(
-        "lm(log(`", response, "`) ~log(`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
+        "lm(log(`", response,"`) ~log(`", variables[i], "`), data = ", dfName, ", na.action = na.exclude)"
       )))
     }
     else {
-      list.lm[[i]] = eval(parse(text = paste(
-        "lm(log(`", response, "`) ~ (`", variables[i], "`), data = ourFrame, na.action = na.exclude)"
+      list.lm[[i]] = eval(parse(text = paste0(
+        "lm(log(`", response, "`) ~ (`", variables[i], "`), data = ", dfName, ", na.action = na.exclude)"
       )))
     }
   }
   length(list.lm.log)
   length(list.lm)
-  return(list(list.lm.log, list.lm))
+  return(list("logs"=list.lm.log, "noLogs"=list.lm))
 }
 
 #' Returns a list of the best covariates.
@@ -77,12 +82,20 @@ listBestCovariates <- function(lm.list, cor.threshold, names) {
 }
 
 # LOAD THE DATA FRAME
-ourFrame <- read.csv(file.choose(), header = TRUE)
+ourFrame <- read.csv(file.choose(), header = TRUE, check.names=FALSE)
+# TODO take out next line once write.csv is fixed
+ourFrame <- ourFrame[-1]
 variables <- names(ourFrame)
-RESPONSE <- "GDP..current.US.."
-reg.lists <- getRegressionLists(ourFrame, RESPONSE)
-list.lm.log <- reg.lists[0]
-list.lm <- reg.lists[1]
+response <- "GDP (current US$)"
+
+if (isAllNumbers(ourFrame)) {
+  print("No Columns Contain NaNs")
+}
+
+reg.lists <- getRegressionLists(ourFrame, "ourFrame", "GDP (current US$)")
+list.lm.log <- reg.lists$logs
+list.lm <- reg.lists$noLogs
+
 covariates.logged <- listBestCovariates(list.lm.log, 0.5, variables)
 covariates <- listBestCovariates(list.lm, 0.5, variables)
 

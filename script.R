@@ -81,6 +81,8 @@ listBestCovariates <- function(lm.list, cor.threshold, names) {
   return(covariates)
 }
 
+
+
 # LOAD THE DATA FRAME
 ourFrame <- read.csv(file.choose(), header = TRUE, check.names=FALSE)
 # TODO take out next line once write.csv is fixed
@@ -98,53 +100,3 @@ list.lm <- reg.lists$noLogs
 
 covariates.logged <- listBestCovariates(list.lm.log, 0.5, variables)
 covariates <- listBestCovariates(list.lm, 0.5, variables)
-
-##############################
-
-# Use best Univariate predictors in Multi-Variate Model
-# View plot with abline for example list.lm.log.summary[25]. I need to figure out how to modularize plots to assess identified predictors for multivariate fit.
-#  list.lm.log.summary[25]
-#  plot(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`))
-#  abline(lm(log(ourFrame$`GDP (current US$)`) ~ log(ourFrame$`Adjusted savings: carbon dioxide damage (current US$)`),na.action = na.exclude))
-
-# names of the logged predictors
-names.covariates.logged <- rep("", length(covariates.logged))
-for (i in 1:length(covariates.logged)) {
-  # TODO is it [i] or [[i]]?
-  covariate = covariates.logged[i]
-  names.covariates.logged[i] <- names(ourFrame[covariate])
-}
-
-# names of unlogged predictors
-names.covariates <- rep("", length(covariates))
-for (i in 1:length(covariates)) {
-  # TODO is it [i] or [[i]]?
-  covariate = covariates[i]
-  names.covariates[i] <- names(ourFrame[covariate])
-}
-
-# concatenate all logged predictors into string to be evaluated by lm function
-test <- paste0("log(`", paste(names.covariates.logged, collapse="` + `"), "`)")
-test.lm <- eval(parse(text=test))
-summary(test.lm)
-
-#  for(i in 1:length(covariates.log.name)){
-#    test.lm <- eval(parse(text = paste0(
-#      "lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14))` + ", test[1],"+",test[2],", data = ourFrame, na.action = na.exclude)"
-#    )))
-#  }
-
-#  test.lm <- NULL
-#  for(i in 1:length(covariates.log.name)){
-#    test.lm <- eval(parse(text = paste0(
-#      "lm(log(`GDP (current US$)`) ~ `Child employment in manufacturing, female (% of female economically active children ages 7-14)` + ", paste("log(`",covariates.log.name[i],sep = "` + `"), "`), data = ourFrame, na.action = na.exclude)"
-#    )))
-#  }
-
-# Use nested F-test to pick predictors for multivariate model
-
-
-# Assess/Infer quality of predictors (predictor coefficients must be significantly different from each other) in Multi-Variate Model
-
-# Produce quality of fit of final Multivariate model
-

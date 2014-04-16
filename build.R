@@ -1,6 +1,9 @@
 #' Data from World Bank
 #' http://databank.worldbank.org/data/views/variableselection/selectvariables.aspx?source=world-development-indicators
 
+#' Surrounds string in backticks
+addq <- function(x) paste0("`", x, "`")
+
 #' Returns a data frame with only one specific year.
 #' @param dataFrame Data frame in WIDE format.
 #' @param year The year that will be kept (e.g. "Y2008")
@@ -38,10 +41,7 @@ writeYearFrames <- function(data, years) {
   for (i in 1:length(years)) {
     year = years[i]
     wideYearDF = getYearFrame(data, year, years)
-    
-    # TODO
-    myFormula = `COUNTRY.NAME` ~ `INDICATOR.NAME`
-    
+    myFormula = as.formula(paste0("data$", addq(COUNTRY.NAME), "~ ", "data$", addq(INDICATOR.NAME)))
     longYearDF = cast(wideYearDF, formula=myFormula, fun.aggregate=NULL, value=year)
     write.csv(longYearDF, file=paste0(year,".csv"), row.names=FALSE)
   }

@@ -41,8 +41,11 @@ writeYearFrames <- function(data, years) {
   for (i in 1:length(years)) {
     year = years[i]
     wideYearDF = getYearFrame(data, year, years)
-    myFormula = as.formula(paste0("data$", addq(COUNTRY.NAME), "~ ", "data$", addq(INDICATOR.NAME)))
+
+    myFormula = as.formula(paste0(COUNTRY.NAME, " ~ ", INDICATOR.NAME, ", data = data"))
+
     longYearDF = cast(wideYearDF, formula=myFormula, fun.aggregate=NULL, value=year)
+    
     write.csv(longYearDF, file=paste0(year,".csv"), row.names=FALSE)
   }
 }

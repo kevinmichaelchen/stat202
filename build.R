@@ -14,7 +14,7 @@ getYearFrame <- function(dataFrame, year, years) {
   for (i in 1:length(years)) {
     if (year == years[i]) {next}
     # the target for Y2008 is "Country Code|Indicator Code|Y0|Y1|...|Y2007"
-    target = paste(target, years[i], sep="|")
+    target = paste(target, years[i], sep = "|")
   }
   return(dataFrame[-(grep(target, names(dataFrame)))])
 }
@@ -42,11 +42,11 @@ writeYearFrames <- function(data, years) {
     year = years[i]
     wideYearDF = getYearFrame(data, year, years)
 
-    myFormula = as.formula(paste0(COUNTRY.NAME, " ~ ", INDICATOR.NAME, ", data = data"))
-
-    longYearDF = cast(wideYearDF, formula=myFormula, fun.aggregate=NULL, value=year)
+    mdata <- melt(wideYearDF, id.vars = COUNTRY.NAME)
+    longYearDF = cast(mdata, 
+                      eval(parse(text=paste0("data$", COUNTRY.NAME, " ~ ", "data$", INDICATOR.NAME))))
     
-    write.csv(longYearDF, file=paste0(year,".csv"), row.names=FALSE)
+    write.csv(longYearDF, file = paste0(year,".csv"), row.names = FALSE)
   }
 }
 
@@ -55,10 +55,10 @@ writeYearFrames <- function(data, years) {
 # CONSTANTS
 ORIGINAL.DATA = "originalData.csv"
 YEARS <- c("Y1980", "Y2008")
-COUNTRY.NAME = "Country Name"
-COUNTRY.CODE = "Country Code"
-INDICATOR.NAME = "Indicator Name"
-INDICATOR.CODE = "Indicator Code"
+COUNTRY.NAME = "Country.Name"
+COUNTRY.CODE = "Country.Code"
+INDICATOR.NAME = "Indicator.Name"
+INDICATOR.CODE = "Indicator.Code"
 
 # Choose original data set to set working directory.
 print(paste0("Pick ", ORIGINAL.DATA, " in order to setwd (the file name matters): "))
@@ -69,10 +69,10 @@ setwd(substr(file,0,(nchar(file) - nchar(ORIGINAL.DATA))))
 if (!"reshape" %in% rownames(installed.packages())) {
   install.packages("reshape")
 }
-library("reshape", lib.loc=.libPaths()[1])
+library("reshape", lib.loc = .libPaths()[1])
 
 
 
-data <- read.csv(file.choose(), header = TRUE, check.names = FALSE)
+data <- read.csv(file.choose(), header = TRUE, check.names = TRUE)
 data <- renameColumns(data, YEARS)
 writeYearFrames(data, YEARS)

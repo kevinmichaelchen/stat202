@@ -108,3 +108,31 @@ summary(lm(log.GDP.per.capita ~ emissions.methane))
 summary(lm(log.GDP.per.capita ~ emissions.nitrous))
 
 
+#'
+#' Labor Model
+#'
+unemployment <- df$`Unemployment, total (% of total labor force)`
+lpr <- df$`Labor force participation rate, total (% of total population ages 15-64)`
+lpr.female <- df$`Labor force participation rate, female (% of female population ages 15-64)`
+lpr.male <- df$`Labor force participation rate, male (% of male population ages 15-64)`
+lpr.youth <- df$`Labor force participation rate, total (% of total population ages 15-24)`
+lpr.youth.female <- df$`Labor force participation rate, female (% of female population ages 15-24)`
+lpr.youth.male <- df$`Labor force participation rate, male (% of male population ages 15-24)`
+services.male <- df$`Employees, services, male (% of male employment)`
+services.female <- df$`Employees, services, female (% of female employment)`
+industry.male <- df$`Employees, industry, male (% of male employment)`
+industry.female <- df$`Employees, industry, female (% of female employment)`
+agriculture.male <- df$`Employees, agriculture, male (% of male employment)`
+agriculture.female <- df$`Employees, agriculture, female (% of female employment)`
+
+summary(lm(log.GDP.per.capita ~ unemployment))
+summary(lm(log.GDP.per.capita ~ unemployment + lpr))
+summary(lm(log.GDP.per.capita ~ unemployment + lpr.female))
+summary(lm(log.GDP.per.capita ~ unemployment + lpr.youth.female + lpr.youth.male))
+summary(lm(log.GDP.per.capita ~ services.male))
+summary(lm(log.GDP.per.capita ~ services.female))
+summary(lm(log.GDP.per.capita ~ services.male + services.female))
+summary(lm(log.GDP.per.capita ~ industry.male + industry.female))
+summary(lm(log.GDP.per.capita ~ agriculture.female))
+summary(lm(log.GDP.per.capita ~ services.male + services.female + industry.male + industry.female + agriculture.male + agriculture.female))
+summary(lm(log.GDP.per.capita ~ services.male + industry.male))

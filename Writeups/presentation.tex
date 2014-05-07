@@ -3,6 +3,7 @@
 \usetheme{CambridgeUS}
 
 \usepackage{hyperref}
+\usepackage{verbatim}
 
 \title{Predicting Country GDP}
 \subtitle{Using World Bank Development Indicators}
@@ -26,9 +27,9 @@
 
 \hypersetup{
     bookmarks=true,         % show bookmarks bar?
-    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
-    pdftoolbar=true,        % show Acrobat’s toolbar?
-    pdfmenubar=true,        % show Acrobat’s menu?
+    unicode=false,          % non-Latin characters in Acrobat‚Äôs bookmarks
+    pdftoolbar=true,        % show Acrobat‚Äôs toolbar?
+    pdfmenubar=true,        % show Acrobat‚Äôs menu?
     pdffitwindow=false,     % window fit to page when opened
     pdfstartview={FitH},    % fits the width of the page to the window
     pdftitle={My title},    % title
@@ -52,10 +53,38 @@
 \end{frame}
 
 \begin{frame}{Outline}
-\tableofcontents
-% You might wish to add the option [pausesections]
+\tableofcontents%[pausesections]
 \end{frame}
 
+
+% % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % %
+\section{Research Question}
+\begin{frame}{Response of Interest}
+\begin{itemize}
+\item What makes a country rich?
+\item Two metrics for wealth:
+  \begin{itemize}
+    \item GDP
+      \item GDP per capita
+        \end{itemize}
+\item Compare Japan and China (in 2012 USD)
+\begin{table}
+    \begin{tabular}{| l | l | l |} \hline
+    ~     & GDP (in trillions) & GDP per capita (in thousands) \\ \hline
+    China & 8.2                            & 6                                         \\ \hline
+    Japan & 6                              & 46                                        \\ \hline
+    \end{tabular}
+\end{table}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Predictors of Interest}
+\begin{itemize}
+\item 
+\end{itemize}
+\end{frame}
 
 
 % % % % % % % % % % % % % % % % % % % %
@@ -67,73 +96,73 @@
 
 \begin{frame}{Downloading the Data}
 \begin{itemize}
-	\item Collected from \href{http://data.worldbank.org/indicator}{The World Bank} 
-	\item All countries -- Afghanistan to Zimbabwe
-	\item Only two years -- 1980, 2008
-		\begin{itemize}
-			\item to avoid \emph{time series} problems, e.g. autocorrelation
-		\end{itemize}
+  \item Collected from \href{http://data.worldbank.org/indicator}{The World Bank} 
+    \item All countries -- Afghanistan to Zimbabwe
+      \item Only two years -- 1980, 2008
+        \begin{itemize}
+              \item \emph{time series} problems, e.g. autocorrelation
+                \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Over 1300 Indicators}
 \begin{itemize}
-	\item Education -- literarcy rates, public spending\dots
-	\item Environment -- electricity access, CO2 emissions, water pollution\dots
-	\item Economic Policy \& Debt
-	\item Finance
-	\item Health -- immunization, fertility, mortality, HIV, malnutrition\dots
-	\item Infrastructure -- Internet/cell users, paved roads, rail lines\dots
-	\item Labor -- unemployment
-	\item Poverty
-	\item Trade -- imports, exports
+  \item Education -- literacy rates, public spending\dots
+    \item Environment -- electricity access, CO2 emissions, water pollution\dots
+      \item Economic Policy \& Debt
+        \item Finance
+          \item Health -- immunization, fertility, mortality, HIV, malnutrition\dots
+            \item Infrastructure -- Internet/cell users, paved roads, rail lines\dots
+              \item Labor -- unemployment
+                \item Poverty
+                  \item Trade -- imports, exports
 \end{itemize}
 \end{frame}
 
 \subsection{Restructuring}
 \begin{frame}{Long to Wide Format}
 \begin{itemize}
-	\item Use the {\tt reshape} package
-	\item \emph{Long} format --- what we downloaded \\
-		\begin{table}
-			\begin{tabular}{ | l | l | l | } \hline
-			Country		& Variable		& Value \\ \hline
-			Afghanistan	& GDP1980		& 2.4   \\ \hline
-			Afghanistan	& GDP2008  		& 2.7   \\ \hline
-			Afghanistan	& CO$_2$1980  	& 4.6   \\ \hline
-			Afghanistan	& CO$_2$2008  	& 5.6   \\ \hline
-			\end{tabular}
-		\end{table}
-		
-	\item \emph{Wide} format --- what we want \\
-		\begin{table}
-			\begin{tabular}{| l || l | l | l | l |} \hline
-			Country		& GDP1980	& GDP2008	& CO$_2$1980	& CO$_2$2008 \\ \hline
-			Afghanistan	& 2.4			& 2.7			& 4.6				& 5.6 \\ \hline
-%			Albania		& 4.3			& 4.6			& 3.2				& 4.2 \\ \hline
-			\end{tabular}
-		\end{table}
+  \item Use the {\tt reshape} package
+    \item \emph{Long} format --- what we downloaded \\
+      \begin{table}
+        \begin{tabular}{ | l | l | l | } \hline
+          Country& Variable& Value \\ \hline
+          Afghanistan& GDP1980& 2.4   \\ \hline
+          Afghanistan& GDP2008  & 2.7   \\ \hline
+          Afghanistan& CO$_2$1980  & 4.6   \\ \hline
+          Afghanistan& CO$_2$2008  & 5.6   \\ \hline
+          \end{tabular}
+        \end{table}
+      
+      \item \emph{Wide} format --- what we want \\
+        \begin{table}
+          \begin{tabular}{| l || l | l | l | l |} \hline
+            Country& GDP1980& GDP2008& CO$_2$1980& CO$_2$2008 \\ \hline
+            Afghanistan& 2.4& 2.7& 4.6& 5.6 \\ \hline
+            %Albania& 4.3& 4.6& 3.2& 4.2 \\ \hline
+            \end{tabular}
+          \end{table}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Parcelling Data into Frames}{Frame per Year}
 \begin{itemize}
-	\item What we have: \\
-		\begin{table}
-			\begin{tabular}{| l || l | l | l | l |} \hline
-			Country		& GDP1980	& GDP2008	& CO$_2$1980	& CO$_2$2008 \\ \hline
-			Afghanistan	& 2.4			& 2.7			& 4.6				& 5.6 \\ \hline
-%			Albania		& 4.3			& 4.6			& 3.2				& 4.2 \\ \hline
-			\end{tabular}
-		\end{table}
-		
-	\item What we want (for each year): \\
-		\begin{table}
-			\begin{tabular}{ | l || l | l | } \hline
-			Country     & GDP & CO2 \\ \hline
-			Afghanistan & 2.4 & 4.6 \\ \hline
-			\end{tabular}
-		\end{table}
+  \item What we have: \\
+    \begin{table}
+      \begin{tabular}{| l || l | l | l | l |} \hline
+        Country& GDP1980& GDP2008& CO$_2$1980& CO$_2$2008 \\ \hline
+        Afghanistan& 2.4& 2.7& 4.6& 5.6 \\ \hline
+        %Albania& 4.3& 4.6& 3.2& 4.2 \\ \hline
+        \end{tabular}
+      \end{table}
+    
+    \item What we want (for each year): \\
+      \begin{table}
+        \begin{tabular}{ | l || l | l | } \hline
+          Country     & GDP & CO2 \\ \hline
+          Afghanistan & 2.4 & 4.6 \\ \hline
+          \end{tabular}
+        \end{table}
 \end{itemize}
 \end{frame}
 
@@ -141,47 +170,15 @@
 % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % %
-\section{Predictor Selection}
+\section{Future Extensions}
 
-\subsection{Stepwise Selection}
+\subsection{Stepwise Selection of Predictors}
 
-
-
-
-
-
-
-
-% All of the following is optional and typically not needed. 
-\appendix
-\section<presentation>*{\appendixname}
-\subsection<presentation>*{For Further Reading}
-
-\begin{frame}[allowframebreaks]
-  \frametitle<presentation>{For Further Reading}
-    
-  \begin{thebibliography}{10}
-    
-  \beamertemplatebookbibitems
-  % Start with overview books.
-
-  \bibitem{Author1990}
-    A.~Author.
-    \newblock {\em Handbook of Everything}.
-    \newblock Some Press, 1990.
- 
-    
-  \beamertemplatearticlebibitems
-  % Followed by interesting articles. Keep the list short. 
-
-  \bibitem{Someone2000}
-    S.~Someone.
-    \newblock On this and that.
-    \newblock {\em Journal of This and That}, 2(1):50--100,
-    2000.
-  \end{thebibliography}
+\begin{frame}{The step function}
+\begin{itemize}
+\item Predictors selected automatically
+\end{itemize}
 \end{frame}
 
+
 \end{document}
-
-

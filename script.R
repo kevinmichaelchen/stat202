@@ -153,3 +153,21 @@ summary(lm(log.GDP.per.capita ~ imports + exports + debt))
 summary(lm(log.GDP.per.capita ~ imports + exports + education))
 summary(lm(log.GDP.per.capita ~ imports + exports + military))
 summary(lm(log.GDP.per.capita ~ imports + exports + taxes))
+
+#'
+#' SCIENCE MODEL
+#'
+
+high.tech <- df$`High-technology exports (% of manufactured exports)`
+r.n.d <- df$`Research and development expenditure (% of GDP)`
+journals <- df$`Scientific and technical journal articles`
+
+summary(lm(log.GDP.per.capita ~ r.n.d + high.tech + journals))
+summary(lm(log.GDP.per.capita ~ r.n.d + high.tech))
+summary(lm(log.GDP.per.capita ~ r.n.d + journals))
+summary(lm(log.GDP.per.capita ~ high.tech + journals))
+
+# all significant
+summary(lm(log.GDP.per.capita ~ journals))
+summary(lm(log.GDP.per.capita ~ high.tech))
+summary(lm(log.GDP.per.capita ~ r.n.d))

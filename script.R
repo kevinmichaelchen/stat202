@@ -109,7 +109,7 @@ summary(lm(log.GDP.per.capita ~ emissions.nitrous))
 
 
 #'
-#' Labor Model
+#' LABOR MODEL
 #'
 unemployment <- df$`Unemployment, total (% of total labor force)`
 lpr <- df$`Labor force participation rate, total (% of total population ages 15-64)`
@@ -136,3 +136,20 @@ summary(lm(log.GDP.per.capita ~ industry.male + industry.female))
 summary(lm(log.GDP.per.capita ~ agriculture.female))
 summary(lm(log.GDP.per.capita ~ services.male + services.female + industry.male + industry.female + agriculture.male + agriculture.female))
 summary(lm(log.GDP.per.capita ~ services.male + industry.male))
+
+#'
+#' ECONOMIC MODEL
+#'
+exports <- df$`Exports of goods and services (% of GDP)`
+imports <- df$`Imports of goods and services (% of GDP)`
+trade <- df$`Trade in services (% of GDP)`
+debt <- df$`Central government debt, total (% of GDP)`
+revenue <- df$`Revenue, excluding grants (% of GDP)`
+education <- df$`Public spending on education, total (% of government expenditure)`
+military <- df$`Military expenditure (% of central government expenditure)`
+taxes <- df$`Tax revenue (% of GDP)`
+
+summary(lm(log.GDP.per.capita ~ imports + exports + debt))
+summary(lm(log.GDP.per.capita ~ imports + exports + education))
+summary(lm(log.GDP.per.capita ~ imports + exports + military))
+summary(lm(log.GDP.per.capita ~ imports + exports + taxes))

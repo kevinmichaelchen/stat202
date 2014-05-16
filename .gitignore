@@ -1,3 +1,10 @@
+Writeups/images/
+*.png
+*.jpg
+*.jpeg
+*.bbl
+*.blg
+*.vrb
 *.pdf
 *.nav
 *.snm

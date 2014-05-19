@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{hyperref}
+\usepackage{endnotes}
 
 \title{
   \sc
@@ -53,16 +54,8 @@
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection*{\sc Abstract}
-The determinants of a nation's gross domestic product (GDP) have been explored to a great extent.
-Indeed, given that GDP is a function of a nation's 
-consumption, investment, government spending, exports, and imports, 
-the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly.
-We present four core models that try to explain GDP per capita without 
-relying on the literal components of Keynesian aggregate demand.
-Specifically, they proxy for measures of climate, technological advancement, 
-urbanization and urban welfare, and social development.
+The determinants of a nation's gross domestic product (GDP) have been explored to a great extent. Indeed, given that GDP is a function of a nation's consumption, investment, government spending, exports, and imports, the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly. We present four core models that try to explain GDP per capita without relying on the literal components of Keynesian aggregate demand. Specifically, they proxy for measures of climate, technological advancement, urbanization and urban welfare, and social development.
 We find that\dots %TODO
-
 
 
 
@@ -70,48 +63,29 @@ We find that\dots %TODO
 % % % % % % % % % % %
 % % % % % % % % % % %
 \section{\sc Introduction}
-What makes one country wealthier, or more well off, than another?
-In Keynesian theory, GDP can be reduced to its literal components:
+What makes one country wealthier, or more well off, than another? In Keynesian theory, GDP can be reduced to its literal components:
 $$\mathrm{GDP} = C + I + G + (X - M)$$
-where 
-$C$ is household expenditure, 
-$I$ is investment, 
-$G$ is government spending,
-$X$ is exports, and
-$M$ is imports.
+where $C$ is household expenditure, $I$ is investment,  $G$ is government spending, $X$ is exports, and $M$ is imports.
 
-However, regressing GDP on these components would be pointless as it would confirm nothing new,
-and uninteresting as it would not be an appropriate proxy for a country's standard of living.
-Instead, we use a more telling response and more interesting indicators.
+However, regressing GDP on these components would be pointless as it would confirm nothing new, and uninteresting as it would not be an appropriate proxy for a country's standard of living. Instead, we use a more telling response and more interesting indicators.
 
-\subsection{\sc Why ``per-capita'' GDP?}
-GDP is not a suitable proxy for standards of living.
-For proof of this, look no further than China.
-There, GDP has skyrocketed while GDP per capita remains one of the world's lowest. 
-Although GDP per capita may not be a perfect metric for living standards -- 
-since not all citizens benefit from a country's increased production -- 
-it has been argued that GDP per capita tends to move with living standards.
-In addition, most countries in the world frequently publish GDP per capita data.
-Wide access to data, as well as the fact that per-capita GDP is measured 
-with a relatively consistent definition, makes this a suitable proxy for a
-country's standards of living.
+\subsection{Why ``per-capita'' GDP?}
+GDP is not a suitable proxy for standards of living. For proof of this, look no further than China. There, GDP has skyrocketed while GDP per capita remains one of the world's lowest. Although GDP per capita may not be a perfect metric for living standards -- since not all citizens benefit from a country's increased production -- it has been argued that GDP per capita tends to move with living standards. In addition, most countries in the world frequently publish GDP per capita data. Wide access to data, as well as the fact that per-capita GDP is measured with a relatively consistent definition, makes this a suitable proxy for a country's standards of living.
 
-\subsection{\sc Research Question}
-Three out of four of our models are inspired from three simple icons:
-climate change, cities, and computers.
-These models beg the following question:
-Are people in greener, more urbanized, and more technologically advanced countries better off?
+\subsection{Research Question}
+Our models are inspired from four simple buzzwords: \emph{climate change}, \emph{cities}, \emph{computers}, and \emph{``comfort''} (used somewhat euphemistically). These models beg the following question: Are people better off in greener, more urbanized, more technologically advanced, and more socially developed countries?
 
-It is difficult to hypothesize what effect each of these indicator sets will have on a per-capita response.
-It makes sense to think that a country with higher pollution is more industrial and thus has a higher output, 
-but how would that affect per-capita output? This difficulty is present for our urbanization and technology models as well.
-A more urbanized nation may experience the agglomeration economies inherent in cities, and a more
-tech-savvy country may reap productivity benefits from knowledge spillovers, but the effect on per-capita GDP is less clear.
+For our climate change model, we use metrics for energy consumption, pollution, and paved roads -- the idea being that firm production rises with energy consumption, that pollution spikes as a result, and that firms are more likely to produce if they face less congestion when transporting their goods.
 
-Our fourth and final model bundles together various indices for social development,
-such as literacy rates, life expectancy, refugee population, and child labor.
+For our urbanization model, we use proxies for urban welfare and urbanization level. Cities provide benefits of agglomeration for both firms and workers. In a city, a worker is more likely to match with a firm, to find employment, and to spread knowledge between firms. Similarly, when firms cluster together in a city, they experience greater knowledge spillovers, lower proximity from their buyers, and thus lower transportation costs. In addition, we hypothesize that wealthier urban populations will experience greater productivity and thus lead to greater national output.
 
-For all four models, we hypothesize that each indicator is positively correlated with the response.
+Next, for our technology model, we use metrics for high-tech exports, and research and development (R\&D). We hypothesize that these metrics are directly correlated with innovation and productivity, and that they rise with GDP as a result.
+
+Finally, for our social development model, we look at the size of a country's refugee population, the preponderance of child labor, literacy rates, and life expectancy. We hypothesize that literacy rates and life expectancy are positively correlated with GDP, as countries that are healthier and more educated tend to have healthier economies. We also hypothesize that refugee population and child labor are negatively correlated with national output, as they are indicative of poverty, poor schooling, and nearby civil strife.
+
+Given these models, we face several challenges. First, while we have provided hypotheses for each indicator's effect on GDP, we have not hypothesized about their effects on per-capita GDP. That is, a country with higher pollution may be more industrial and thus have a higher output, but what does that say about its population size and consequently about its GDP per capita?
+
+Second, we may face multicollinearity in our models. For instance, our social development model includes literacy rates and child labor. The former is a proxy for education, while the latter is often linked directly to education. This is problematic since multicollinearity increases standard error and decreases an indicator's $t$-statistic, thus making it appear insignificant when in reality it is not.
 
 
 
@@ -119,21 +93,35 @@ For all four models, we hypothesize that each indicator is positively correlated
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\section{\sc Data}
+\section{Data}
 We collect data from the \href{http://data.worldbank.org/indicator}{World Development Indicators}, 
 which draws from several internationally recognized sources and boasts 54 years' worth of data for 214 countries across 1334 indicators.
-We use data for the year 2008.
+We use data for the year 2008.\endnotemark[1]
 
-For modularity, we built a script that created a data frame for each year of data downloaded, and then recast each frame from wide to long format.
+We use heat maps to determine which indicators had few missing data points, including our response, as shown in Figure~\ref{gdp_per_capita_heat_map}.
 
-details of how data was collected, W's and missing data
+\begin{figure}[h!]
+\centering
+%\includegraphics[scale=0.5]{images/gdp_per_capita_heat_map.jpg}
+\caption{\label{gdp_per_capita_heat_map}Our response had near-universal coverage.}
+\end{figure}
 
 
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\section{\sc Analysis}
+\section{Analysis}
+As with any linear regression model, we provide exploratory analysis of our assumptions: linearity, independence, zero mean, constant variance, and normality.
+
+By virtue of using ordinary least squares linear regression, the mean error is zero. In addition, we safely assume independence, as the collection of data points was done in such a way that one datum did not influence another.
+
+To confirm linearity, we provide scatterplots of GDP per capita against each indicator.
+
+To confirm constance variance, we provide scatterplots of residuals versus fitted values.
+
+To confirm the normality of the error distribution, we provide a Q-Q plot for each of our models.
+
 exploratory analysis, checking model conditions and how we changed our model based on that
 
 
@@ -141,7 +129,7 @@ exploratory analysis, checking model conditions and how we changed our model bas
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\section{\sc Results}
+\section{Results}
 present fitted model and inferences about research question
 
 
@@ -149,8 +137,10 @@ present fitted model and inferences about research question
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\section{\sc Conclusion}
+\section{Conclusion}
 summarize results, describe limitations and how they might be addressed
 
 
-\end{document}
+\endnotetext[1]{For modularity, we built a script that created a data frame for each year of data downloaded, and then recast each frame from wide to long format.}
+
+\theendnotes

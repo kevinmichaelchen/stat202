@@ -3,7 +3,7 @@ df <- read.csv(file.choose(), header = TRUE, check.names = FALSE)
 
 # Our response
 log.GDP.per.capita <- log(df$`GDP per capita (current US$)`)
-plot(log.GDP.per.capita)
+boxplot(log.GDP.per.capita)
 
 #'
 #' AGRICULTURAL MODEL
@@ -13,6 +13,22 @@ rural.poor <- df$`Poverty headcount ratio at urban poverty line (% of urban popu
 food.production <- df$`Food production index (2004-2006 = 100)`
 arable.land <- df$`Arable land (% of land area)`
 rural.population.percent <- df$`Rural population (% of total population)`
+
+haha <- function(xxx, xxxName) {
+  plot(x = xxx, xlab = xxxName,
+       y = log.GDP.per.capita, ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ 
+                      xxx
+  )),
+  lwd = 3.5,
+  col = "firebrick")
+}
+
+
+haha(rural.water, "Rural water")
 
 # Regressions
 summary(lm(log.GDP.per.capita ~ rural.water + rural.poor + food.production + arable.land + rural.population.percent))
@@ -27,15 +43,46 @@ summary(lm(log.GDP.per.capita ~ rural.water + rural.population.percent))
 #' URBAN MODEL
 #'
 motor.vehicles.per.1000 <- df$`Motor vehicles (per 1,000 people)`
+plot(motor.vehicles.per.1000, log.GDP.per.capita) # BAD!!
+plot(sqrt(motor.vehicles.per.1000), log.GDP.per.capita)
+
 urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban population with access)`
-urban.primacy <- df$`Population in the largest city (% of urban population)`
+plot(urban.sanitation, log.GDP.per.capita)
+
 urban.population <- df$`Urban population (% of total)`
-urban.poverty.percentage <- df$`Poverty headcount ratio at urban poverty line (% of urban population)`
-price.of.gas <- df$`Pump price for gasoline (US$ per liter)`
-price.of.diesel <- df$`Pump price for diesel fuel (US$ per liter)`
-road.sector.energy <- df$`Road sector energy consumption (% of total energy consumption)`
+plot(urban.population, log.GDP.per.capita)
 
 urban.water <- df$`Improved water source, urban (% of urban population with access)`
+# Can't be fixed
+plot(urban.water, log.GDP.per.capita)
+
+pred <- c(motor.vehicles.per.1000,
+          urban.sanitation,
+          urban.primacy,
+          urban.population,
+          urban.poverty.percentage,
+          price.of.gas,
+          price.of.diesel,
+          road.sector.energy,
+          urban.water
+          )
+
+for (i in 1:length(pred)) {
+  p = pred[i]
+  s = deparse(substitute(p))
+  
+  plot(x = p,
+       xlab = s,
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ p)),
+         lwd = 3.5,
+         col = "firebrick")
+}
+
 log.urban.water <- log(urban.water + 0.01)
 par(mfrow=c(1,2))
 plot(lm(log.GDP.per.capita ~ urban.water), which=c(1), pch = 16, cex = 1, lwd = 7)

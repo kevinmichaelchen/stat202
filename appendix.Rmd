@@ -1,0 +1,57 @@
+Appendix: V. Sharma, K. Chen, JL. Etienne
+========================================================
+
+# Urban Model
+```{r}
+df <- read.csv("~/Desktop/STAT202/Final/data/Y2008.csv", header = TRUE, check.names = FALSE)
+
+log.GDP.per.capita <- log(df$`GDP per capita (current US$)`)
+
+urban.population <- df$`Urban population (% of total)`
+urban.water <- df$`Improved water source, urban (% of urban population with access)`
+```
+
+## Condition Checking
+Size metric appears linear!!
+```{r fig.width=7, fig.height=6}
+  plot(x = urban.population,
+       xlab = "Urban Population (% of Total)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ urban.population)),
+         lwd = 3.5,
+         col = "firebrick")
+```
+
+Welfare proxy is not linear! We tried to transform it but nothing would give us anything resembling linearity. We need a new welfare proxy!
+```{r fig.width=7, fig.height=6}
+  plot(x = urban.water,
+       xlab = "% of Urban Population with Clean Water Access",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ urban.water)),
+         lwd = 3.5,
+         col = "firebrick")
+```
+
+We replace access to clean water with access to improved sanitation facilities. We see that log GDP per capita rises with each additional percentage of the urban population that has access to improved sanitation.
+```{r fig.width=7, fig.height=6}
+urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban population with access)`
+plot(x = urban.sanitation,
+       xlab = "% of Urban Population with Sanitation Access",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ urban.sanitation)),
+         lwd = 3.5,
+         col = "firebrick")
+```
+

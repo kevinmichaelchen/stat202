@@ -1,18 +1,34 @@
 ## Conditions Analysis
+
+# ~/Desktop/STAT202/Final/data/Y2008.csv
+
+ROOT <- "~/Desktop/STAT202/Final/"
+DATA <- paste0(ROOT,"data/")
+CONDITION.PLOT.DIR <- paste0(ROOT,"writeups/images/condition_plots/")
+GVLMA.PLOT.DIR <- paste0(ROOT,"writeups/images/gvlma_plots/")
+setwd(DATA)
+list.files()
+
 # Load the data frame
-df <- read.csv(file.choose(), header = TRUE, check.names = FALSE)
+df <- read.csv(paste0(DATA,"Y2008.csv"), header = TRUE, check.names = FALSE)
+
+
+
+
 
 #### Global Statistic Assumptions Test: 
 ## Ho: B1 = B2 = B3 = Bn = 0
 ## Ha: B1 != B2! = B3 != Bn != 0
 require(gvlma)
 
-ROOT <- "/Users/varunsharma/Dropbox/STAT 202 Final/STAT202/"
-CONDITION.PLOT.DIR <- paste0(ROOT,"condition_plots/")
-GVLMA.PLOT.DIR <- paste0(ROOT,"gvlma_plots/")
 
-gvmodels.funct <- function(Names.Predictors.Substitute,Title.Predictors.Substitute,Path,gvmodel.List.per.bucket,summary.List.per.bucket,plot.List.per.bucket){
-  for(i in 1:length(Names.Predictors.Substitute)){
+gvmodels.funct <- function(Names.Predictors.Substitute,
+                           Title.Predictors.Substitute,
+                           Path,
+                           gvmodel.List.per.bucket,
+                           summary.List.per.bucket,
+                           plot.List.per.bucket) {
+  for(i in 1:length(Names.Predictors.Substitute)) {
     jpeg(paste0(Path,Title.Predictors.Substitute[i],"_gvmodelplot.jpeg"))
     gvmodel.List.per.bucket[[i]] <- gvlma(eval(parse(text = paste0("lm(log.GDP.per.capita ~ df$`",Names.Predictors.Substitute[i],"`,data = df)"))))
     summary.List.per.bucket[[i]] <- summary(gvmodel.List.per.bucket[[i]])
@@ -44,8 +60,16 @@ boxplot(log.GDP.per.capita)
 
 # Agricultural Model
 
-Names.Predictors.Agr <- c("Improved water source, rural (% of rural population with access)","Poverty headcount ratio at urban poverty line (% of urban population)","Food production index (2004-2006 = 100)","Arable land (% of land area)","Rural population (% of total population)")
-Title.Predictors.Agr <- c("rural.water","rural.poor","food.production","arable.land","rural.population.percent")
+Names.Predictors.Agr <- c("Improved water source, rural (% of rural population with access)",
+                          "Poverty headcount ratio at urban poverty line (% of urban population)",
+                          "Food production index (2004-2006 = 100)",
+                          "Arable land (% of land area)",
+                          "Rural population (% of total population)")
+Title.Predictors.Agr <- c("rural.water",
+                          "rural.poor",
+                          "food.production",
+                          "arable.land",
+                          "rural.population.percent")
 
 for(i in 1:length(Names.Predictors.Agr)) {
   jpeg(paste0(CONDITION.PLOT.DIR,"agricultural/",Title.Predictors.Agr[i],"_residplot.jpeg"))

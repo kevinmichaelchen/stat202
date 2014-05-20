@@ -1,6 +1,10 @@
 ROOT <- "~/Desktop/STAT202/Final/"
 
+if (!"rworldmap" %in% rownames(installed.packages()))
+  install.packages("rworldmap", dependencies=TRUE)
 
+if (!"spam" %in% rownames(installed.packages()))
+  install.packages("spam")
 
 df <- read.csv(paste0(ROOT, "data/Y2008.csv"), header = TRUE, check.names = FALSE)
 
@@ -9,6 +13,11 @@ makePDF <- function(s) paste0(IMG_PATH, s, ".pdf")
 makePNG <- function(s) paste0(IMG_PATH, s, ".png")
 PLOT_WIDTH = 500
 
+
+# HEAT MAP
+require(rworldmap)
+map.sync <- joinCountryData2Map(df, nameJoinColumn = "Country.Code", nameCountryColumn = "Country.Name", suggestForFailedCodes = T, verbose = T)
+mapCountryData(map.sync, nameColumnToPlot = "GDP per capita (current US$)", colourPalette = "heat", mapTitle = "GDP per capita", aspect = 'variable', oceanCol = "dark blue", missingCountryCol = "white") 
 
 ##################
 ### INDICATORS ###

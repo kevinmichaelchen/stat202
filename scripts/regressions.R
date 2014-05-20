@@ -184,15 +184,18 @@ for (i in 1:length(predictors)) {
 
 
 emissions.co2.kt <- df$`CO2 emissions (kt)`
-log.emissions.co2.kt <- log(emissions.co2.kt + 0.01)
 emissions.methane <- df$`Methane emissions (kt of CO2 equivalent)`
-log.emissions.methane <- log(emissions.methane + 0.01)
 emissions.nitrous <- df$`Nitrous oxide emissions (thousand metric tons of CO2 equivalent)`
-log.emissions.nitrous <- log(emissions.nitrous + 0.01)
 electricity.consumption <- df$`Electric power consumption (kWh per capita)`
-log.electricity.consumption <- log(electricity.consumption + 0.01)
 paved.roads <- df$`Roads, paved (% of total roads)`
+
+log.emissions.co2.kt <- log(emissions.co2.kt + 0.01)
+log.emissions.methane <- log(emissions.methane + 0.01)
+log.emissions.nitrous <- log(emissions.nitrous + 0.01)
+log.electricity.consumption <- log(electricity.consumption + 0.01)
 log.paved.roads <- log(paved.roads + 0.01)
+
+
 
 # all super significant
 summary(lm(log.GDP.per.capita ~ electricity.consumption))

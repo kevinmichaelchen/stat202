@@ -12,7 +12,8 @@ urban.water <- df$`Improved water source, urban (% of urban population with acce
 ```
 
 ## Condition Checking
-Size metric appears linear!!
+
+### Linearity checking and transformations
 ```{r fig.width=7, fig.height=6}
   plot(x = urban.population,
        xlab = "Urban Population (% of Total)",
@@ -25,8 +26,10 @@ Size metric appears linear!!
          lwd = 3.5,
          col = "firebrick")
 ```
+Size metric appears linear!!
 
-Welfare proxy is not linear! We tried to transform it but nothing would give us anything resembling linearity. We need a new welfare proxy!
+
+
 ```{r fig.width=7, fig.height=6}
   plot(x = urban.water,
        xlab = "% of Urban Population with Clean Water Access",
@@ -39,11 +42,13 @@ Welfare proxy is not linear! We tried to transform it but nothing would give us 
          lwd = 3.5,
          col = "firebrick")
 ```
+Welfare proxy is not linear! We tried to transform it but nothing would give us anything resembling linearity. We need a new welfare proxy!
 
-We replace access to clean water with access to improved sanitation facilities. We see that log GDP per capita rises with each additional percentage of the urban population that has access to improved sanitation.
+
+
 ```{r fig.width=7, fig.height=6}
 urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban population with access)`
-plot(x = urban.sanitation,
+  plot(x = urban.sanitation,
        xlab = "% of Urban Population with Sanitation Access",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
@@ -54,4 +59,164 @@ plot(x = urban.sanitation,
          lwd = 3.5,
          col = "firebrick")
 ```
+We replace access to clean water with access to improved sanitation facilities. We see that log GDP per capita rises with each additional percentage of the urban population that has access to improved sanitation.
 
+
+### Regression and Exploratory Analysis
+```{r}
+m <- lm(log.GDP.per.capita ~ urban.sanitation + urban.population)
+summary(m)
+```
+We see significance!
+
+What about equal variance and normality of errors?
+```{r fig.width = 7, fig.height = 10}
+par(mfrow=c(2,1))
+plot(m, which=c(1,2))
+```
+Yes, there is equal variance! However, there's a long left tail.
+We could try non-parametric tests...
+
+
+# Climate Model
+```{r}
+emissions.co2.kt <- df$`CO2 emissions (kt)`
+emissions.methane <- df$`Methane emissions (kt of CO2 equivalent)`
+emissions.nitrous <- df$`Nitrous oxide emissions (thousand metric tons of CO2 equivalent)`
+electricity.consumption <- df$`Electric power consumption (kWh per capita)`
+paved.roads <- df$`Roads, paved (% of total roads)`
+
+log.emissions.co2.kt <- log(emissions.co2.kt + 0.01)
+log.emissions.methane <- log(emissions.methane + 0.01)
+log.emissions.nitrous <- log(emissions.nitrous + 0.01)
+log.electricity.consumption <- log(electricity.consumption + 0.01)
+log.paved.roads <- log(paved.roads + 0.01)
+```
+
+## Condition Checking
+### Linearity checking and transformations
+```{r fig.width = 9, fig.height = 8}
+par(mfrow=c(2,3))
+  plot(x = emissions.co2.kt,
+       xlab = "CO2 Emissions (kt)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ emissions.co2.kt)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = emissions.methane,
+       xlab = "Methane Emissions (kt)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ emissions.methane)),
+         lwd = 3.5,
+         col = "firebrick")
+
+
+  plot(x = emissions.nitrous,
+       xlab = "Nitrous Emissions (kt)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ emissions.nitrous)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.emissions.co2.kt,
+       xlab = "log CO2 Emissions (kt)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.emissions.co2.kt)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.emissions.methane,
+       xlab = "log Methane Emissions (kt)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.emissions.methane)),
+         lwd = 3.5,
+         col = "firebrick")
+
+
+  plot(x = log.emissions.nitrous,
+       xlab = "log Nitrous Emissions (kt)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.emissions.nitrous)),
+         lwd = 3.5,
+         col = "firebrick")
+
+```
+Pollution scatterplots (top row) show no linearity.
+Log transformations (bottom row) improve all of them.
+
+```{r fig.width=9, fig.height=8}
+par(mfrow=c(2,2))
+  plot(x = electricity.consumption,
+       xlab = "Electricity Consumption",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ electricity.consumption)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = paved.roads,
+       xlab = "Paved Roads (% of total)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ paved.roads)),
+         lwd = 3.5,
+         col = "firebrick")
+
+
+  plot(x = log.electricity.consumption,
+       xlab = "log Electricity Consumption",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.electricity.consumption)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.paved.roads,
+       xlab = "log Paved Roads (% of total)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.paved.roads)),
+         lwd = 3.5,
+         col = "firebrick")
+```
+Log transformation improves linearity of electricity consumption, but no so much paved roads, which is already good to begin with.
+
+
+### Regression and Exploratory Analysis

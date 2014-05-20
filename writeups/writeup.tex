@@ -1,18 +1,18 @@
-\documentclass[12pt, twocolumn]{article}
+\documentclass[12pt]{article}
 
-\usepackage{usenix}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{endnotes}
-\usepackage{multicol}
+\usepackage{pdfpages}
+%\usepackage[left=1.25in,right=1.25in]{geometry}
 
 \title{
   \sc
-  What Makes a Country More Well Off? \\
-  A Regression Analysis of GDP per capita
+  What Makes a Country Wealthier? \\
+  {\large Exploring the determinants of GDP per capita}
 }
 
 \author{
@@ -54,11 +54,12 @@
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\subsection*{\sc Abstract}
+\begin{abstract}
 The determinants of a nation's gross domestic product (GDP) have been explored to a great extent. Indeed, given that GDP is a function of a nation's consumption, investment, government spending, exports, and imports, the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly. We present four core models that try to explain GDP per capita without relying on the literal components of Keynesian aggregate demand. Specifically, they proxy for measures of climate, technological advancement, urbanization and urban welfare, and social development.
 We find that\dots %TODO
+\end{abstract}
 
-
+\newpage
 
 % % % % % % % % % % %
 % % % % % % % % % % %
@@ -132,6 +133,18 @@ Furthermore, we fix each violated condition by transforming the indicator in que
   \centering
   \includegraphics[width=\textwidth]{images/climate_model_conditions}
   \caption{\label{climate_model_conditions}Residuals vs fitted and Q-Q plot}
+\end{figure*}
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{images/climate_model_scatter_elec_roads}
+  \caption{\label{climate_model_scatter_elec_roads}Left to right: electricity consumption, paved roads. Log transformations on bottom row.}
+\end{figure*}
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{images/climate_model_scatter_pollution}
+  \caption{\label{climate_model_scatter_pollution}Left to right: CO2, methane, nitrous. Log transformations on bottom row.}
 \end{figure*}
 
 \subsection{Cities Model Conditions}

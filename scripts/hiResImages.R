@@ -9,12 +9,11 @@ if (!"spam" %in% rownames(installed.packages()))
 df <- read.csv(paste0(ROOT, "data/Y2008.csv"), header = TRUE, check.names = FALSE)
 
 IMG_PATH <- paste0(ROOT, "writeups/images/")
-makePNG <- function(s) paste0(IMG_PATH, s, ".png")
+makePDF <- function(s) paste0(IMG_PATH, s, ".pdf")
 PLOT_WIDTH = 1000
 PCH = 17
-CEX = 3
-LWD = 8
-
+CEX = 2
+LWD = 5
 
 # HEAT MAP
 #require(rworldmap)
@@ -70,7 +69,7 @@ log.literacy <- log(literacy + 0.01)
 ###################
 nrow = 1
 ncol = 2
-png(filename = makePNG("urban_model_scatter_pop_water"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("urban_model_scatter_pop_water"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(x = urban.population, xlab = "Urban Population (% of Total)", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = "darkblue")
 abline(summary(lm(log.GDP.per.capita ~ urban.population)), lwd = LWD, col = "firebrick")
@@ -84,7 +83,7 @@ g <- dev.off()
 
 nrow = 1
 ncol = 1
-png(filename = makePNG("urban_model_scatter_san"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("urban_model_scatter_san"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(x = urban.sanitation, xlab = "% of Urban Population with Sanitation Access", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = "darkblue")
 abline(summary(lm(log.GDP.per.capita ~ urban.sanitation)), lwd = LWD, col = "firebrick")
@@ -97,7 +96,7 @@ nrow = 1
 ncol = 2
 m <- lm(log.GDP.per.capita ~ urban.sanitation + urban.population)
 summary(m)
-png(filename = makePNG("urban_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("urban_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(m, which=c(1,2))
 g <- dev.off()
@@ -114,7 +113,7 @@ g <- dev.off()
 #####################
 nrow = 2
 ncol = 3
-png(filename = makePNG("climate_model_scatter_pollution"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("climate_model_scatter_pollution"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(x = co2, xlab = "CO2 Emissions (kt)", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = "darkblue")
 abline(summary(lm(log.GDP.per.capita ~ co2)), lwd = LWD, col = "firebrick")
@@ -140,7 +139,7 @@ g <- dev.off()
 
 nrow = 2
 ncol = 2
-png(filename = makePNG("climate_model_scatter_elec_roads"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("climate_model_scatter_elec_roads"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(x = electricity.consumption, xlab = "Electricity Consumption", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = "darkblue")
 abline(summary(lm(log.GDP.per.capita ~ electricity.consumption)), lwd = LWD, col = "firebrick")
@@ -165,7 +164,7 @@ summary(m2)
 
 nrow = 1
 ncol = 2
-png(filename = makePNG("climate_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("climate_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(m2, which=c(1,2))
 g <- dev.off()
@@ -182,7 +181,7 @@ g <- dev.off()
 #####################
 nrow = 2
 ncol = 3
-png(filename = makePNG("science_model_scatter"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("science_model_scatter"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(x = high.tech, xlab = "High-tech exports (% of manufactured exports)", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = "darkblue")
 abline(summary(lm(log.GDP.per.capita ~ high.tech)), lwd = LWD, col = "firebrick")
@@ -211,7 +210,7 @@ summary(m)
 
 nrow = 1
 ncol = 2
-png(filename = makePNG("science_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("science_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(m, which=c(1,2))
 g <- dev.off()
@@ -233,7 +232,7 @@ summary(m)
 
 nrow = 1
 ncol = 2
-png(filename = makePNG("social_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("social_model_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(m, which=c(1,2))
 g <- dev.off()
@@ -243,7 +242,7 @@ g <- dev.off()
 
 nrow = 2
 ncol = 4
-png(filename = makePNG("social_model_scatter"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("social_model_scatter"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(x = child.labor, xlab = "Child Employment (% of children ages 7-14)", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = "darkblue")
 abline(lm(log.GDP.per.capita ~ child.labor), lwd = LWD, col = "firebrick")
@@ -276,9 +275,11 @@ g <- dev.off()
 m <- lm(log.GDP.per.capita ~ log.life.expect + log.refugees)
 summary(m)
 
+plot.lm(m)
+
 nrow = 1
 ncol = 2
-png(filename = makePNG("social_model_log_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+pdf(file = makePDF("social_model_log_conditions"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
 plot(m, which=c(1,2))
 g <- dev.off()

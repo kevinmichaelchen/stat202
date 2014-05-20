@@ -12,7 +12,6 @@ urban.water <- df$`Improved water source, urban (% of urban population with acce
 ```
 
 ## Condition Checking
-
 ### Linearity checking and transformations
 ```{r fig.width=7, fig.height=6}
   plot(x = urban.population,
@@ -76,6 +75,10 @@ plot(m, which=c(1,2))
 ```
 Yes, there is equal variance! However, there's a long left tail.
 We could try non-parametric tests...
+
+
+
+
 
 
 # Climate Model
@@ -220,3 +223,230 @@ Log transformation improves linearity of electricity consumption, but no so much
 
 
 ### Regression and Exploratory Analysis
+
+
+
+
+
+
+
+
+# Science Model
+```{r}
+high.tech <- df$`High-technology exports (% of manufactured exports)`
+r.n.d <- df$`Research and development expenditure (% of GDP)`
+journals <- df$`Scientific and technical journal articles`
+log.high.tech <- log(high.tech + 0.01)
+log.research <- log(r.n.d + 0.01)
+log.journals <- log(journals + 0.01)
+```
+
+## Condition Checking
+### Linearity checking and transformations
+```{r fig.width = 9, fig.height = 8}
+par(mfrow=c(2,3))
+  plot(x = high.tech,
+       xlab = "High-tech exports (% of manufactured exports)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ high.tech)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = r.n.d,
+       xlab = "R&D Expenditure (% of GDP)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ r.n.d)),
+         lwd = 3.5,
+         col = "firebrick")
+
+
+  plot(x = journals,
+       xlab = "Science Journals",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ journals)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.high.tech,
+       xlab = "log High-tech exports (% of manufactured exports)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.high.tech)),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.research,
+       xlab = "log R&D Expenditure (% of GDP)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.research)),
+         lwd = 3.5,
+         col = "firebrick")
+
+
+  plot(x = log.journals,
+       xlab = "log Science Journals",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(summary(lm(log.GDP.per.capita ~ log.journals)),
+         lwd = 3.5,
+         col = "firebrick")
+
+```
+Log-transforming improves linearity of all indicators with respect to log GDP per capita -- although there is still a lot of scatter.
+
+### Regression and Exploratory Analysis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Social Development Model
+```{r}
+child.labor <- df$`Children in employment, total (% of children ages 7-14)`
+life.expect <- df$`Life expectancy at birth, male (years)`
+refugees <- df$`Refugee population by country or territory of origin`
+literacy <- df$`Literacy rate, adult total (% of people ages 15 and above)`
+
+log.child.labor <- log(child.labor + 0.01)
+log.life.expect <- log(life.expect + 0.01)
+log.refugees <- log(refugees + 0.01)
+log.literacy <- log(literacy + 0.01)
+```
+
+## Condition Checking
+### Linearity checking and transformations
+```{r fig.width=8, fig.height=6}
+par(mfrow=c(2,4))
+  
+  plot(x = child.labor,
+       xlab = "Child Employment (% of chlidren ages 7-14)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ child.labor),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = life.expect,
+       xlab = "Life expectancy at birth, male (years)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ life.expect),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = refugees,
+       xlab = "Refugee Population",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ refugees),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = literacy,
+       xlab = "Literacy Rate (adult total)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ literacy),
+         lwd = 3.5,
+         col = "firebrick")
+
+
+
+
+  plot(x = log.child.labor,
+       xlab = "log Child Employment (% of chlidren ages 7-14)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ log.child.labor),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.life.expect,
+       xlab = "log Life expectancy at birth, male (years)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ log.life.expect),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.refugees,
+       xlab = "log Refugee Population",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ log.refugees),
+         lwd = 3.5,
+         col = "firebrick")
+
+  plot(x = log.literacy,
+       xlab = "log Literacy Rate (adult total)",
+       y = log.GDP.per.capita,
+       ylab = "log(GDP per capita)",
+       pch = 17, #dot point
+       cex = 1.2, #dot size
+       col = "darkblue")
+  abline(lm(log.GDP.per.capita ~ log.literacy),
+         lwd = 3.5,
+         col = "firebrick")
+
+```
+Discard child labor and literacy rates, as there are not enough data points.
+
+Life expectancy shows linearity with respect to log GDP per capita.
+
+Refugee population's linearity is drastically improved with log transformation.
+
+### Regression and Exploratory Analysis
+
+

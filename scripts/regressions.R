@@ -329,9 +329,9 @@ summary(lm(log.GDP.per.capita ~ r.n.d))
 #'
 #' SOCIAL DEVELOPMENT MODEL
 #'
+hiv.prevalence <- df$`Prevalence of HIV, female (% ages 15-24)`
 child.labor <- df$`Children in employment, total (% of children ages 7-14)`
 life.expectancy <- df$`Life expectancy at birth, male (years)`
-hiv.prevalence <- df$`Prevalence of HIV, female (% ages 15-24)`
 refugee.pop <- df$`Refugee population by country or territory of origin`
 literacy.rate <- df$`Literacy rate, adult total (% of people ages 15 and above)`
 
@@ -340,6 +340,7 @@ log.life.expect <- log(life.expectancy + 0.01)
 log.refugees <- log(refugee.pop + 0.01)
 log.literacy <- log(literacy.rate + 0.01)
 
+plot.new()
 par(mfrow=c(1,4))
 plot(lm(log.GDP.per.capita ~ log.child.labor), which=c(1), pch = 16, cex = 2, lwd = 7)
 title("log.child.labor")

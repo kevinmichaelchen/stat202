@@ -2,18 +2,20 @@ Appendix: V. Sharma, K. Chen, JL. Etienne
 ========================================================
 
 # Urban Model
-```{r}
+```{r echo=FALSE}
 df <- read.csv("~/Desktop/STAT202/Final/data/Y2008.csv", header = TRUE, check.names = FALSE)
-
 log.GDP.per.capita <- log(df$`GDP per capita (current US$)`)
-
-urban.population <- df$`Urban population (% of total)`
-urban.water <- df$`Improved water source, urban (% of urban population with access)`
 ```
 
-## Condition Checking
-### Linearity checking and transformations
-```{r fig.width=7, fig.height=6}
+```{r}
+urban.population <- df$`Urban population (% of total)`
+urban.water <- df$`Improved water source, urban (% of urban population with access)`
+urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban population with access)`
+```
+
+## Linearity checking and transformations
+```{r fig.width=8, fig.height=5, echo=FALSE, warning=FALSE}
+par(mfrow=c(1,2))
   plot(x = urban.population,
        xlab = "Urban Population (% of Total)",
        y = log.GDP.per.capita,
@@ -24,12 +26,7 @@ urban.water <- df$`Improved water source, urban (% of urban population with acce
   abline(summary(lm(log.GDP.per.capita ~ urban.population)),
          lwd = 3.5,
          col = "firebrick")
-```
-Size metric appears linear!!
 
-
-
-```{r fig.width=7, fig.height=6}
   plot(x = urban.water,
        xlab = "% of Urban Population with Clean Water Access",
        y = log.GDP.per.capita,
@@ -41,12 +38,14 @@ Size metric appears linear!!
          lwd = 3.5,
          col = "firebrick")
 ```
-Welfare proxy is not linear! We tried to transform it but nothing would give us anything resembling linearity. We need a new welfare proxy!
+Size metric appears linear!
+Welfare proxy is not linear!
+A log transformation did not bring us closer to linearity.
+We need a new welfare proxy!
 
 
 
-```{r fig.width=7, fig.height=6}
-urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban population with access)`
+```{r fig.width=7, fig.height=6, echo=FALSE, warning=FALSE}
   plot(x = urban.sanitation,
        xlab = "% of Urban Population with Sanitation Access",
        y = log.GDP.per.capita,
@@ -61,19 +60,15 @@ urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban popula
 We replace access to clean water with access to improved sanitation facilities. We see that log GDP per capita rises with each additional percentage of the urban population that has access to improved sanitation.
 
 
-### Regression and Exploratory Analysis
-```{r}
+## Regression and Exploratory Analysis
+```{r fig.width = 8, fig.height = 5, echo=FALSE}
 m <- lm(log.GDP.per.capita ~ urban.sanitation + urban.population)
 summary(m)
-```
-We see significance!
-
-What about equal variance and normality of errors?
-```{r fig.width = 7, fig.height = 10}
-par(mfrow=c(2,1))
+par(mfrow=c(1,2))
 plot(m, which=c(1,2))
 ```
-Yes, there is equal variance! However, there's a long left tail.
+From the regression output, we see that both indicators are significant.
+From the plot of residuals vs fitted values, we see there is roughly equal variance! However, from the Q-Q plot, we see there's a long left tail.
 We could try non-parametric tests...
 
 
@@ -83,96 +78,96 @@ We could try non-parametric tests...
 
 # Climate Model
 ```{r}
-emissions.co2.kt <- df$`CO2 emissions (kt)`
-emissions.methane <- df$`Methane emissions (kt of CO2 equivalent)`
-emissions.nitrous <- df$`Nitrous oxide emissions (thousand metric tons of CO2 equivalent)`
+co2 <- df$`CO2 emissions (kt)`
+methane <- df$`Methane emissions (kt of CO2 equivalent)`
+nitrous <- df$`Nitrous oxide emissions (thousand metric tons of CO2 equivalent)`
 electricity.consumption <- df$`Electric power consumption (kWh per capita)`
 paved.roads <- df$`Roads, paved (% of total roads)`
 
-log.emissions.co2.kt <- log(emissions.co2.kt + 0.01)
-log.emissions.methane <- log(emissions.methane + 0.01)
-log.emissions.nitrous <- log(emissions.nitrous + 0.01)
+log.co2 <- log(co2 + 0.01)
+log.methane <- log(methane + 0.01)
+log.nitrous <- log(nitrous + 0.01)
 log.electricity.consumption <- log(electricity.consumption + 0.01)
 log.paved.roads <- log(paved.roads + 0.01)
 ```
 
-## Condition Checking
-### Linearity checking and transformations
-```{r fig.width = 9, fig.height = 8}
+## Linearity checking and transformations
+```{r fig.width = 9, fig.height = 5, echo=FALSE, warning=FALSE}
 par(mfrow=c(2,3))
-  plot(x = emissions.co2.kt,
+  plot(x = co2,
        xlab = "CO2 Emissions (kt)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
        cex = 1.2, #dot size
        col = "darkblue")
-  abline(summary(lm(log.GDP.per.capita ~ emissions.co2.kt)),
+  abline(summary(lm(log.GDP.per.capita ~ co2)),
          lwd = 3.5,
          col = "firebrick")
 
-  plot(x = emissions.methane,
+  plot(x = methane,
        xlab = "Methane Emissions (kt)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
        cex = 1.2, #dot size
        col = "darkblue")
-  abline(summary(lm(log.GDP.per.capita ~ emissions.methane)),
+  abline(summary(lm(log.GDP.per.capita ~ methane)),
          lwd = 3.5,
          col = "firebrick")
 
 
-  plot(x = emissions.nitrous,
+  plot(x = nitrous,
        xlab = "Nitrous Emissions (kt)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
        cex = 1.2, #dot size
        col = "darkblue")
-  abline(summary(lm(log.GDP.per.capita ~ emissions.nitrous)),
+  abline(summary(lm(log.GDP.per.capita ~ nitrous)),
          lwd = 3.5,
          col = "firebrick")
 
-  plot(x = log.emissions.co2.kt,
+  plot(x = log.co2,
        xlab = "log CO2 Emissions (kt)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
        cex = 1.2, #dot size
        col = "darkblue")
-  abline(summary(lm(log.GDP.per.capita ~ log.emissions.co2.kt)),
+  abline(summary(lm(log.GDP.per.capita ~ log.co2)),
          lwd = 3.5,
          col = "firebrick")
 
-  plot(x = log.emissions.methane,
+  plot(x = log.methane,
        xlab = "log Methane Emissions (kt)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
        cex = 1.2, #dot size
        col = "darkblue")
-  abline(summary(lm(log.GDP.per.capita ~ log.emissions.methane)),
+  abline(summary(lm(log.GDP.per.capita ~ log.methane)),
          lwd = 3.5,
          col = "firebrick")
 
 
-  plot(x = log.emissions.nitrous,
+  plot(x = log.nitrous,
        xlab = "log Nitrous Emissions (kt)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
        cex = 1.2, #dot size
        col = "darkblue")
-  abline(summary(lm(log.GDP.per.capita ~ log.emissions.nitrous)),
+  abline(summary(lm(log.GDP.per.capita ~ log.nitrous)),
          lwd = 3.5,
          col = "firebrick")
 
 ```
 Pollution scatterplots (top row) show no linearity.
 Log transformations (bottom row) improve all of them.
+They are all equally good. We're not sure which pollution metric to pick!
 
-```{r fig.width=9, fig.height=8}
+```{r fig.width=9, fig.height=8, echo=FALSE, warning=FALSE}
 par(mfrow=c(2,2))
   plot(x = electricity.consumption,
        xlab = "Electricity Consumption",
@@ -219,10 +214,22 @@ par(mfrow=c(2,2))
          lwd = 3.5,
          col = "firebrick")
 ```
-Log transformation improves linearity of electricity consumption, but no so much paved roads, which is already good to begin with.
+Log transformation improves the linearity of electricity consumption.
+Paved roads is more linear but does not have enough data points.
+For this reason, we remove paved roads.
 
+## Regression and Exploratory Analysis
+```{r echo=FALSE}
+summary(lm(log.GDP.per.capita ~ log.electricity.consumption))
+```
+Electricity consumption is significant!
 
-### Regression and Exploratory Analysis
+Test interaction between CO2 and electricity
+
+```{r echo=FALSE}
+summary(lm(log.GDP.per.capita ~ log.electricity.consumption*log.co2))
+summary(lm(log.GDP.per.capita ~ log.electricity.consumption:log.co2 + log.co2))
+```
 
 
 
@@ -241,9 +248,8 @@ log.research <- log(r.n.d + 0.01)
 log.journals <- log(journals + 0.01)
 ```
 
-## Condition Checking
-### Linearity checking and transformations
-```{r fig.width = 9, fig.height = 8}
+## Linearity checking and transformations
+```{r fig.width = 9, fig.height = 5, echo=FALSE, warning=FALSE}
 par(mfrow=c(2,3))
   plot(x = high.tech,
        xlab = "High-tech exports (% of manufactured exports)",
@@ -316,8 +322,11 @@ par(mfrow=c(2,3))
 ```
 Log-transforming improves linearity of all indicators with respect to log GDP per capita -- although there is still a lot of scatter.
 
-### Regression and Exploratory Analysis
-
+## Regression and Exploratory Analysis
+```{r}
+m <- lm(log.GDP.per.capita ~ log.high.tech * log.journals)
+summary(m)
+```
 
 
 
@@ -344,13 +353,24 @@ log.refugees <- log(refugees + 0.01)
 log.literacy <- log(literacy + 0.01)
 ```
 
-## Condition Checking
-### Linearity checking and transformations
-```{r fig.width=8, fig.height=6}
+## Linearity checking and transformations
+The full model is moot. 211 obs deleted.
+```{r fig.width=8, fig.height=5, echo=FALSE}
+m <- lm(log.GDP.per.capita ~ child.labor + life.expect + refugees + literacy)
+summary(m)
+m <- lm(log.GDP.per.capita ~ life.expect + refugees)
+summary(m)
+par(mfrow=c(1,2))
+plot(m, which=c(1,2))
+```
+The full model deletes all observations due to missingness.
+We remove child labor and literacy, as they have minimal observations.
+
+```{r fig.width=8, fig.height=5, echo=FALSE, warning=FALSE}
 par(mfrow=c(2,4))
   
   plot(x = child.labor,
-       xlab = "Child Employment (% of chlidren ages 7-14)",
+       xlab = "Child Employment (% of children ages 7-14)",
        y = log.GDP.per.capita,
        ylab = "log(GDP per capita)",
        pch = 17, #dot point
@@ -447,6 +467,12 @@ Life expectancy shows linearity with respect to log GDP per capita.
 
 Refugee population's linearity is drastically improved with log transformation.
 
-### Regression and Exploratory Analysis
+## Regression and Exploratory Analysis
+```{r fig.width=8, fig.height=5, echo=FALSE}
+m <- lm(log.GDP.per.capita ~ log.life.expect + log.refugees)
+summary(m)
+par(mfrow=c(1,2))
+plot(m, which=c(1,2))
+```
 
 

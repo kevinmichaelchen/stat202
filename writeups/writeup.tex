@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 
+\usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -291,11 +292,34 @@ Figure~\ref{climate_model_conditions} provides a way for us to assess whether ou
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Indicators}
+How well does a country's urban environment explain its wealth? To answer this, we look at the size of a country's urban environment, as well as the welfare of that environment.
+For size, we use the percentage of population living in urban environments.
+For welfare, we use the percentage of the urban population with access to clean water.
+
+In Figure~\ref{urban_model_scatter_pop_water}, we make scatterplots of log GDP per capita versus population and water.
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/urban_model_scatter_pop_water}
+  \caption{\label{urban_model_scatter_pop_water}Left to right: Population, water.}
+\end{figure*}
+
+We lack a linear relationship between the response and the percentage of urban population with access to water. We tried to remedy this defect with several transformations, but to no avail. Consequently, we replace our urban welfare predictor with the percentage of the urban population with access to sanitation, which primarily entails access to latrines. This new indicator exhibited a much more linear relationship with log GDP per capita, as seen in Figure~\ref{urban_model_scatter_san}.
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{images/urban_model_scatter_san}
+  \caption{\label{urban_model_scatter_san}Access to sanitation is a better proxy for urban welfare than access to water.}
+\end{figure*}
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Regression}
+
+Figure~\ref{urban_model_regressions} shows our variations of the urban model.
+The first model includes our size metric (urban population) as well as both of our proxies for urban welfare (urban sanitation and urban water).
+Model B regresses log GDP per capita on urban population and urban water, whereas Model C regresses on urban population and urban sanitation.
 
 \begin{figure}[h!]
 \begin{singlespace}

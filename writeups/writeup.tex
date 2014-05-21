@@ -89,7 +89,9 @@ Given these models, we face several challenges. First, while we have provided hy
 
 Second, we may face multicollinearity in our models. For instance, our social development model includes literacy rates and child labor. The former is a proxy for education, while the latter is often linked directly to education. This is problematic since multicollinearity increases standard error and decreases an indicator's $t$-statistic, thus making it appear insignificant when in reality it is not.
 
+The structure of this paper is as follows: We proceed through each model, providing exploratory analysis, condition checking, and interpretation of regression output. Exploratory analysis starts with scatterplots, which show both the amount of data points for an indicator (so we can weed out indicators with bad data coverage) and the linearity between the indicator and the response. If linearity is not present, we try to transform it, usually with logs. We then perform a regression, interpret the coefficients, and check the model conditions to gauge the model's meaningfulness.
 
+While this is a rough algorithm for our thinking process, it is not something we have to rigidly adhere to. Our goal here is not to come up with the ``perfect'' model. As previously stated, we can use exports and imports to come up with a model with an exceptionally high $R^2$ value. Our goal is simply to explain GDP per capita in more relatable ways: people are more knowledgeable about their country's climate and general urban, technological and social environment than they are about its level of exports and imports.
 
 
 % % % % % % % % % % %
@@ -113,21 +115,28 @@ We use heat maps to determine which indicators had few missing data points, incl
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\section{Analysis}
+\section{Climate Change Model}
+
+\subsection{Indicators}
+%what we picked and why
+How do climate-related indicators affect a country's wealth? To answer this, we look at pollution and energy consumption. Intuitively, there is a correlation between those two: the more energy a country consumes, the more it pollutes. We proceed with caution, wary of multicollinearity.
+
+For our pollution metrics, we choose emissions (measured in kilotons) consisting of three basic chemical compounds: nitrous oxide, carbon dioxide, and methane. Nitrous oxide emissions result from agricultural biomass burning, industrial activity, and livestock management. Carbon dioxide results from burning fossil fuels. Methane results from agriculture and industry.
+
+Our proxies for energy consumption consisted of electric consumption per capita (in kilowatt-hours) and the percentage of total roads that are paved. The former measures the production of power plants (minus transportation costs), while the latter might directly account for those transportation costs: that is, a larger network of paved roads may reduce the time it takes to transport goods and thus energy consumption.
+
+% TODO scatterplots, linearity and transformations
+
+\subsection{Regression}
+
+\subsection{Condition Checking}
 As with any linear regression model, we provide exploratory analysis of our assumptions: linearity, independence, zero mean, constant variance, and normality.
 
-By virtue of using ordinary least squares linear regression, the mean error is zero. In addition, we safely assume independence, as the collection of data points was done in such a way that one datum did not influence another.
+We confirm (1) linearity above with scatterplots, (2) zero error mean by our use of ordinary least squares linear regression, and (3) independence by the way data points were collected -- that is, measuring a national statistics does not effect the statistics of it or any other nation. We apply these assumptions to the other three models.
 
 To confirm linearity, we provide scatterplots of GDP per capita against each indicator.
 
-To confirm constance variance, we provide scatterplots of residuals versus fitted values.
-
-To confirm the normality of the error distribution, we provide a Q-Q plot for each of our models.
-
-Furthermore, we fix each violated condition by transforming the indicator in question or by removing it from the model entirely.
-
-\subsection{Climate Change Model Conditions}
-
+To confirm constance variance, we provide scatterplots of residuals versus fitted values. To confirm the normality of the error distribution, we provide a Q-Q plot for each of our models. Furthermore, we fix each violated condition by transforming the indicator in question or by removing it from the model entirely.
 
 \begin{figure*}[h!]
   \centering
@@ -147,9 +156,9 @@ Furthermore, we fix each violated condition by transforming the indicator in que
   \caption{\label{climate_model_scatter_pollution}Left to right: CO2, methane, nitrous. Log transformations on bottom row.}
 \end{figure*}
 
-\subsection{Cities Model Conditions}
-\subsection{Computers Model Conditions}
-\subsection{Social Development Model Conditions}
+\section{Cities Model}
+\section{Computers Model}
+\section{Social Development Model}
 
 
 

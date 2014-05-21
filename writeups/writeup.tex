@@ -61,6 +61,10 @@ We find that\dots %TODO
 
 \newpage
 
+%\begin{singlespace}
+%\tableofcontents
+%\end{singlespace}
+
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
@@ -136,7 +140,7 @@ When we run scatterplots of each of the pollution metrics against the response, 
 
 \begin{figure*}[h!]
   \centering
-  \includegraphics[width=\textwidth]{images/climate_model_scatter_pollution}
+  \includegraphics[width=0.8\textwidth]{images/climate_model_scatter_pollution}
   \caption{\label{climate_model_scatter_pollution}Left to right: CO2, methane, nitrous. Log transformations on bottom row.}
 \end{figure*}
 
@@ -144,21 +148,42 @@ Next we run scatterplots of log GDP per capita versus each our proxies for energ
 
 \begin{figure*}[h!]
   \centering
-  \includegraphics[width=\textwidth]{images/climate_model_scatter_elec_roads}
+  \includegraphics[width=0.6\textwidth]{images/climate_model_scatter_elec_roads}
   \caption{\label{climate_model_scatter_elec_roads}Left to right: electricity consumption, paved roads. Log transformations on bottom row.}
 \end{figure*}
 
 
 \subsection{Regression}
 
+% The full model
+\begin{singlespace}
+\small
+\begin{verbatim}
+Coefficients:
+                          Estimate Std. Error t value Pr(>|t|)    
+(Intercept)              7.381e+00  3.517e-01  20.988  < 2e-16 ***
+electricity.consumption  1.013e-04  2.007e-05   5.048 5.82e-06 ***
+paved.roads              1.901e-02  4.613e-03   4.121 0.000136 ***
+co2                     -3.860e-09  3.617e-07  -0.011 0.991526    
+methane                 -2.488e-06  3.072e-06  -0.810 0.421698    
+nitrous                  5.820e-06  1.010e-05   0.576 0.567109    
+---
+
+Residual standard error: 1.04 on 52 degrees of freedom
+  (156 observations deleted due to missingness)
+Multiple R-squared:  0.5118,Adjusted R-squared:  0.4649 
+F-statistic:  10.9 on 5 and 52 DF,  p-value: 3.298e-07
+\end{verbatim}
+\end{singlespace}
+
 \subsection{Condition Checking}
 As with any linear regression model, we provide exploratory analysis of our assumptions: linearity, independence, zero mean, constant variance, and normality.
 
 We confirm (1) linearity above with scatterplots, (2) zero error mean by our use of ordinary least squares linear regression, and (3) independence by the way data points were collected -- that is, measuring a national statistics does not effect the statistics of it or any other nation. We apply these assumptions to the other three models.
 
-To confirm linearity, we provide scatterplots of GDP per capita against each indicator.
+We provide scatterplots of residuals versus fitted values to evaluate constant variance, and a Q-Q plot to confirm the normality of the error distribution. As shown in Figure~\ref{climate_model_conditions}, the model is fairly homoskedastic but has a bit of long left tail.
 
-To confirm constance variance, we provide scatterplots of residuals versus fitted values. To confirm the normality of the error distribution, we provide a Q-Q plot for each of our models. Furthermore, we fix each violated condition by transforming the indicator in question or by removing it from the model entirely.
+% TODO should we try a nonparametric test?
 
 \begin{figure*}[h!]
   \centering

@@ -1,5 +1,5 @@
 *ssc install estout, replace
-eststo clear
+
 clear
 capture log close
 
@@ -41,15 +41,37 @@ gen log_refugee_pop = log(refugee_pop + 0.01)
 gen log_literacy = log(literacy + 0.01)
 
 
+
+* CLIMATE MODEL REGRESSIONS
+eststo clear
 eststo: regress log_GDP_per_capita paved_roads log_electric_cons log_co2 log_nitrous log_methane
 eststo: regress log_GDP_per_capita paved_roads log_electric_cons log_co2
 eststo: regress log_GDP_per_capita paved_roads log_electric_cons
 gen co2_elec = log_electric_cons * log_co2
 eststo: regress log_GDP_per_capita log_electric_cons log_co2 co2_elec
-
-
-
 esttab, mtitles("Model A" "Model B" "Model C" "Model D")
 
+
+* URBAN MODEL REGRESSIONS
+eststo clear
+eststo: regress log_GDP_per_capita urb_sanitation urb_population urb_water
+eststo: regress log_GDP_per_capita urb_population urb_water
+eststo: regress log_GDP_per_capita urb_sanitation urb_population
+esttab, mtitles("Model A" "Model B" "Model C")
+
+* SCIENCE MODEL REGRESSIONS
+eststo clear
+gen tech_jour = log_high_tech * log_journals
+eststo: regress log_GDP_per_capita log_research log_high_tech log_journals
+eststo: regress log_GDP_per_capita log_high_tech log_journals
+eststo: regress log_GDP_per_capita log_high_tech log_journals tech_jour
+esttab, mtitles("Model A" "Model B" "Model C")
+
+* SOCIAL DEVELOPMENT MODEL REGRESSIONS
+eststo clear
+eststo: regress log_GDP_per_capita child_labor
+eststo: regress log_GDP_per_capita literacy  
+eststo: regress log_GDP_per_capita life_expect refugee_pop
+esttab, mtitles("Model A" "Model B" "Model C")
 
 log close

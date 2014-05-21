@@ -6,7 +6,7 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{endnotes}
-\usepackage{pdfpages}
+%\usepackage{pdfpages}
 %\usepackage[left=1.25in,right=1.25in]{geometry}
 
 \title{
@@ -154,10 +154,16 @@ Next we run scatterplots of log GDP per capita versus each our proxies for energ
 
 
 \subsection{Regression}
+Figure~\ref{climate_model_regressions} shows our variations of the climate model.
+First, we run the full model that includes every indicator.
+Of these, the log of electricity consumption is the only one to show up as significant.
+We see a positive correlation: the more energy power plants consume in a country, the higher that country's log per-capita GDP will be.
+Specifically, for the first three models, a 1\% increase in electricity consumption is associated with $0.97$\% increase in GDP per capita, give or take one basis point.
 
-% The full model
+\begin{figure}[h!]
 \begin{singlespace}
-\footnotesize
+\scriptsize
+%\footnotesize
 \begin{verbatim}
                       (1)             (2)             (3)             (4)   
                   Model A         Model B         Model C         Model D   
@@ -189,15 +195,21 @@ t statistics in parentheses
 * p<0.05, ** p<0.01, *** p<0.001
 \end{verbatim}
 \end{singlespace}
+\caption{\label{climate_model_regressions}$N$ increases when we remove paved roads.}
+\end{figure}
+
+However, Model 4 tells a different story.
+We remove the paved roads indicator -- as it is causing too many values to be deleted -- and regress on the interaction between log CO2 and log electricity consumption.
+We find that the log of electricity consumption is no longer significant.
+Instead, log CO2 and the interaction term are significant.
 
 \subsection{Condition Checking}
 As with any linear regression model, we provide exploratory analysis of our assumptions: linearity, independence, zero mean, constant variance, and normality.
 
-We confirm (1) linearity above with scatterplots, (2) zero error mean by our use of ordinary least squares linear regression, and (3) independence by the way data points were collected -- that is, measuring a national statistics does not effect the statistics of it or any other nation. We apply these assumptions to the other three models.
+We confirm (1) linearity above with scatterplots, (2) zero error mean by our use of ordinary least squares linear regression, and (3) independence by the way data points were collected -- that is, measuring a nation's statistics does not effect the statistics of it or any other nation. We apply these assumptions to the other three models.
 
-We provide scatterplots of residuals versus fitted values to evaluate constant variance, and a Q-Q plot to confirm the normality of the error distribution. As shown in Figure~\ref{climate_model_conditions}, the model is fairly homoskedastic but has a bit of long left tail.
+Figure~\ref{climate_model_conditions} provides a way for us to assess whether our model violates our assumptions of equal variance and normal errors. On the left, we see a scatterplot of residuals versus fitted values, which shows that the model is fairly homoskedastic. On the right, we see the errors are not quite normal, as there is a long left tail. For future work, we might try nonparametric tests, as they do not require a normal error distribution.
 
-% TODO should we try a nonparametric test?
 
 \begin{figure*}[h!]
   \centering
@@ -230,6 +242,40 @@ We provide scatterplots of residuals versus fitted values to evaluate constant v
 % % % % % % % % % % %
 % % % % % % % % % % %
 \section{Social Development Model}
+
+\begin{figure}[h!]
+\begin{singlespace}
+\scriptsize
+%\footnotesize
+\begin{verbatim}
+------------------------------------------------------------
+                      (1)             (2)             (3)
+                  Model A         Model B         Model C
+------------------------------------------------------------
+child_labor       -0.0426
+                  (-2.19)
+
+literacy                           0.0462*
+                                   (2.48)
+
+life_expect                                         0.133***
+                                                  (16.19)
+
+refugee_pop                                  -0.000000429
+                                                  (-1.48)
+
+_cons               8.381***        4.421*         -0.441
+                  (15.09)          (2.74)         (-0.79)
+------------------------------------------------------------
+N                      12              25             180
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+\end{verbatim}
+\end{singlespace}
+\caption{\label{social_development_model_regressions}Sufficently large $n$ required removing child labor and literacy.}
+\end{figure}
+
 
 
 

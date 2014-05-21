@@ -1,45 +1,55 @@
+*ssc install estout, replace
+eststo clear
 clear
 capture log close
 
 log using "~/Desktop/STAT202/Final/scripts/regressions.log", text replace
 insheet using "~/Desktop/STAT202/Final/data/Y2008.csv", comma
 
+gen gdp_per_capita_current_USD = real(gdppercapitacurrentus)
+gen log_GDP_per_capita = log(gdp_per_capita_current_USD + 0.01)
 
-rename old urb_sanitation
-rename old urb_population
-rename old urb_water
+gen urb_sanitation = real(improvedsanitationfacilitiesurba)
+gen urb_population = real(urbanpopulationoftotal)
+gen urb_water = real(improvedwatersourceurbanofurbanp)
 
-rename old co2
-rename old methane
-rename old nitrous
-rename old paved_roads
-rename old electric_cons
-gen log_co2 = log(co2)
-gen log_methane = log(methane)
-gen log_nitrous = log(nitrous)
-gen log_paved_roads = log(paved_roads)
-gen log_electric_cons = log(electric_cons)
+gen co2 = real(co2emissionskt)
+gen methane = real(methaneemissionsktofco2equivalen)
+gen nitrous = real(nitrousoxideemissionsthousandmet)
+gen paved_roads = real(roadspavedoftotalroads)
+gen electric_cons = real(electricpowerconsumptionkwhperca)
+gen log_co2 = log(co2 + 0.01)
+gen log_methane = log(methane + 0.01)
+gen log_nitrous = log(nitrous + 0.01)
+gen log_paved_roads = log(paved_roads + 0.01)
+gen log_electric_cons = log(electric_cons + 0.01)
 
-rename old high_tech
-rename old research
-rename old journals
-gen log_high_tech = log(high_tech)
-gen log_research = log(research)
-gen log_journals = log(journals)
+gen high_tech = real(hightechnologyexportsofmanufactu)
+gen research = real(researchanddevelopmentexpenditur)
+gen journals = real(scientificandtechnicaljournalart)
+gen log_high_tech = log(high_tech + 0.01)
+gen log_research = log(research + 0.01)
+gen log_journals = log(journals + 0.01)
 
-rename old child_labor
-rename old life_expect
-rename old refugee_pop
-rename old literacy
-gen log_child_labor = log(child_labor)
-gen log_life_expect = log(life_expect)
-gen log_refugee_pop = log(refugee_pop)
-gen log_literacy = log(literacy)
+gen child_labor = real(childreninemploymenttotalofchild)
+gen life_expect = real(lifeexpectancyatbirthmaleyears)
+gen refugee_pop = real(v1017)
+gen literacy = real(literacyrateadulttotalofpeopleag)
+gen log_child_labor = log(child_labor + 0.01)
+gen log_life_expect = log(life_expect + 0.01)
+gen log_refugee_pop = log(refugee_pop + 0.01)
+gen log_literacy = log(literacy + 0.01)
 
 
-*eststo: regress log_GDP_per_capita log_co2
+eststo: regress log_GDP_per_capita paved_roads log_electric_cons log_co2 log_nitrous log_methane
+eststo: regress log_GDP_per_capita paved_roads log_electric_cons log_co2
+eststo: regress log_GDP_per_capita paved_roads log_electric_cons
+gen co2_elec = log_electric_cons * log_co2
+eststo: regress log_GDP_per_capita log_electric_cons log_co2 co2_elec
 
-*esttab
+
+
+esttab, mtitles("Model A" "Model B" "Model C" "Model D")
 
 
 log close

@@ -157,22 +157,36 @@ Next we run scatterplots of log GDP per capita versus each our proxies for energ
 
 % The full model
 \begin{singlespace}
-\small
+\footnotesize
 \begin{verbatim}
-Coefficients:
-                          Estimate Std. Error t value Pr(>|t|)    
-(Intercept)              7.381e+00  3.517e-01  20.988  < 2e-16 ***
-electricity.consumption  1.013e-04  2.007e-05   5.048 5.82e-06 ***
-paved.roads              1.901e-02  4.613e-03   4.121 0.000136 ***
-co2                     -3.860e-09  3.617e-07  -0.011 0.991526    
-methane                 -2.488e-06  3.072e-06  -0.810 0.421698    
-nitrous                  5.820e-06  1.010e-05   0.576 0.567109    
----
+                      (1)             (2)             (3)             (4)   
+                  Model A         Model B         Model C         Model D   
+----------------------------------------------------------------------------
+paved_roads       0.00262         0.00166         0.00169                   
+                   (0.79)          (0.56)          (0.59)                   
 
-Residual standard error: 1.04 on 52 degrees of freedom
-  (156 observations deleted due to missingness)
-Multiple R-squared:  0.5118,Adjusted R-squared:  0.4649 
-F-statistic:  10.9 on 5 and 52 DF,  p-value: 3.298e-07
+log_electr~s        0.984***        0.961***        0.961***        0.291   
+                  (10.10)         (13.80)         (13.97)          (1.37)   
+
+log_co2           -0.0488         0.00220                          -0.455** 
+                  (-0.38)          (0.05)                         (-2.65)   
+
+log_nitrous        0.1000                                                   
+                   (0.82)                                                   
+
+log_methane       -0.0662                                                   
+                  (-0.40)                                                   
+
+co2_elec                                                           0.0613** 
+                                                                   (2.82)   
+
+_cons               1.465           1.380*          1.399**         6.433***
+                   (1.69)          (2.23)          (2.89)          (3.96)   
+----------------------------------------------------------------------------
+N                      58              59              59             132   
+----------------------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
 \end{verbatim}
 \end{singlespace}
 

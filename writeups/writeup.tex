@@ -65,9 +65,21 @@ We find that\dots %TODO
 %\tableofcontents
 %\end{singlespace}
 
-% % % % % % % % % % %
-% % % % % % % % % % %
-% % % % % % % % % % %
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
 \section{Introduction}
 What makes one country wealthier, or more well off, than another? In Keynesian theory, GDP can be reduced to its literal components:
 $$\mathrm{GDP} = C + I + G + (X - M)$$
@@ -75,9 +87,15 @@ where $C$ is household expenditure, $I$ is investment,  $G$ is government spendi
 
 However, regressing GDP on these components would be pointless as it would confirm nothing new, and uninteresting as it would not be an appropriate proxy for a country's standard of living. Instead, we use a more telling response and more interesting indicators.
 
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \subsection{Why ``per-capita'' GDP?}
 GDP is not a suitable proxy for standards of living. For proof of this, look no further than China. There, GDP has skyrocketed while GDP per capita remains one of the world's lowest. Although GDP per capita may not be a perfect metric for living standards -- since not all citizens benefit from a country's increased production -- it has been argued that GDP per capita tends to move with living standards. In addition, most countries in the world frequently publish GDP per capita data. Wide access to data, as well as the fact that per-capita GDP is measured with a relatively consistent definition, makes this a suitable proxy for a country's standards of living.
 
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \subsection{Research Question}
 Our models are inspired from four simple buzzwords: \emph{climate change}, \emph{cities}, \emph{computers}, and \emph{``comfort''} (used somewhat euphemistically). These models beg the following question: Are people better off in greener, more urbanized, more technologically advanced, and more socially developed countries?
 
@@ -98,9 +116,21 @@ The structure of this paper is as follows: We proceed through each model, provid
 While this is a rough algorithm for our thinking process, it is not something we have to rigidly adhere to. Our goal here is not to come up with the ``perfect'' model. As previously stated, we can use exports and imports to come up with a model with an exceptionally high $R^2$ value. Our goal is simply to explain GDP per capita in more relatable ways: people are more knowledgeable about their country's climate and general urban, technological and social environment than they are about its level of exports and imports.
 
 
-% % % % % % % % % % %
-% % % % % % % % % % %
-% % % % % % % % % % %
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
 \section{Data}
 We collect data from the \href{http://data.worldbank.org/indicator}{World Development Indicators}, 
 which draws from several internationally recognized sources and boasts 54 years' worth of data for 214 countries across 1334 indicators.
@@ -122,20 +152,33 @@ In compliance with economic convention, and more importantly, because it makes s
 
 
 
-% % % % % % % % % % %
-% % % % % % % % % % %
-% % % % % % % % % % %
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
 \section{Climate Change Model}
 
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \subsection{Indicators}
-% what we picked and why
 How do climate-related indicators affect a country's wealth? To answer this, we look at pollution and energy consumption. Intuitively, there is a correlation between those two: the more energy a country consumes, the more it pollutes. We proceed with caution, wary of multicollinearity.
 
 For our pollution metrics, we choose emissions (measured in kilotons) consisting of three basic chemical compounds: nitrous oxide, carbon dioxide, and methane. Nitrous oxide emissions result from agricultural biomass burning, industrial activity, and livestock management. Carbon dioxide results from burning fossil fuels. Methane results from agriculture and industry.
 
 Our proxies for energy consumption consist of electric consumption per capita (in kilowatt-hours) and the percentage of total roads that are paved. The former measures the production of power plants (minus transportation costs), while the latter might directly account for those transportation costs: that is, a larger network of paved roads may reduce the time it takes to transport goods and thus energy consumption.
 
-% TODO scatterplots, linearity and transformations
 When we run scatterplots of each of the pollution metrics against the response, none resemble anything close to a linear relationship. When we apply a log transformation to each pollution metric, however, all of them exhibit linearity. This correction is illustrated in Figure~\ref{climate_model_scatter_pollution}.
 
 \begin{figure*}[h!]
@@ -152,7 +195,9 @@ Next we run scatterplots of log GDP per capita versus each our proxies for energ
   \caption{\label{climate_model_scatter_elec_roads}Left to right: electricity consumption, paved roads. Log transformations on bottom row.}
 \end{figure*}
 
-
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \subsection{Regression}
 Figure~\ref{climate_model_regressions} shows our variations of the climate model.
 First, we run the full model that includes every indicator.
@@ -203,6 +248,9 @@ We remove the paved roads indicator -- as it is causing too many values to be de
 We find that the log of electricity consumption is no longer significant.
 Instead, log CO2 and the interaction term are significant.
 
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \subsection{Condition Checking}
 As with any linear regression model, we provide exploratory analysis of our assumptions: linearity, independence, zero mean, constant variance, and normality.
 
@@ -222,31 +270,173 @@ Figure~\ref{climate_model_conditions} provides a way for us to assess whether ou
 
 
 
-% % % % % % % % % % %
-% % % % % % % % % % %
-% % % % % % % % % % %
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
 \section{Cities Model}
 
-
-
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Indicators}
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
-\section{Computers Model}
-
-
-
-
-% % % % % % % % % % %
-% % % % % % % % % % %
-% % % % % % % % % % %
-\section{Social Development Model}
+\subsection{Regression}
 
 \begin{figure}[h!]
 \begin{singlespace}
-\scriptsize
+\small
+\begin{verbatim}
+------------------------------------------------------------
+                      (1)             (2)             (3)
+                  Model A         Model B         Model C
+------------------------------------------------------------
+urb_sanita~n       0.0278***                       0.0315***
+                   (8.52)                         (10.95)
+
+urb_popula~n       0.0317***       0.0424***       0.0329***
+                  (10.18)         (12.65)         (10.75)
+
+urb_water          0.0217*         0.0609***
+                   (2.32)          (6.30)
+
+_cons               2.449**         0.373           4.141***
+                   (3.26)          (0.44)         (20.85)
+------------------------------------------------------------
+N                     179             183             181
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+\end{verbatim}
+\end{singlespace}
+\caption{\label{urban_model_regressions}We drop urban water in the final model, due to its lack of linearity.}
+\end{figure}
+
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Condition Checking}
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+\section{Computers Model}
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Indicators}
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Regression}
+
+\begin{figure}[h!]
+\begin{singlespace}
+\small
+\begin{verbatim}
+------------------------------------------------------------
+                      (1)             (2)             (3)
+                  Model A         Model B         Model C
+------------------------------------------------------------
+log_research        0.324
+                   (1.83)
+
+log_high_t~h        0.179          0.0904          -0.102
+                   (1.38)          (1.23)         (-1.13)
+
+log_journals        0.212**         0.220***        0.108*
+                   (2.97)          (5.32)          (2.08)
+
+tech_jour                                          0.0661***
+                                                   (3.41)
+
+_cons               7.639***        7.407***        7.620***
+                  (11.71)         (34.58)         (35.32)
+------------------------------------------------------------
+N                      79             143             143
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+\end{verbatim}
+\end{singlespace}
+\end{figure}
+
+
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Condition Checking}
+
+
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+\section{Social Development Model}
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Indicators}
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
+\subsection{Regression}
+
+\begin{figure}[h!]
+\begin{singlespace}
+%\scriptsize
 %\footnotesize
+\small
 \begin{verbatim}
 ------------------------------------------------------------
                       (1)             (2)             (3)
@@ -276,20 +466,49 @@ t statistics in parentheses
 \caption{\label{social_development_model_regressions}Sufficently large $n$ required removing child labor and literacy.}
 \end{figure}
 
-
-
-
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
+\subsection{Condition Checking}
+
+
+
+
+
+
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
 \section{Results}
 present fitted model and inferences about research question
 
 
 
-% % % % % % % % % % %
-% % % % % % % % % % %
-% % % % % % % % % % %
+
+
+
+
+
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % %
 \section{Conclusion}
 summarize results, describe limitations and how they might be addressed
 

@@ -3,7 +3,7 @@
 clear
 capture log close
 
-log using "~/Desktop/STAT202/Final/scripts/regressions.log", text replace
+log using "~/Desktop/STAT202/Final/writeups/images/regressions.log", text replace
 insheet using "~/Desktop/STAT202/Final/data/Y2008.csv", comma
 
 gen gdp_per_capita_current_USD = real(gdppercapitacurrentus)
@@ -50,7 +50,6 @@ eststo: regress log_GDP_per_capita paved_roads log_electric_cons
 gen co2_elec = log_electric_cons * log_co2
 eststo: regress log_GDP_per_capita log_electric_cons log_co2 co2_elec
 esttab, mtitles("Model A" "Model B" "Model C" "Model D")
-
 
 * URBAN MODEL REGRESSIONS
 eststo clear

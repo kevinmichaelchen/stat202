@@ -17,6 +17,9 @@ LWD = 8
 POINT_COLOR = "darkblue"
 LINE_COLOR = "firebrick"
 
+op <- par(pch=PCH, cex=CEX, lwd=LWD)
+par(op)
+
 # HEAT MAP
 #require(rworldmap)
 #map.sync <- joinCountryData2Map(df, nameJoinColumn = "Country.Code", nameCountryColumn = "Country.Name", suggestForFailedCodes = T, verbose = T)
@@ -25,6 +28,15 @@ LINE_COLOR = "firebrick"
 ##################
 ### INDICATORS ###
 ##################
+
+nrow = 1
+ncol = 2
+png(filename = makePNG("gdp_transform"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+par(mfrow=c(nrow,ncol))
+boxplot(df$`GDP per capita (current US$)`, col=c("gold"))
+boxplot(log(df$`GDP per capita (current US$)`), col=c("gold"))
+g <- dev.off()
+
 log.GDP.per.capita <- log(df$`GDP per capita (current US$)`)
 
 urban.sanitation <- df$`Improved sanitation facilities, urban (% of urban population with access)`
@@ -156,8 +168,10 @@ plot(x = log.paved.roads, xlab = "log Paved Roads (% of total)", y = log.GDP.per
 abline(summary(lm(log.GDP.per.capita ~ log.paved.roads)), lwd = LWD, col = LINE_COLOR)
 g <- dev.off()
 
-
-
+summary(lm(log.GDP.per.capita ~ methane + nitrous + co2))
+summary(lm(log.GDP.per.capita ~ electricity.consumption + paved.roads + co2 + methane + nitrous))
+summary(lm(log.GDP.per.capita ~ electricity.consumption + paved.roads + co2))
+summary(lm(log.GDP.per.capita ~ electricity.consumption + paved.roads))
 
 m1 <- lm(log.GDP.per.capita ~ log.electricity.consumption*log.co2)
 summary(m1)

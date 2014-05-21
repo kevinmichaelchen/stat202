@@ -102,12 +102,18 @@ We collect data from the \href{http://data.worldbank.org/indicator}{World Develo
 which draws from several internationally recognized sources and boasts 54 years' worth of data for 214 countries across 1334 indicators.
 We use data for the year 2008.\endnotemark[1]
 
-We use heat maps to determine which indicators had few missing data points, including our response, as shown in Figure~\ref{gdp_per_capita_heat_map}.
+In compliance with economic convention, and more importantly, because it makes statistical sense, we use log GDP per capita. This choice is shown in Figure~\ref{gdp_transform}. Not only is our response normal, but it is missing very few data points, as shown in the heat map in Figure~\ref{gdp_per_capita_heat_map}.
 
 \begin{figure}[h!]
-\centering
-%\includegraphics[scale=0.5]{images/gdp_per_capita_heat_map.jpg}
-\caption{\label{gdp_per_capita_heat_map}Our response had near-universal coverage.}
+  \centering
+  \includegraphics[width=\textwidth]{images/gdp_transform}
+  \caption{\label{gdp_transform}Log GDP per capita is more normal than its unlogged counterpart.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  %\includegraphics[scale=0.5]{images/gdp_per_capita_heat_map.jpg}
+  \caption{\label{gdp_per_capita_heat_map}Our response had near-universal coverage.}
 \end{figure}
 
 
@@ -118,14 +124,30 @@ We use heat maps to determine which indicators had few missing data points, incl
 \section{Climate Change Model}
 
 \subsection{Indicators}
-%what we picked and why
+% what we picked and why
 How do climate-related indicators affect a country's wealth? To answer this, we look at pollution and energy consumption. Intuitively, there is a correlation between those two: the more energy a country consumes, the more it pollutes. We proceed with caution, wary of multicollinearity.
 
 For our pollution metrics, we choose emissions (measured in kilotons) consisting of three basic chemical compounds: nitrous oxide, carbon dioxide, and methane. Nitrous oxide emissions result from agricultural biomass burning, industrial activity, and livestock management. Carbon dioxide results from burning fossil fuels. Methane results from agriculture and industry.
 
-Our proxies for energy consumption consisted of electric consumption per capita (in kilowatt-hours) and the percentage of total roads that are paved. The former measures the production of power plants (minus transportation costs), while the latter might directly account for those transportation costs: that is, a larger network of paved roads may reduce the time it takes to transport goods and thus energy consumption.
+Our proxies for energy consumption consist of electric consumption per capita (in kilowatt-hours) and the percentage of total roads that are paved. The former measures the production of power plants (minus transportation costs), while the latter might directly account for those transportation costs: that is, a larger network of paved roads may reduce the time it takes to transport goods and thus energy consumption.
 
 % TODO scatterplots, linearity and transformations
+When we run scatterplots of each of the pollution metrics against the response, none resemble anything close to a linear relationship. When we apply a log transformation to each pollution metric, however, all of them exhibit linearity. This correction is illustrated in Figure~\ref{climate_model_scatter_pollution}.
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{images/climate_model_scatter_pollution}
+  \caption{\label{climate_model_scatter_pollution}Left to right: CO2, methane, nitrous. Log transformations on bottom row.}
+\end{figure*}
+
+Next we run scatterplots of log GDP per capita versus each our proxies for energy consumption, as shown in the top row of Figure~\ref{climate_model_scatter_elec_roads}. Immediately we see two problems. First, electricity consumption versus log GDP per capita does not exhibit linearity. Second, the number of data points for the paved roads indicator is minimal. A log transformation on each indicator is shown in the bottom row. The log of electricity consumption exhibits a more linear relationship with the response. However, paved roads still has just as few data points.
+
+\begin{figure*}[h!]
+  \centering
+  \includegraphics[width=\textwidth]{images/climate_model_scatter_elec_roads}
+  \caption{\label{climate_model_scatter_elec_roads}Left to right: electricity consumption, paved roads. Log transformations on bottom row.}
+\end{figure*}
+
 
 \subsection{Regression}
 
@@ -144,20 +166,30 @@ To confirm constance variance, we provide scatterplots of residuals versus fitte
   \caption{\label{climate_model_conditions}Residuals vs fitted and Q-Q plot}
 \end{figure*}
 
-\begin{figure*}[h!]
-  \centering
-  \includegraphics[width=\textwidth]{images/climate_model_scatter_elec_roads}
-  \caption{\label{climate_model_scatter_elec_roads}Left to right: electricity consumption, paved roads. Log transformations on bottom row.}
-\end{figure*}
 
-\begin{figure*}[h!]
-  \centering
-  \includegraphics[width=\textwidth]{images/climate_model_scatter_pollution}
-  \caption{\label{climate_model_scatter_pollution}Left to right: CO2, methane, nitrous. Log transformations on bottom row.}
-\end{figure*}
 
+
+
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \section{Cities Model}
+
+
+
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \section{Computers Model}
+
+
+
+
+% % % % % % % % % % %
+% % % % % % % % % % %
+% % % % % % % % % % %
 \section{Social Development Model}
 
 

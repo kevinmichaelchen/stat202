@@ -219,9 +219,14 @@ plot(x = log.journals, xlab = "log Science Journals", y = log.GDP.per.capita, yl
 abline(summary(lm(log.GDP.per.capita ~ log.journals)), lwd = LWD, col = LINE_COLOR)
 g <- dev.off()
 
+summary(lm(log.GDP.per.capita ~ research + high.tech + journals + research*high.tech + research*journals + high.tech*journals))
+
+# NICE!!!!!!!!!
+summary(lm(log.GDP.per.capita ~ log.research + log.high.tech + log.journals + log.research*log.high.tech + log.research*log.journals + log.high.tech*log.journals))
 
 
-
+summary(lm(log.GDP.per.capita ~ log.research * log.journals))
+summary(lm(log.GDP.per.capita ~ log.research * log.high.tech))
 m <- lm(log.GDP.per.capita ~ log.high.tech * log.journals)
 summary(m)
 

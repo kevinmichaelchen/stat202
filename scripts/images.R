@@ -324,3 +324,9 @@ par(mfrow=c(nrow,ncol))
 plot(m, which=c(1,2))
 g <- dev.off()
 
+m1 <- lm(log.GDP.per.capita ~ log.child.labor)
+m2 <- lm(log.GDP.per.capita ~ log.literacy)
+m3 <- lm(log.GDP.per.capita ~ log.life.expect + log.refugees)
+stargazer(m1,m2,m3)
+
+

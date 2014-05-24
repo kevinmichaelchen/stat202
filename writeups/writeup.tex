@@ -344,8 +344,8 @@ Table~\ref{urban_model_regressions} shows the regressions of various phases of o
 The first model includes our size metric (urban population) as well as both of our proxies for urban welfare (urban sanitation and urban water).
 Model 2 regresses log GDP per capita on urban population and urban water, whereas Model 3 regresses on urban population and urban sanitation.
 
-\newgeometry{margin=1cm} % modify this if you need even more space
-\begin{landscape}
+%\newgeometry{margin=1cm} % modify this if you need even more space
+%\begin{landscape}
 \begin{table}[!htbp] \centering 
   \caption{We drop urban water in the final model, due to its lack of linearity.}
   \label{urban_model_regressions} 
@@ -381,8 +381,8 @@ F Statistic & 186.043$^{***}$ (df = 3; 175) & 178.061$^{***}$ (df = 2; 180) & 27
 \end{tabular} 
 \end{table}
 \end{landscape}
-\restoregeometry
-\doublespacing
+%\restoregeometry
+%\doublespacing
 
 Every indicators in each of the models appears significant, but we should expect the highest $R^2$ from the last model, since its welfare proxy (\emph{urban sanitation}) bears a much more linear relationship with the response than the other welfare proxy (\emph{urban water}). Indeed, the $R^2$ of Model 2 is $0.66$, whereas the $R^2$ of Model 3 is $0.75$.
 
@@ -437,7 +437,7 @@ How well does a country's level of technology explain its wealth? We examine thr
 
 Once we apply log transformations to each of our three indicators, we see strong linear relationships, shown in Figure~\ref{science_model_scatter}.
 
-Figure~\ref{science_model_regressions} shows various forms of our science and technology model. We use the logarithms of our World Bank indicators, as they are stronger predictors of log GDP per capita.
+Table~\ref{science_model_regressions} shows various forms of our science and technology model. We use the logarithms of our World Bank indicators, as they are stronger predictors of log GDP per capita.
 
 % TODO show r^2 in esttab in .do file
 In addition, we include every possible interaction term for two reasons.
@@ -542,48 +542,72 @@ From the Q-Q plot, we see that the errors are roughly normal, with some deviatio
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Indicators}
+How does a country's level of social development affect its output, and more importantly, its GDP per capita?
+We look at four primary indicators: the unemployment rate for children ages 7-14, the life expectancy at birth (in years) for males, the refugee population, and the literacy rate for adults aged 15 and above.
+These indicators measure a country's economic, health, political, and educational institutions, respectively.
+Intuition tells us they are positively correlated with national output.
+That is, we expect GDP per capita to rise with lower unemployment rates, higher life expectancy, a lower refugee population, and higher levels of education.
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Regression}
+Table~\ref{social_development_model_regressions} shows our social development model.
+Model 1 and model 2 simply show that child labor and literacy, though significant, do not have enough observations.
+For this reason, we focus on model 3, which shows that $\ln(\mathrm{life.expect})$ and $\ln(\mathrm{refugees})$ have an extremely statistically significant effect on $ln(\mathrm{GDP.per.capita})$.
 
-\begin{figure}[!ht]
-\begin{singlespace}
-%\scriptsize
-%\footnotesize
-\small
-\begin{verbatim}
-------------------------------------------------------------
-                      (1)             (2)             (3)
-                  Model A         Model B         Model C
-------------------------------------------------------------
-child_labor       -0.0426
-                  (-2.19)
-
-literacy                           0.0462*
-                                   (2.48)
-
-life_expect                                         0.133***
-                                                  (16.19)
-
-refugee_pop                                  -0.000000429
-                                                  (-1.48)
-
-_cons               8.381***        4.421*         -0.441
-                  (15.09)          (2.74)         (-0.79)
-------------------------------------------------------------
-N                      12              25             180
-------------------------------------------------------------
-\end{verbatim}
-\end{singlespace}
-\caption{\label{social_development_model_regressions}Sufficently large $n$ required removing child labor and literacy.}
-\end{figure}
+\begin{table}[!htbp] \centering 
+  \caption{Sufficently large $n$ acquired from removing child labor and literacy.}
+  \label{social_development_model_regressions} 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{log.GDP.per.capita} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ log.child.labor & $-$0.968$^{**}$ &  &  \\ 
+  & (0.314) &  &  \\ 
+  & & & \\ 
+ log.literacy &  & 3.234$^{**}$ &  \\ 
+  &  & (1.387) &  \\ 
+  & & & \\ 
+ log.life.expect &  &  & 6.981$^{***}$ \\ 
+  &  &  & (0.534) \\ 
+  & & & \\ 
+ log.refugees &  &  & $-$0.136$^{***}$ \\ 
+  &  &  & (0.023) \\ 
+  & & & \\ 
+ Constant & 10.128$^{***}$ & $-$5.968 & $-$19.888$^{***}$ \\ 
+  & (0.934) & (6.156) & (2.303) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 12 & 25 & 180 \\ 
+R$^{2}$ & 0.487 & 0.191 & 0.633 \\ 
+Adjusted R$^{2}$ & 0.436 & 0.156 & 0.628 \\ 
+Residual Std. Error & 0.951 (df = 10) & 1.278 (df = 23) & 0.968 (df = 177) \\ 
+F Statistic & 9.496$^{**}$ (df = 1; 10) & 5.438$^{**}$ (df = 1; 23) & 152.374$^{***}$ (df = 2; 177) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Condition Checking}
+The conditions of model 3 are depicted in Figure~\ref{social_model_conditions}.
+From the plot of residuals versus fitted values, we see that the variance is not fan-shaped, but it is also far from ideal.
+From the model's Q-Q plot, we see that the error distribution is far from normal, since both tails are long.
+Thus, our social development model may require a nonparametric test.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/social_model_conditions}
+  \caption{\label{social_model_conditions}Left to right: Residuals vs fitted values, Q-Q plot.}
+\end{figure}
 
 
 

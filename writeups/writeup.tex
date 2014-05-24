@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
 \usepackage[top=1in,bottom=1in,left=1in,right=1in]{geometry}
 \usepackage{amssymb}
@@ -56,8 +56,7 @@
 % % % % % % % % % % %
 % % % % % % % % % % %
 \begin{abstract}
-The determinants of a nation's gross domestic product (GDP) have been explored to a great extent. Indeed, given that GDP is a function of a nation's consumption, investment, government spending, exports, and imports, the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly. We present four core models that try to explain GDP per capita without relying on the literal components of Keynesian aggregate demand. Specifically, they proxy for measures of climate, technological advancement, urbanization and urban welfare, and social development.
-We find that\dots %TODO
+The determinants of a nation's gross domestic product (GDP) have been explored to a great extent. Indeed, given that GDP is a function of a nation's consumption, investment, government spending, exports, and imports, the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly. We present four core models that try to explain GDP per capita without relying on the literal components of Keynesian aggregate demand. Specifically, they proxy for measures of climate change, technological advancement, urbanization and urban welfare, and social development. We find that\dots %TODO
 \end{abstract}
 
 \newpage
@@ -112,11 +111,18 @@ Given these models, we face several challenges. First, while we have provided hy
 
 Second, we may face multicollinearity in our models. For instance, our social development model includes literacy rates and child labor. The former is a proxy for education, while the latter is often linked directly to education. This is problematic since multicollinearity increases standard error and decreases an indicator's $t$-statistic, thus making it appear insignificant when in reality it is not.
 
-The structure of this paper is as follows: We proceed through each model, providing exploratory analysis, condition checking, and interpretation of regression output. Exploratory analysis starts with scatterplots, which show both the amount of data points for an indicator (so we can weed out indicators with bad data coverage) and the linearity between the indicator and the response. If linearity is not present, we try to transform it, usually with logs. We then perform a regression, interpret the coefficients, and check the model conditions to gauge the model's meaningfulness.
+For each model, we provide exploratory analysis, condition checking, and interpretation of regression output. Exploratory analysis starts with scatterplots, which show both the amount of data points for an indicator (so we can weed out indicators with bad data coverage) and the linearity between the indicator and the response. If linearity is not present, we try to transform it, usually with logs. If we cannot achieve linearity, we remove the indicator from our model.\footnote{Due to a model's tendency to change, we often provide a side-by-side comparison of all its forms. The table includes coefficients and $t$-statistics for each indicator, as well as one, two, or three asterisks for the $\alpha$ levels of $0.05$, $0.01$, and $0.001$, respectively.} We then perform a regression, interpret the coefficients, and check the model conditions to gauge the model's meaningfulness.
 
 While this is a rough algorithm for our thinking process, it is not something we have to rigidly adhere to. Our goal here is not to come up with the ``perfect'' model. As previously stated, we can use exports and imports to come up with a model with an exceptionally high $R^2$ value. Our goal is simply to explain GDP per capita in more relatable ways: people are more knowledgeable about their country's climate and general urban, technological and social environment than they are about its level of exports and imports.
 
-
+The structure of this paper is as follows.
+Section~\ref{sec:data} describes the data source.
+The following sections describe indivual models; that is, they try to see how well a group of indicators explains GDP per capita.
+Section~\ref{sec:model_climate} gives an account of our climate change model;
+Section~\ref{sec:model_urban}, our urbanization model;
+Section~\ref{sec:model_tech}, our technology model; and
+Section~\ref{sec:model_social}, our social development model.
+Section~\ref{sec:conclusion} concludes.
 
 
 
@@ -133,19 +139,20 @@ While this is a rough algorithm for our thinking process, it is not something we
 % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Data}
+\label{sec:data}
 We collect data from the \href{http://data.worldbank.org/indicator}{World Development Indicators}, 
 which draws from several internationally recognized sources and boasts 54 years' worth of data for 214 countries across 1334 indicators.
 We use data for the year 2008.\endnotemark[1]
 
 In compliance with economic convention, and more importantly, because it makes statistical sense, we use log GDP per capita. This choice is shown in Figure~\ref{gdp_transform}. Not only is our response normal, but it is missing very few data points, as shown in the heat map in Figure~\ref{gdp_per_capita_heat_map}.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\textwidth]{images/gdp_transform}
   \caption{\label{gdp_transform}Log GDP per capita is more normal than its unlogged counterpart.}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   %\includegraphics[scale=0.5]{images/gdp_per_capita_heat_map.jpg}
   \caption{\label{gdp_per_capita_heat_map}Our response had near-universal coverage.}
@@ -169,6 +176,7 @@ In compliance with economic convention, and more importantly, because it makes s
 % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Climate Change Model}
+\label{sec:model_climate}
 
 % % % % % % % % % % %
 % % % % % % % % % % %
@@ -182,7 +190,7 @@ Our proxies for energy consumption consist of electric consumption per capita (i
 
 When we run scatterplots of each of the pollution metrics against the response, none resemble anything close to a linear relationship. When we apply a log transformation to each pollution metric, however, all of them exhibit linearity. This correction is illustrated in Figure~\ref{climate_model_scatter_pollution}.
 
-\begin{figure*}[h!]
+\begin{figure*}[!ht]
   \centering
   \includegraphics[width=0.8\textwidth]{images/climate_model_scatter_pollution}
   \caption{\label{climate_model_scatter_pollution}Left to right: CO2, methane, nitrous. Log transformations on bottom row.}
@@ -190,7 +198,7 @@ When we run scatterplots of each of the pollution metrics against the response, 
 
 Next we run scatterplots of log GDP per capita versus each our proxies for energy consumption, as shown in the top row of Figure~\ref{climate_model_scatter_elec_roads}. Immediately we see two problems. First, electricity consumption versus log GDP per capita does not exhibit linearity. Second, the number of data points for the paved roads indicator is minimal. A log transformation on each indicator is shown in the bottom row. The log of electricity consumption exhibits a more linear relationship with the response. However, paved roads still has just as few data points.
 
-\begin{figure*}[h!]
+\begin{figure*}[!ht]
   \centering
   \includegraphics[width=0.6\textwidth]{images/climate_model_scatter_elec_roads}
   \caption{\label{climate_model_scatter_elec_roads}Left to right: electricity consumption, paved roads. Log transformations on bottom row.}
@@ -206,9 +214,8 @@ Of these, the log of electricity consumption is the only one to show up as signi
 We see a positive correlation: the more energy power plants consume in a country, the higher that country's log per-capita GDP will be.
 Specifically, for the first three models, a 1\% increase in electricity consumption is associated with $0.97$\% increase in GDP per capita, give or take one basis point.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \begin{singlespace}
-\scriptsize
 %\footnotesize
 \begin{verbatim}
                       (1)             (2)             (3)             (4)   
@@ -260,7 +267,7 @@ We confirm (1) linearity above with scatterplots, (2) zero error mean by our use
 Figure~\ref{climate_model_conditions} provides a way for us to assess whether our model violates our assumptions of equal variance and normal errors. On the left, we see a scatterplot of residuals versus fitted values, which shows that the model is fairly homoskedastic. On the right, we see the errors are not quite normal, as there is a long left tail. For future work, we might try nonparametric tests, as they do not require a normal error distribution.
 
 
-\begin{figure*}[h!]
+\begin{figure*}[!ht]
   \centering
   \includegraphics[width=\textwidth]{images/climate_model_conditions}
   \caption{\label{climate_model_conditions}Residuals vs fitted and Q-Q plot}
@@ -287,6 +294,7 @@ Figure~\ref{climate_model_conditions} provides a way for us to assess whether ou
 % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Cities Model}
+\label{sec:model_urban}
 
 % % % % % % % % % % %
 % % % % % % % % % % %
@@ -294,11 +302,9 @@ Figure~\ref{climate_model_conditions} provides a way for us to assess whether ou
 \subsection{Indicators}
 How well does a country's urban environment explain its wealth? To answer this, we look at the size of a country's urban environment, as well as the welfare of that environment.
 For size, we use the percentage of population living in urban environments.
-For welfare, we use the percentage of the urban population with access to clean water.
+For welfare, we use the percentage of the urban population with access to clean water. Figure~\ref{urban_model_scatter_pop_water} shows scatterplots of log GDP per capita against our \emph{population} and \emph{water} indicators.
 
-In Figure~\ref{urban_model_scatter_pop_water}, we make scatterplots of log GDP per capita versus population and water.
-
-\begin{figure*}[h!]
+\begin{figure*}[!ht]
   \centering
   \includegraphics[width=0.8\textwidth]{images/urban_model_scatter_pop_water}
   \caption{\label{urban_model_scatter_pop_water}Left to right: Population, water.}
@@ -306,9 +312,9 @@ In Figure~\ref{urban_model_scatter_pop_water}, we make scatterplots of log GDP p
 
 We lack a linear relationship between the response and the percentage of urban population with access to water. We tried to remedy this defect with several transformations, but to no avail. Consequently, we replace our urban welfare predictor with the percentage of the urban population with access to sanitation, which primarily entails access to latrines. This new indicator exhibited a much more linear relationship with log GDP per capita, as seen in Figure~\ref{urban_model_scatter_san}.
 
-\begin{figure*}[h!]
+\begin{figure*}[!ht]
   \centering
-  \includegraphics[width=0.5\textwidth]{images/urban_model_scatter_san}
+  \includegraphics[width=0.4\textwidth]{images/urban_model_scatter_san}
   \caption{\label{urban_model_scatter_san}Access to sanitation is a better proxy for urban welfare than access to water.}
 \end{figure*}
 
@@ -317,15 +323,14 @@ We lack a linear relationship between the response and the percentage of urban p
 % % % % % % % % % % %
 \subsection{Regression}
 
-Figure~\ref{urban_model_regressions} shows our variations of the urban model.
+Figure~\ref{urban_model_regressions} shows the regressions of various phases of our urban model.
 The first model includes our size metric (urban population) as well as both of our proxies for urban welfare (urban sanitation and urban water).
 Model B regresses log GDP per capita on urban population and urban water, whereas Model C regresses on urban population and urban sanitation.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \begin{singlespace}
-\small
+%\small
 \begin{verbatim}
-------------------------------------------------------------
                       (1)             (2)             (3)
                   Model A         Model B         Model C
 ------------------------------------------------------------
@@ -342,22 +347,25 @@ _cons               2.449**         0.373           4.141***
                    (3.26)          (0.44)         (20.85)
 ------------------------------------------------------------
 N                     179             183             181
-------------------------------------------------------------
-t statistics in parentheses
-* p<0.05, ** p<0.01, *** p<0.001
 \end{verbatim}
 \end{singlespace}
 \caption{\label{urban_model_regressions}We drop urban water in the final model, due to its lack of linearity.}
 \end{figure}
+
+Every indicators in each of the models appears significant, but we should expect the highest $R^2$ from the last model, since its welfare proxy (\emph{urban sanitation}) bears a much more linear relationship with the response than the other welfare proxy (\emph{urban water}). Indeed, the $R^2$ of Model B is $0.66$, whereas the $R^2$ of Model C is $0.75$.
 
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Condition Checking}
+Figure~\ref{urban_model_conditions} allows us to assess our model condition's of equal variance and normal errors. The scatterplot of residuals versus fitted values shows roughly equal variance for all fitted values. The Q-Q plot, on the other hand, is not as promising, as we see a slightly long left tail. If we believe the lack of normality in the errors is a concern, we could perform nonparametric tests, which punt on assumptions about the error distribution.
 
-
-
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/urban_model_conditions}
+  \caption{\label{urban_model_conditions}The urban model shows equal variance and (almost) normal errors.}
+\end{figure}
 
 
 
@@ -375,22 +383,23 @@ t statistics in parentheses
 % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Computers Model}
+\label{sec:model_tech}
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Indicators}
+How well does a country's level of technology explain its wealth?
 
 % % % % % % % % % % %
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Regression}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \begin{singlespace}
 \small
 \begin{verbatim}
-------------------------------------------------------------
                       (1)             (2)             (3)
                   Model A         Model B         Model C
 ------------------------------------------------------------
@@ -410,11 +419,9 @@ _cons               7.639***        7.407***        7.620***
                   (11.71)         (34.58)         (35.32)
 ------------------------------------------------------------
 N                      79             143             143
-------------------------------------------------------------
-t statistics in parentheses
-* p<0.05, ** p<0.01, *** p<0.001
 \end{verbatim}
 \end{singlespace}
+\caption{\label{science_model_regressions}Taking out \emph{research} drastically increases the number of observations.}
 \end{figure}
 
 
@@ -445,6 +452,7 @@ t statistics in parentheses
 % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Social Development Model}
+\label{sec:model_social}
 
 % % % % % % % % % % %
 % % % % % % % % % % %
@@ -456,7 +464,7 @@ t statistics in parentheses
 % % % % % % % % % % %
 \subsection{Regression}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \begin{singlespace}
 %\scriptsize
 %\footnotesize
@@ -483,8 +491,6 @@ _cons               8.381***        4.421*         -0.441
 ------------------------------------------------------------
 N                      12              25             180
 ------------------------------------------------------------
-t statistics in parentheses
-* p<0.05, ** p<0.01, *** p<0.001
 \end{verbatim}
 \end{singlespace}
 \caption{\label{social_development_model_regressions}Sufficently large $n$ required removing child labor and literacy.}
@@ -505,17 +511,6 @@ t statistics in parentheses
 
 
 
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-% % % % % % % % % % % % % % % % % % % % % %
-\section{Results}
-present fitted model and inferences about research question
 
 
 
@@ -534,7 +529,22 @@ present fitted model and inferences about research question
 % % % % % % % % % % % % % % % % % % % % % %
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Conclusion}
-summarize results, describe limitations and how they might be addressed
+\label{sec:conclusion}
+We provide four core models that explain the log of GDP per capita. Each model has very significant indicators and high $R^2$.
+% TODO summarize the results more, describe why the models are useful
+
+However, there may an inherent limitation to our regressions: reverse causality.
+In each model we try to explain the effect of $x$ on $y$, when in reality it could be that $y$ affects $x$. For instance, a country's GDP per capita may be what allows it to invest more in research and technology.
+
+Even if $y$ does not directly cause $x$, it may affect $x$ through another lurking variable. We must think about what affects the indicators we use. First, we do not account for a nation's institutions, even though they have a huge impact on just about everything. Wealthier nations can afford to have strengthen their legal and political institutions. As a result, regulations on pollution or on child labor may be more stringent.
+
+Another limitation might be multicollinearity between two or more indicators in a regression. Often, two explanatory variables are literally proxies for the same thing, as was the case with methane emissions and nitrous emissions; they both proxy for pollution. Sometimes one covariate affects another. This occurred in the climate change model, since higher energy consumption almost certainly increases pollution. Additionally, we speculate that it may have occurred in the social development model: higher literacy rates may rise with productivity, which may eliminate the need for children workers.
+
+In the case of multicollinearity, regressions can fail. In the case of reverse causality, covariates can be correlated with the error terms. There are several methods to fix the problem of biased and inconsistent estimates -- such as instrumental variables, decision tree predictor selection, stepwise regressions -- but they are all beyond the scope of introductory statistics.
+
+By far, the easiest way to deal with bias is to manually remove one or more of the explanatory variables. Collinear covariates can be weeded on mere suspicion, or based on the variance inflation factor (VIF). For instance, if the VIF for \emph{nitrous emissions} is 9, this means $SE(\beta_{\textrm{nitrous emissions}})$ is $\sqrt{9} = 3$ times as large as it would be if \emph{nitrous emissions} were not correlated with any other predictors.
+
+Our models are not without their flaws, but we have provided a preliminary investigation into what is required to explain a country's per capita wealth in a robust and unbiased way.
 
 
 \endnotetext[1]{For modularity, we built a script that created a data frame for each year of data downloaded, and then recast each frame from wide to long format.}

@@ -3,8 +3,8 @@ ssc install estout, replace
 clear
 capture log close
 
-log using "~/Desktop/regressions.log", text replace
-insheet using "~/Desktop/STAT202/Final/data/Y2008.csv", comma
+log using "~/Desktop/science_regressions.log", text replace
+insheet using "~/Desktop/Y2008.csv", comma
 
 gen gdp_per_capita_current_USD = real(gdppercapitacurrentus)
 gen log_GDP_per_capita = log(gdp_per_capita_current_USD + 0.01)

@@ -219,8 +219,8 @@ Specifically, for the models 1 and 3, a 1\% increase in electricity consumption 
 \newgeometry{margin=1cm} % modify this if you need even more space
 \begin{landscape}
 \begin{table}[!htbp] \centering 
-  \caption{} 
-  \label{} 
+  \caption{$N$ increases when we remove paved roads.}
+  \label{climate_model_regressions} 
 \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -263,7 +263,6 @@ F Statistic & 55.543$^{***}$ (df = 5; 52) & 71.067$^{***}$ (df = 4; 54) & 66.321
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
-\caption{\label{climate_model_regressions}$N$ increases when we remove paved roads.}
 \end{table} 
 \end{landscape}
 \restoregeometry
@@ -348,8 +347,8 @@ Model 2 regresses log GDP per capita on urban population and urban water, wherea
 \newgeometry{margin=1cm} % modify this if you need even more space
 \begin{landscape}
 \begin{table}[!htbp] \centering 
-  \caption{} 
-  \label{} 
+  \caption{We drop urban water in the final model, due to its lack of linearity.}
+  \label{urban_model_regressions} 
 \begin{tabular}{@{\extracolsep{5pt}}lccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -380,7 +379,6 @@ F Statistic & 186.043$^{***}$ (df = 3; 175) & 178.061$^{***}$ (df = 2; 180) & 27
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
-\caption{\label{urban_model_regressions}We drop urban water in the final model, due to its lack of linearity.}
 \end{table}
 \end{landscape}
 \restoregeometry
@@ -446,14 +444,18 @@ In addition, we include every possible interaction term for two reasons.
 First, we do so because we can afford to. With only $K=3$ explanatory variables, we can show all $6 = K(K-1)/2$ pairwise combinations. 
 Second, and more importantly, we suspect that the effect of one explanatory variable on log GDP per capita depends on the level of another covariate. For instance, research may have less impact on GDP for lower levels of high-tech exports. This is intuitive since, in our model, research is only as good as the fruits borne by it. In short, we justify our use of interaction terms with the following question: What's the point of science journals and R\&D if you can't make things?
 
-Table~\ref{science_model_regressions} answers precisely that question. Indeed, there is no ``point'' -- in the sense of output and GDP -- to the science community if it doesn't produce anything. We know this because {\tt log.research:log.high.tech} and {\tt log.high.tech:log.journals} are significant, but {\tt log.research:log.journals} are not.
+Table~\ref{science_model_regressions} answers precisely that question. Indeed, there is no ``point'' -- in the sense of output and GDP -- to the science community if it doesn't produce anything. We know this because
+$\ln(\mathrm{research}) \times \ln(\mathrm{high.tech})$ and
+$\ln(\mathrm{high.tech}) \times \ln(\mathrm{journals})$
+are significant, but 
+$\ln(\mathrm{research}) \times \ln(\mathrm{journals})$ is not.
 
 \newgeometry{margin=1cm} % modify this if you need even more space
 \begin{landscape}
 \small
 \begin{table}[!htbp] \centering 
-  \caption{} 
-  \label{} 
+  \caption{Taking out \emph{research} drastically increases the number of observations.}
+  \label{science_model_regressions} 
 \begin{tabular}{@{\extracolsep{5pt}}lccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -493,7 +495,6 @@ F Statistic & 24.942$^{***}$ (df = 3; 75) & 30.418$^{***}$ (df = 3; 84) & 26.041
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
-\caption{\label{science_model_regressions}Taking out \emph{research} drastically increases the number of observations.}
 \end{table} 
 \end{landscape}
 \restoregeometry

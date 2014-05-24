@@ -7,6 +7,8 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{endnotes}
+\usepackage{geometry}
+\usepackage{pdflscape}
 %\usepackage{pdfpages}
 %\usepackage[left=1.25in,right=1.25in]{geometry}
 
@@ -208,48 +210,64 @@ Next we run scatterplots of log GDP per capita versus each our proxies for energ
 % % % % % % % % % % %
 % % % % % % % % % % %
 \subsection{Regression}
-Figure~\ref{climate_model_regressions} shows our variations of the climate model.
+Table~\ref{climate_model_regressions} shows our variations of the climate model.
 First, we run the full model that includes every indicator.
 Of these, the log of electricity consumption is the only one to show up as significant.
 We see a positive correlation: the more energy power plants consume in a country, the higher that country's log per-capita GDP will be.
-Specifically, for the first three models, a 1\% increase in electricity consumption is associated with $0.97$\% increase in GDP per capita, give or take one basis point.
+Specifically, for the models 1 and 3, a 1\% increase in electricity consumption is associated with $0.97$\% increase in GDP per capita, give or take one basis point.
 
-\begin{figure}[!ht]
-\begin{singlespace}
-%\footnotesize
-\begin{verbatim}
-                      (1)             (2)             (3)             (4)   
-                  Model A         Model B         Model C         Model D   
-----------------------------------------------------------------------------
-paved_roads       0.00262         0.00166         0.00169                   
-                   (0.79)          (0.56)          (0.59)                   
-
-log_electr~s        0.984***        0.961***        0.961***        0.291   
-                  (10.10)         (13.80)         (13.97)          (1.37)   
-
-log_co2           -0.0488         0.00220                          -0.455** 
-                  (-0.38)          (0.05)                         (-2.65)   
-
-log_nitrous        0.1000                                                   
-                   (0.82)                                                   
-
-log_methane       -0.0662                                                   
-                  (-0.40)                                                   
-
-co2_elec                                                           0.0613** 
-                                                                   (2.82)   
-
-_cons               1.465           1.380*          1.399**         6.433***
-                   (1.69)          (2.23)          (2.89)          (3.96)   
-----------------------------------------------------------------------------
-N                      58              59              59             132   
-----------------------------------------------------------------------------
-t statistics in parentheses
-* p<0.05, ** p<0.01, *** p<0.001
-\end{verbatim}
-\end{singlespace}
+\newgeometry{margin=1cm} % modify this if you need even more space
+\begin{landscape}
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-5} 
+\\[-1.8ex] & \multicolumn{4}{c}{log.GDP.per.capita} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+\hline \\[-1.8ex] 
+ paved.roads & 0.003 & 0.001 & $-$0.001 &  \\ 
+  & (0.003) & (0.003) & (0.016) &  \\ 
+  & & & & \\ 
+ log.electricity.consumption & 0.984$^{***}$ & 0.411 & 0.962$^{***}$ & 0.291 \\ 
+  & (0.098) & (0.313) & (0.071) & (0.212) \\ 
+  & & & & \\ 
+ paved.roads:log.co2 &  &  & 0.0003 &  \\ 
+  &  &  & (0.002) &  \\ 
+  & & & & \\ 
+ log.co2 & $-$0.049 & $-$0.454$^{*}$ & $-$0.017 & $-$0.455$^{***}$ \\ 
+  & (0.127) & (0.257) & (0.106) & (0.172) \\ 
+  & & & & \\ 
+ log.nitrous & 0.100 &  &  &  \\ 
+  & (0.122) &  &  &  \\ 
+  & & & & \\ 
+ log.methane & $-$0.066 &  &  &  \\ 
+  & (0.165) &  &  &  \\ 
+  & & & & \\ 
+ log.electricity.consumption:log.co2 &  & 0.058$^{*}$ &  & 0.061$^{***}$ \\ 
+  &  & (0.032) &  & (0.022) \\ 
+  & & & & \\ 
+ Constant & 1.465$^{*}$ & 5.736$^{**}$ & 1.557 & 6.433$^{***}$ \\ 
+  & (0.865) & (2.491) & (1.105) & (1.626) \\ 
+  & & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 58 & 59 & 59 & 132 \\ 
+R$^{2}$ & 0.842 & 0.840 & 0.831 & 0.806 \\ 
+Adjusted R$^{2}$ & 0.827 & 0.829 & 0.818 & 0.802 \\ 
+Residual Std. Error & 0.591 (df = 52) & 0.584 (df = 54) & 0.601 (df = 54) & 0.668 (df = 128) \\ 
+F Statistic & 55.543$^{***}$ (df = 5; 52) & 71.067$^{***}$ (df = 4; 54) & 66.321$^{***}$ (df = 4; 54) & 177.733$^{***}$ (df = 3; 128) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
 \caption{\label{climate_model_regressions}$N$ increases when we remove paved roads.}
-\end{figure}
+\end{table} 
+\end{landscape}
+\restoregeometry
+\doublespacing
 
 However, Model 4 tells a different story.
 We remove the paved roads indicator -- as it is causing too many values to be deleted -- and regress on the interaction between log CO2 and log electricity consumption.
@@ -323,36 +341,52 @@ We lack a linear relationship between the response and the percentage of urban p
 % % % % % % % % % % %
 \subsection{Regression}
 
-Figure~\ref{urban_model_regressions} shows the regressions of various phases of our urban model.
+Table~\ref{urban_model_regressions} shows the regressions of various phases of our urban model.
 The first model includes our size metric (urban population) as well as both of our proxies for urban welfare (urban sanitation and urban water).
-Model B regresses log GDP per capita on urban population and urban water, whereas Model C regresses on urban population and urban sanitation.
+Model 2 regresses log GDP per capita on urban population and urban water, whereas Model 3 regresses on urban population and urban sanitation.
 
-\begin{figure}[!ht]
-\begin{singlespace}
-%\small
-\begin{verbatim}
-                      (1)             (2)             (3)
-                  Model A         Model B         Model C
-------------------------------------------------------------
-urb_sanita~n       0.0278***                       0.0315***
-                   (8.52)                         (10.95)
-
-urb_popula~n       0.0317***       0.0424***       0.0329***
-                  (10.18)         (12.65)         (10.75)
-
-urb_water          0.0217*         0.0609***
-                   (2.32)          (6.30)
-
-_cons               2.449**         0.373           4.141***
-                   (3.26)          (0.44)         (20.85)
-------------------------------------------------------------
-N                     179             183             181
-\end{verbatim}
-\end{singlespace}
+\newgeometry{margin=1cm} % modify this if you need even more space
+\begin{landscape}
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{log.GDP.per.capita} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ urban.population & 0.032$^{***}$ & 0.042$^{***}$ & 0.033$^{***}$ \\ 
+  & (0.003) & (0.003) & (0.003) \\ 
+  & & & \\ 
+ urban.sanitation & 0.028$^{***}$ &  & 0.032$^{***}$ \\ 
+  & (0.003) &  & (0.003) \\ 
+  & & & \\ 
+ urban.water & 0.022$^{**}$ & 0.061$^{***}$ &  \\ 
+  & (0.009) & (0.010) &  \\ 
+  & & & \\ 
+ Constant & 2.449$^{***}$ & 0.373 & 4.141$^{***}$ \\ 
+  & (0.752) & (0.841) & (0.199) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 179 & 183 & 181 \\ 
+R$^{2}$ & 0.761 & 0.664 & 0.756 \\ 
+Adjusted R$^{2}$ & 0.757 & 0.661 & 0.753 \\ 
+Residual Std. Error & 0.781 (df = 175) & 0.922 (df = 180) & 0.787 (df = 178) \\ 
+F Statistic & 186.043$^{***}$ (df = 3; 175) & 178.061$^{***}$ (df = 2; 180) & 275.727$^{***}$ (df = 2; 178) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
 \caption{\label{urban_model_regressions}We drop urban water in the final model, due to its lack of linearity.}
-\end{figure}
+\end{table}
+\end{landscape}
+\restoregeometry
+\doublespacing
 
-Every indicators in each of the models appears significant, but we should expect the highest $R^2$ from the last model, since its welfare proxy (\emph{urban sanitation}) bears a much more linear relationship with the response than the other welfare proxy (\emph{urban water}). Indeed, the $R^2$ of Model B is $0.66$, whereas the $R^2$ of Model C is $0.75$.
+Every indicators in each of the models appears significant, but we should expect the highest $R^2$ from the last model, since its welfare proxy (\emph{urban sanitation}) bears a much more linear relationship with the response than the other welfare proxy (\emph{urban water}). Indeed, the $R^2$ of Model 2 is $0.66$, whereas the $R^2$ of Model 3 is $0.75$.
 
 
 % % % % % % % % % % %
@@ -412,35 +446,58 @@ In addition, we include every possible interaction term for two reasons.
 First, we do so because we can afford to. With only $K=3$ explanatory variables, we can show all $6 = K(K-1)/2$ pairwise combinations. 
 Second, and more importantly, we suspect that the effect of one explanatory variable on log GDP per capita depends on the level of another covariate. For instance, research may have less impact on GDP for lower levels of high-tech exports. This is intuitive since, in our model, research is only as good as the fruits borne by it. In short, we justify our use of interaction terms with the following question: What's the point of science journals and R\&D if you can't make things?
 
-\begin{figure}[!ht]
-\begin{singlespace}
+Table~\ref{science_model_regressions} answers precisely that question. Indeed, there is no ``point'' -- in the sense of output and GDP -- to the science community if it doesn't produce anything. We know this because {\tt log.research:log.high.tech} and {\tt log.high.tech:log.journals} are significant, but {\tt log.research:log.journals} are not.
+
+\newgeometry{margin=1cm} % modify this if you need even more space
+\begin{landscape}
 \small
-\begin{verbatim}
-                      (1)             (2)             (3)
-                  Model A         Model B         Model C
-------------------------------------------------------------
-log_research        0.324
-                   (1.83)
-
-log_high_t~h        0.179          0.0904          -0.102
-                   (1.38)          (1.23)         (-1.13)
-
-log_journals        0.212**         0.220***        0.108*
-                   (2.97)          (5.32)          (2.08)
-
-tech_jour                                          0.0661***
-                                                   (3.41)
-
-_cons               7.639***        7.407***        7.620***
-                  (11.71)         (34.58)         (35.32)
-------------------------------------------------------------
-N                      79             143             143
-\end{verbatim}
-\end{singlespace}
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{5}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-6} 
+\\[-1.8ex] & \multicolumn{5}{c}{log.GDP.per.capita} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+\hline \\[-1.8ex] 
+ log.research & 0.324$^{*}$ & 0.576$^{**}$ & $-$0.076 &  & $-$0.758$^{**}$ \\ 
+  & (0.178) & (0.277) & (0.225) &  & (0.339) \\ 
+  & & & & & \\ 
+ log.journals & 0.212$^{***}$ & 0.206$^{***}$ &  & 0.108$^{**}$ & 0.661$^{***}$ \\ 
+  & (0.071) & (0.070) &  & (0.052) & (0.151) \\ 
+  & & & & & \\ 
+ log.high.tech:log.journals &  &  &  & 0.066$^{***}$ & $-$0.237$^{***}$ \\ 
+  &  &  &  & (0.019) & (0.063) \\ 
+  & & & & & \\ 
+ log.high.tech & 0.179 &  & 0.512$^{***}$ & $-$0.102 & 2.115$^{***}$ \\ 
+  & (0.129) &  & (0.161) & (0.091) & (0.429) \\ 
+  & & & & & \\ 
+ log.research:log.journals &  & $-$0.018 &  &  & 0.021 \\ 
+  &  & (0.041) &  &  & (0.045) \\ 
+  & & & & & \\ 
+ log.research:log.high.tech &  &  & 0.367$^{***}$ &  & 0.544$^{***}$ \\ 
+  &  &  & (0.093) &  & (0.098) \\ 
+  & & & & & \\ 
+ Constant & 7.638$^{***}$ & 8.054$^{***}$ & 8.301$^{***}$ & 7.620$^{***}$ & 3.785$^{***}$ \\ 
+  & (0.652) & (0.559) & (0.408) & (0.216) & (1.057) \\ 
+  & & & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 79 & 88 & 81 & 143 & 79 \\ 
+R$^{2}$ & 0.499 & 0.521 & 0.504 & 0.326 & 0.655 \\ 
+Adjusted R$^{2}$ & 0.479 & 0.504 & 0.484 & 0.311 & 0.626 \\ 
+Residual Std. Error & 1.050 (df = 75) & 1.067 (df = 84) & 1.042 (df = 77) & 1.282 (df = 139) & 0.890 (df = 72) \\ 
+F Statistic & 24.942$^{***}$ (df = 3; 75) & 30.418$^{***}$ (df = 3; 84) & 26.041$^{***}$ (df = 3; 77) & 22.394$^{***}$ (df = 3; 139) & 22.737$^{***}$ (df = 6; 72) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
 \caption{\label{science_model_regressions}Taking out \emph{research} drastically increases the number of observations.}
-\end{figure}
-
-Figure~\ref{science_model_regressions} answers precisely that question. Indeed, there is no ``point'' -- in the sense of output and GDP -- to the science community if it doesn't produce anything. We know this because {\tt log.research:log.high.tech} and {\tt log.high.tech:log.journals} are significant, but {\tt log.research:log.journals} are not. % TODO interpret the interaction terms of lm(formula = log.GDP.per.capita ~ log.research + log.high.tech +    log.journals + log.research * log.high.tech + log.research *     log.journals + log.high.tech * log.journals)
+\end{table} 
+\end{landscape}
+\restoregeometry
+\doublespacing
 
 
 % % % % % % % % % % %
@@ -448,15 +505,24 @@ Figure~\ref{science_model_regressions} answers precisely that question. Indeed, 
 % % % % % % % % % % %
 \subsection{Condition Checking}
 
+Figure~\ref{science_model_conditions} shows the regression conditions for the following model:
+\begin{align*}
+\ln(\textrm{GDP per capita}) = \beta_0 &+
+\beta_1 \cdot \ln(\textrm{research}) +
+\beta_2 \cdot \ln(\textrm{exports}) +
+\beta_3 \cdot \ln(\textrm{journals}) + \\
+&\beta_4 \cdot \ln(\textrm{research}) \times \ln(\textrm{journals}) + \\
+&\beta_5 \cdot \ln(\textrm{exports}) \times \ln(\textrm{research}) + \\
+&\beta_6 \cdot \ln(\textrm{exports}) \times \ln(\textrm{journals})
+\end{align*}
+From the plot of residuals versus fitted values, we can glean that there is fairly equal variance.
+From the Q-Q plot, we see that the errors are roughly normal, with some deviation on the left tail.
 
-
-
-
-
-
-
-
-
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.7\textwidth]{images/science_model_conditions}
+  \caption{\label{science_model_conditions}Left to right: Residuals vs fitted values, Q-Q plot.}
+\end{figure}
 
 
 % % % % % % % % % % % % % % % % % % % % % %

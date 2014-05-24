@@ -1,5 +1,9 @@
 ROOT <- "~/Desktop/STAT202/Final/"
 
+if (!"stargazer" %in% rownames(installed.packages()))
+  install.packages("stargazer", dependencies=TRUE)
+library("stargazer")
+
 if (!"rworldmap" %in% rownames(installed.packages()))
   install.packages("rworldmap", dependencies=TRUE)
 
@@ -117,8 +121,10 @@ g <- dev.off()
 
 
 
-summary(lm(log.GDP.per.capita ~ urban.sanitation + urban.population))
-summary(lm(log.GDP.per.capita ~ urban.water + urban.population))
+m1 <- lm(log.GDP.per.capita ~ urban.population + urban.sanitation + urban.water)
+m2 <- lm(log.GDP.per.capita ~ urban.water + urban.population)
+m3 <- lm(log.GDP.per.capita ~ urban.sanitation + urban.population)
+stargazer(m1,m2,m3)
 
 
 
@@ -188,8 +194,22 @@ g <- dev.off()
 
 
 
+co2 <- df$`CO2 emissions (kt)`
+methane <- df$`Methane emissions (kt of CO2 equivalent)`
+nitrous <- df$`Nitrous oxide emissions (thousand metric tons of CO2 equivalent)`
+electricity.consumption <- df$`Electric power consumption (kWh per capita)`
+paved.roads <- df$`Roads, paved (% of total roads)`
+log.co2 <- log(co2 + 0.01)
+log.methane <- log(methane + 0.01)
+log.nitrous <- log(nitrous + 0.01)
+log.electricity.consumption <- log(electricity.consumption + 0.01)
+log.paved.roads <- log(paved.roads + 0.01)
 
-
+m1 <- lm(log.GDP.per.capita ~ paved.roads + log.electricity.consumption + log.co2 + log.nitrous + log.methane)
+m2 <- lm(log.GDP.per.capita ~ paved.roads + log.electricity.consumption*log.co2)
+m3 <- lm(log.GDP.per.capita ~ paved.roads*log.co2 + log.electricity.consumption)
+m4 <- lm(log.GDP.per.capita ~ log.electricity.consumption*log.co2)
+stargazer(m1,m2,m3,m4)
 
 
 
@@ -221,14 +241,14 @@ g <- dev.off()
 
 summary(lm(log.GDP.per.capita ~ research + high.tech + journals + research*high.tech + research*journals + high.tech*journals))
 
-# NICE!!!!!!!!!
-summary(lm(log.GDP.per.capita ~ log.research + log.high.tech + log.journals + log.research*log.high.tech + log.research*log.journals + log.high.tech*log.journals))
+m0 <- lm(log.GDP.per.capita ~ log.research + log.journals + log.high.tech)
+m1 <- lm(log.GDP.per.capita ~ log.research * log.journals)
+m2 <- lm(log.GDP.per.capita ~ log.research * log.high.tech)
+m3 <- lm(log.GDP.per.capita ~ log.high.tech * log.journals)
+m4 <- lm(log.GDP.per.capita ~ log.research*log.high.tech + log.research*log.journals + log.high.tech*log.journals)
+stargazer(m0, m1,m2,m3,m4)
 
-
-summary(lm(log.GDP.per.capita ~ log.research * log.journals))
-summary(lm(log.GDP.per.capita ~ log.research * log.high.tech))
-m <- lm(log.GDP.per.capita ~ log.high.tech * log.journals)
-summary(m)
+m <- m4
 
 nrow = 1
 ncol = 2

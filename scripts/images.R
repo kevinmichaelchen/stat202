@@ -117,7 +117,8 @@ g <- dev.off()
 
 
 
-
+summary(lm(log.GDP.per.capita ~ urban.sanitation + urban.population))
+summary(lm(log.GDP.per.capita ~ urban.water + urban.population))
 
 
 

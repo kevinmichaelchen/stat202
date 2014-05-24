@@ -1,0 +1,479 @@
+-------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/kmchen1/Desktop/STAT202/Final/writeups/images/regressions.log
+  log type:  text
+ opened on:  21 May 2014, 10:59:17
+
+. insheet using "~/Desktop/STAT202/Final/data/Y2008.csv", comma
+(1228 vars, 214 obs)
+
+. 
+. gen gdp_per_capita_current_USD = real(gdppercapitacurrentus)
+(18 missing values generated)
+
+. gen log_GDP_per_capita = log(gdp_per_capita_current_USD + 0.01)
+(18 missing values generated)
+
+. 
+. gen urb_sanitation = real(improvedsanitationfacilitiesurba)
+(20 missing values generated)
+
+. gen urb_population = real(urbanpopulationoftotal)
+(4 missing values generated)
+
+. gen urb_water = real(improvedwatersourceurbanofurbanp)
+(18 missing values generated)
+
+. 
+. gen co2 = real(co2emissionskt)
+(16 missing values generated)
+
+. gen methane = real(methaneemissionsktofco2equivalen)
+(80 missing values generated)
+
+. gen nitrous = real(nitrousoxideemissionsthousandmet)
+(80 missing values generated)
+
+. gen paved_roads = real(roadspavedoftotalroads)
+(148 missing values generated)
+
+. gen electric_cons = real(electricpowerconsumptionkwhperca)
+(79 missing values generated)
+
+. gen log_co2 = log(co2 + 0.01)
+(16 missing values generated)
+
+. gen log_methane = log(methane + 0.01)
+(80 missing values generated)
+
+. gen log_nitrous = log(nitrous + 0.01)
+(80 missing values generated)
+
+. gen log_paved_roads = log(paved_roads + 0.01)
+(148 missing values generated)
+
+. gen log_electric_cons = log(electric_cons + 0.01)
+(79 missing values generated)
+
+. 
+. gen high_tech = real(hightechnologyexportsofmanufactu)
+(66 missing values generated)
+
+. gen research = real(researchanddevelopmentexpenditur)
+(123 missing values generated)
+
+. gen journals = real(scientificandtechnicaljournalart)
+(24 missing values generated)
+
+. gen log_high_tech = log(high_tech + 0.01)
+(66 missing values generated)
+
+. gen log_research = log(research + 0.01)
+(123 missing values generated)
+
+. gen log_journals = log(journals + 0.01)
+(24 missing values generated)
+
+. 
+. gen child_labor = real(childreninemploymenttotalofchild)
+(202 missing values generated)
+
+. gen life_expect = real(lifeexpectancyatbirthmaleyears)
+(14 missing values generated)
+
+. gen refugee_pop = real(v1017)
+(23 missing values generated)
+
+. gen literacy = real(literacyrateadulttotalofpeopleag)
+(187 missing values generated)
+
+. gen log_child_labor = log(child_labor + 0.01)
+(202 missing values generated)
+
+. gen log_life_expect = log(life_expect + 0.01)
+(14 missing values generated)
+
+. gen log_refugee_pop = log(refugee_pop + 0.01)
+(23 missing values generated)
+
+. gen log_literacy = log(literacy + 0.01)
+(187 missing values generated)
+
+. 
+. 
+. 
+. * CLIMATE MODEL REGRESSIONS
+. eststo clear
+
+. eststo: regress log_GDP_per_capita paved_roads log_electric_cons log_co2 log_nitrous log_methane
+
+      Source |       SS       df       MS              Number of obs =      58
+-------------+------------------------------           F(  5,    52) =   55.54
+       Model |  97.0710239     5  19.4142048           Prob > F      =  0.0000
+    Residual |  18.1759608    52  .349537708           R-squared     =  0.8423
+-------------+------------------------------           Adj R-squared =  0.8271
+       Total |  115.246985    57  2.02187693           Root MSE      =  .59122
+
+-----------------------------------------------------------------------------------
+log_GDP_per_cap~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+      paved_roads |   .0026231   .0033364     0.79   0.435    -.0040719    .0093181
+log_electric_cons |   .9843505    .097503    10.10   0.000     .7886964    1.180005
+          log_co2 |  -.0488316   .1273445    -0.38   0.703     -.304367    .2067039
+      log_nitrous |   .0999826   .1223188     0.82   0.417    -.1454679    .3454332
+      log_methane |  -.0662312   .1646393    -0.40   0.689    -.3966041    .2641416
+            _cons |   1.464975   .8652533     1.69   0.096    -.2712832    3.201232
+-----------------------------------------------------------------------------------
+(est1 stored)
+
+. eststo: regress log_GDP_per_capita paved_roads log_electric_cons log_co2
+
+      Source |       SS       df       MS              Number of obs =      59
+-------------+------------------------------           F(  3,    55) =   89.99
+       Model |  95.7805002     3  31.9268334           Prob > F      =  0.0000
+    Residual |   19.513012    55  .354782036           R-squared     =  0.8308
+-------------+------------------------------           Adj R-squared =  0.8215
+       Total |  115.293512    58  1.98781918           Root MSE      =  .59564
+
+-----------------------------------------------------------------------------------
+log_GDP_per_cap~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+      paved_roads |   .0016566   .0029726     0.56   0.580    -.0043007    .0076139
+log_electric_cons |   .9606794   .0696093    13.80   0.000     .8211794    1.100179
+          log_co2 |   .0021987   .0437157     0.05   0.960    -.0854096     .089807
+            _cons |   1.379612   .6185023     2.23   0.030     .1401051    2.619118
+-----------------------------------------------------------------------------------
+(est2 stored)
+
+. eststo: regress log_GDP_per_capita paved_roads log_electric_cons
+
+      Source |       SS       df       MS              Number of obs =      59
+-------------+------------------------------           F(  2,    56) =  137.43
+       Model |  95.7796028     2  47.8898014           Prob > F      =  0.0000
+    Residual |  19.5139094    56  .348462668           R-squared     =  0.8307
+-------------+------------------------------           Adj R-squared =  0.8247
+       Total |  115.293512    58  1.98781918           Root MSE      =  .59031
+
+-----------------------------------------------------------------------------------
+log_GDP_per_cap~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+      paved_roads |   .0016909   .0028675     0.59   0.558    -.0040534    .0074352
+log_electric_cons |   .9609488   .0687821    13.97   0.000     .8231618    1.098736
+            _cons |   1.398709   .4838558     2.89   0.005     .4294298    2.367989
+-----------------------------------------------------------------------------------
+(est3 stored)
+
+. gen co2_elec = log_electric_cons * log_co2
+(80 missing values generated)
+
+. eststo: regress log_GDP_per_capita log_electric_cons log_co2 co2_elec
+
+      Source |       SS       df       MS              Number of obs =     132
+-------------+------------------------------           F(  3,   128) =  177.73
+       Model |  237.834243     3   79.278081           Prob > F      =  0.0000
+    Residual |  57.0947024   128  .446052363           R-squared     =  0.8064
+-------------+------------------------------           Adj R-squared =  0.8019
+       Total |  294.928946   131    2.251366           Root MSE      =  .66787
+
+-----------------------------------------------------------------------------------
+log_GDP_per_cap~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------+----------------------------------------------------------------
+log_electric_cons |   .2907869   .2120161     1.37   0.173    -.1287232    .7102969
+          log_co2 |   -.454617    .171714    -2.65   0.009    -.7943825   -.1148516
+         co2_elec |   .0612694   .0217136     2.82   0.006     .0183054    .1042334
+            _cons |   6.433367   1.625756     3.96   0.000     3.216531    9.650204
+-----------------------------------------------------------------------------------
+(est4 stored)
+
+. esttab, mtitles("Model A" "Model B" "Model C" "Model D")
+
+----------------------------------------------------------------------------
+                      (1)             (2)             (3)             (4)   
+                  Model A         Model B         Model C         Model D   
+----------------------------------------------------------------------------
+paved_roads       0.00262         0.00166         0.00169                   
+                   (0.79)          (0.56)          (0.59)                   
+
+log_electr~s        0.984***        0.961***        0.961***        0.291   
+                  (10.10)         (13.80)         (13.97)          (1.37)   
+
+log_co2           -0.0488         0.00220                          -0.455** 
+                  (-0.38)          (0.05)                         (-2.65)   
+
+log_nitrous        0.1000                                                   
+                   (0.82)                                                   
+
+log_methane       -0.0662                                                   
+                  (-0.40)                                                   
+
+co2_elec                                                           0.0613** 
+                                                                   (2.82)   
+
+_cons               1.465           1.380*          1.399**         6.433***
+                   (1.69)          (2.23)          (2.89)          (3.96)   
+----------------------------------------------------------------------------
+N                      58              59              59             132   
+----------------------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+. * URBAN MODEL REGRESSIONS
+. eststo clear
+
+. eststo: regress log_GDP_per_capita urb_sanitation urb_population urb_water
+
+      Source |       SS       df       MS              Number of obs =     179
+-------------+------------------------------           F(  3,   175) =  186.04
+       Model |  340.756936     3  113.585645           Prob > F      =  0.0000
+    Residual |  106.843752   175  .610535728           R-squared     =  0.7613
+-------------+------------------------------           Adj R-squared =  0.7572
+       Total |  447.600689   178  2.51461061           Root MSE      =  .78137
+
+--------------------------------------------------------------------------------
+log_GDP_per_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+urb_sanitation |    .027842   .0032676     8.52   0.000     .0213931    .0342909
+urb_population |   .0317268   .0031176    10.18   0.000      .025574    .0378797
+     urb_water |   .0217218   .0093525     2.32   0.021     .0032636      .04018
+         _cons |   2.448892   .7520109     3.26   0.001     .9647139     3.93307
+--------------------------------------------------------------------------------
+(est1 stored)
+
+. eststo: regress log_GDP_per_capita urb_population urb_water
+
+      Source |       SS       df       MS              Number of obs =     183
+-------------+------------------------------           F(  2,   180) =  178.06
+       Model |  302.902619     2  151.451309           Prob > F      =  0.0000
+    Residual |  153.100674   180  .850559301           R-squared     =  0.6643
+-------------+------------------------------           Adj R-squared =  0.6605
+       Total |  456.003293   182   2.5055126           Root MSE      =  .92226
+
+--------------------------------------------------------------------------------
+log_GDP_per_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+urb_population |   .0424286    .003355    12.65   0.000     .0358083    .0490488
+     urb_water |   .0608617   .0096551     6.30   0.000       .04181    .0799134
+         _cons |   .3731083   .8413908     0.44   0.658     -1.28715    2.033367
+--------------------------------------------------------------------------------
+(est2 stored)
+
+. eststo: regress log_GDP_per_capita urb_sanitation urb_population
+
+      Source |       SS       df       MS              Number of obs =     181
+-------------+------------------------------           F(  2,   178) =  275.73
+       Model |  341.712038     2  170.856019           Prob > F      =  0.0000
+    Residual |    110.2994   178  .619659548           R-squared     =  0.7560
+-------------+------------------------------           Adj R-squared =  0.7532
+       Total |  452.011438   180  2.51117466           Root MSE      =  .78718
+
+--------------------------------------------------------------------------------
+log_GDP_per_~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+urb_sanitation |   .0315371   .0028809    10.95   0.000      .025852    .0372221
+urb_population |   .0328611   .0030578    10.75   0.000      .026827    .0388953
+         _cons |    4.14085    .198558    20.85   0.000      3.74902    4.532681
+--------------------------------------------------------------------------------
+(est3 stored)
+
+. esttab, mtitles("Model A" "Model B" "Model C")
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+                  Model A         Model B         Model C   
+------------------------------------------------------------
+urb_sanita~n       0.0278***                       0.0315***
+                   (8.52)                         (10.95)   
+
+urb_popula~n       0.0317***       0.0424***       0.0329***
+                  (10.18)         (12.65)         (10.75)   
+
+urb_water          0.0217*         0.0609***                
+                   (2.32)          (6.30)                   
+
+_cons               2.449**         0.373           4.141***
+                   (3.26)          (0.44)         (20.85)   
+------------------------------------------------------------
+N                     179             183             181   
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+. * SCIENCE MODEL REGRESSIONS
+. eststo clear
+
+. gen tech_jour = log_high_tech * log_journals
+(71 missing values generated)
+
+. eststo: regress log_GDP_per_capita log_research log_high_tech log_journals
+
+      Source |       SS       df       MS              Number of obs =      79
+-------------+------------------------------           F(  3,    75) =   24.94
+       Model |  82.5005641     3   27.500188           Prob > F      =  0.0000
+    Residual |  82.6928582    75  1.10257144           R-squared     =  0.4994
+-------------+------------------------------           Adj R-squared =  0.4794
+       Total |  165.193422    78  2.11786439           Root MSE      =    1.05
+
+-------------------------------------------------------------------------------
+log_GDP_per~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+ log_research |   .3244228   .1775317     1.83   0.072    -.0292385    .6780842
+log_high_tech |   .1788967   .1293714     1.38   0.171    -.0788243    .4366176
+ log_journals |    .211865   .0712576     2.97   0.004     .0699125    .3538175
+        _cons |   7.638505   .6523129    11.71   0.000     6.339031    8.937979
+-------------------------------------------------------------------------------
+(est1 stored)
+
+. eststo: regress log_GDP_per_capita log_high_tech log_journals
+
+      Source |       SS       df       MS              Number of obs =     143
+-------------+------------------------------           F(  2,   140) =   25.82
+       Model |  91.2815402     2  45.6407701           Prob > F      =  0.0000
+    Residual |  247.512051   140  1.76794322           R-squared     =  0.2694
+-------------+------------------------------           Adj R-squared =  0.2590
+       Total |  338.793591   142  2.38587036           Root MSE      =  1.3296
+
+-------------------------------------------------------------------------------
+log_GDP_per~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+log_high_tech |   .0903969   .0733215     1.23   0.220    -.0545636    .2353573
+ log_journals |     .22022   .0413881     5.32   0.000     .1383934    .3020466
+        _cons |   7.407349    .214237    34.58   0.000     6.983791    7.830907
+-------------------------------------------------------------------------------
+(est2 stored)
+
+. eststo: regress log_GDP_per_capita log_high_tech log_journals tech_jour
+
+      Source |       SS       df       MS              Number of obs =     143
+-------------+------------------------------           F(  3,   139) =   22.39
+       Model |  110.393481     3  36.7978269           Prob > F      =  0.0000
+    Residual |  228.400111   139  1.64316626           R-squared     =  0.3258
+-------------+------------------------------           Adj R-squared =  0.3113
+       Total |  338.793591   142  2.38587036           Root MSE      =  1.2819
+
+-------------------------------------------------------------------------------
+log_GDP_per~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+log_high_tech |  -.1024186   .0905152    -1.13   0.260    -.2813833     .076546
+ log_journals |   .1075933   .0517944     2.08   0.040     .0051865    .2100002
+    tech_jour |   .0660552   .0193685     3.41   0.001     .0277603    .1043502
+        _cons |   7.619764   .2157253    35.32   0.000     7.193237    8.046291
+-------------------------------------------------------------------------------
+(est3 stored)
+
+. esttab, mtitles("Model A" "Model B" "Model C")
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+                  Model A         Model B         Model C   
+------------------------------------------------------------
+log_research        0.324                                   
+                   (1.83)                                   
+
+log_high_t~h        0.179          0.0904          -0.102   
+                   (1.38)          (1.23)         (-1.13)   
+
+log_journals        0.212**         0.220***        0.108*  
+                   (2.97)          (5.32)          (2.08)   
+
+tech_jour                                          0.0661***
+                                                   (3.41)   
+
+_cons               7.639***        7.407***        7.620***
+                  (11.71)         (34.58)         (35.32)   
+------------------------------------------------------------
+N                      79             143             143   
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+. * SOCIAL DEVELOPMENT MODEL REGRESSIONS
+. eststo clear
+
+. eststo: regress log_GDP_per_capita child_labor
+
+      Source |       SS       df       MS              Number of obs =      12
+-------------+------------------------------           F(  1,    10) =    4.81
+       Model |  5.71938286     1  5.71938286           Prob > F      =  0.0531
+    Residual |  11.8981177    10  1.18981177           R-squared     =  0.3246
+-------------+------------------------------           Adj R-squared =  0.2571
+       Total |  17.6175005    11  1.60159096           Root MSE      =  1.0908
+
+------------------------------------------------------------------------------
+log_GDP_pe~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ child_labor |  -.0426176   .0194381    -2.19   0.053    -.0859284    .0006932
+       _cons |   8.380807   .5554757    15.09   0.000      7.14313    9.618484
+------------------------------------------------------------------------------
+(est1 stored)
+
+. eststo: regress log_GDP_per_capita literacy  
+
+      Source |       SS       df       MS              Number of obs =      25
+-------------+------------------------------           F(  1,    23) =    6.16
+       Model |  9.81585061     1  9.81585061           Prob > F      =  0.0208
+    Residual |   36.650333    23  1.59349274           R-squared     =  0.2112
+-------------+------------------------------           Adj R-squared =  0.1770
+       Total |  46.4661837    24  1.93609099           Root MSE      =  1.2623
+
+------------------------------------------------------------------------------
+log_GDP_pe~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    literacy |   .0461924   .0186115     2.48   0.021     .0076916    .0846932
+       _cons |   4.420642     1.6133     2.74   0.012     1.083277    7.758007
+------------------------------------------------------------------------------
+(est2 stored)
+
+. eststo: regress log_GDP_per_capita life_expect refugee_pop
+
+      Source |       SS       df       MS              Number of obs =     180
+-------------+------------------------------           F(  2,   177) =  137.12
+       Model |  274.412652     2  137.206326           Prob > F      =  0.0000
+    Residual |  177.115814   177  1.00065431           R-squared     =  0.6077
+-------------+------------------------------           Adj R-squared =  0.6033
+       Total |  451.528465   179  2.52250539           Root MSE      =  1.0003
+
+------------------------------------------------------------------------------
+log_GDP_pe~a |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+ life_expect |   .1333642   .0082398    16.19   0.000     .1171033    .1496252
+ refugee_pop |  -4.29e-07   2.90e-07    -1.48   0.140    -1.00e-06    1.42e-07
+       _cons |  -.4409337   .5577436    -0.79   0.430    -1.541617    .6597494
+------------------------------------------------------------------------------
+(est3 stored)
+
+. esttab, mtitles("Model A" "Model B" "Model C")
+
+------------------------------------------------------------
+                      (1)             (2)             (3)   
+                  Model A         Model B         Model C   
+------------------------------------------------------------
+child_labor       -0.0426                                   
+                  (-2.19)                                   
+
+literacy                           0.0462*                  
+                                   (2.48)                   
+
+life_expect                                         0.133***
+                                                  (16.19)   
+
+refugee_pop                                  -0.000000429   
+                                                  (-1.48)   
+
+_cons               8.381***        4.421*         -0.441   
+                  (15.09)          (2.74)         (-0.79)   
+------------------------------------------------------------
+N                      12              25             180   
+------------------------------------------------------------
+t statistics in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/kmchen1/Desktop/STAT202/Final/writeups/images/regressions.log
+  log type:  text
+ closed on:  21 May 2014, 10:59:20
+-------------------------------------------------------------------------------------------------------------

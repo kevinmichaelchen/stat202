@@ -3,7 +3,7 @@
 clear
 capture log close
 
-log using "~/Desktop/STAT202/Final/writeups/images/regressions.log", text replace
+log using "~/Desktop/regressions.log", text replace
 insheet using "~/Desktop/STAT202/Final/data/Y2008.csv", comma
 
 gen gdp_per_capita_current_USD = real(gdppercapitacurrentus)

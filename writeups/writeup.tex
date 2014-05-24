@@ -58,7 +58,7 @@
 % % % % % % % % % % %
 % % % % % % % % % % %
 \begin{abstract}
-The determinants of a nation's gross domestic product (GDP) have been explored to a great extent. Indeed, given that GDP is a function of a nation's consumption, investment, government spending, exports, and imports, the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly. We present four core models that try to explain GDP per capita without relying on the literal components of Keynesian aggregate demand. Specifically, they proxy for measures of climate change, technological advancement, urbanization and urban welfare, and social development. We find that\dots %TODO
+The determinants of a nation's gross domestic product (GDP) have been explored to a great extent. Indeed, given that GDP is a function of a nation's consumption, investment, government spending, exports, and imports, the standard Keynesian model ``predicts'' GDP nearly perfectly, and quite uninterestingly. We present four core models that try to explain GDP per capita without relying on the literal components of Keynesian aggregate demand. Specifically, they proxy for measures of climate change, technological advancement, urbanization and urban welfare, and social development.
 \end{abstract}
 
 \newpage
@@ -146,7 +146,8 @@ We collect data from the \href{http://data.worldbank.org/indicator}{World Develo
 which draws from several internationally recognized sources and boasts 54 years' worth of data for 214 countries across 1334 indicators.
 We use data for the year 2008.\endnotemark[1]
 
-In compliance with economic convention, and more importantly, because it makes statistical sense, we use log GDP per capita. This choice is shown in Figure~\ref{gdp_transform}. Not only is our response normal, but it is missing very few data points, as shown in the heat map in Figure~\ref{gdp_per_capita_heat_map}.
+In compliance with economic convention, and more importantly, because it makes statistical sense, we use log GDP per capita. This choice is shown in Figure~\ref{gdp_transform}.
+Not only is our response normal, but very few countries fail to collect data on GDP.
 
 \begin{figure}[!ht]
   \centering
@@ -154,11 +155,7 @@ In compliance with economic convention, and more importantly, because it makes s
   \caption{\label{gdp_transform}Log GDP per capita is more normal than its unlogged counterpart.}
 \end{figure}
 
-\begin{figure}[!ht]
-  \centering
-  %\includegraphics[scale=0.5]{images/gdp_per_capita_heat_map.jpg}
-  \caption{\label{gdp_per_capita_heat_map}Our response had near-universal coverage.}
-\end{figure}
+%\begin{figure}[!ht] \centering \includegraphics[scale=0.5]{images/gdp_per_capita_heat_map.jpg} \caption{\label{gdp_per_capita_heat_map}Our response had near-universal coverage.} \end{figure}
 
 
 
@@ -422,7 +419,7 @@ Figure~\ref{urban_model_conditions} allows us to assess our model condition's of
 % % % % % % % % % % %
 \subsection{Indicators}
 How well does a country's level of technology explain its wealth? We examine three indicators: the number of scientific journals and articles produced by a nation, the percent of GDP that goes into research and development (R\&D), and the percentage of manufactured exports that are deemed ``high-tech.'' It is worth noting that each of these explanatory variables may be highly correlated with each other. In other words, the more a country invests in R\&D, the more scientific journals it will produce, and vice versa.
-% TODO correlation matrix?
+% TODO correlation matrix
 
 \begin{figure}[!ht]
   \centering
@@ -439,7 +436,6 @@ Once we apply log transformations to each of our three indicators, we see strong
 
 Table~\ref{science_model_regressions} shows various forms of our science and technology model. We use the logarithms of our World Bank indicators, as they are stronger predictors of log GDP per capita.
 
-% TODO show r^2 in esttab in .do file
 In addition, we include every possible interaction term for two reasons.
 First, we do so because we can afford to. With only $K=3$ explanatory variables, we can show all $6 = K(K-1)/2$ pairwise combinations. 
 Second, and more importantly, we suspect that the effect of one explanatory variable on log GDP per capita depends on the level of another covariate. For instance, research may have less impact on GDP for lower levels of high-tech exports. This is intuitive since, in our model, research is only as good as the fruits borne by it. In short, we justify our use of interaction terms with the following question: What's the point of science journals and R\&D if you can't make things?
@@ -638,10 +634,12 @@ Thus, our social development model may require a nonparametric test.
 % % % % % % % % % % % % % % % % % % % % % %
 \section{Conclusion}
 \label{sec:conclusion}
-We provide four core models that explain the log of GDP per capita. Each model has very significant indicators and high $R^2$.
-% TODO summarize the results more, describe why the models are useful
+We provide four core models that explain the log of GDP per capita.
+Each model has very significant indicators and high $R^2$.
+More importantly, these models are more relatable and more interesting to the layman than Keynesian theory.
+That is, they offer a fresh explanation for why some nations are wealthier by regressing on more perceptible variables, such as a country's general levels of pollution, urbanization, innovation, and education.
 
-However, there may an inherent limitation to our regressions: reverse causality.
+However, there may be an inherent limitation to our regressions: reverse causality.
 In each model we try to explain the effect of $x$ on $y$, when in reality it could be that $y$ affects $x$. For instance, a country's GDP per capita may be what allows it to invest more in research and technology.
 
 Even if $y$ does not directly cause $x$, it may affect $x$ through another lurking variable. We must think about what affects the indicators we use. First, we do not account for a nation's institutions, even though they have a huge impact on just about everything. Wealthier nations can afford to have strengthen their legal and political institutions. As a result, regulations on pollution or on child labor may be more stringent.

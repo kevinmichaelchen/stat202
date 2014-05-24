@@ -86,6 +86,25 @@ log.literacy <- log(literacy + 0.01)
 ### URBAN MODEL ###
 ###################
 nrow = 1
+ncol = 3
+png(filename = makePNG("urban_model_scatter"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
+par(mfrow=c(nrow,ncol))
+
+plot(x = urban.population, xlab = "Urban Population (% of Total)", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = POINT_COLOR)
+abline(summary(lm(log.GDP.per.capita ~ urban.population)), lwd = LWD, col = LINE_COLOR)
+
+plot(x = urban.water, xlab = "% Urban Access to Clean Water", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = POINT_COLOR)
+abline(summary(lm(log.GDP.per.capita ~ urban.water)), lwd = LWD, col = LINE_COLOR)
+
+plot(x = urban.sanitation, xlab = "% of Urban Population with Sanitation Access", y = log.GDP.per.capita, ylab = "log(GDP per capita)", pch = PCH, cex = CEX, col = POINT_COLOR)
+abline(summary(lm(log.GDP.per.capita ~ urban.sanitation)), lwd = LWD, col = LINE_COLOR)
+
+g <- dev.off()
+
+
+
+
+nrow = 1
 ncol = 2
 png(filename = makePNG("urban_model_scatter_pop_water"), width = PLOT_WIDTH * ncol, height = PLOT_WIDTH * nrow)
 par(mfrow=c(nrow,ncol))
